@@ -1,0 +1,17 @@
+Source:
+https://linuxhint.com/split-linux-terminal/
+
+Use tmax
+
+Install:
+sudo apt-get install tmux
+
+Run:
+tmux new -s dev
+
+Instructions:
+Vertical split:		ctrl + b + %
+Horisontal split:	ctrl + b + "
+Change active cell:	ctrl + b + o
+Delete cell:		ctrl + b + d
+help:			ctrl + b + ?
