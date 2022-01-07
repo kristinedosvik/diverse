@@ -6,12 +6,24 @@ Use tmax
 Install:
 sudo apt-get install tmux
 
-Run:
-tmux new -s dev
+Run:			tmux new -s <session_name> 
+See active terminals:	tmux ls
+Kill terminals:		tmux kill-session -t <session_name>
 
-Instructions:
+
+Instructions within tmux terminal:
 Vertical split:		ctrl + b + %
 Horisontal split:	ctrl + b + "
-Change active cell:	ctrl + b + o
 Delete cell:		ctrl + b + d
-help:			ctrl + b + ?
+help:			google
+
+
+
+Help:
+//Start command to tmux by typing ctrl + b.
+//The next command can be related to tmux, ; denotes next command.
+
+Change to another pane:	ctrl + b; up/down/left/rigth;
+Resize windows:		ctrl + b + up/down/left/rigth;
+
+
