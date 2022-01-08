@@ -12,9 +12,9 @@ Kill terminals:		tmux kill-session -t <session_name>
 
 
 Instructions within tmux terminal:
-Vertical split:		ctrl + b + %
-Horisontal split:	ctrl + b + "
-Delete cell:		ctrl + b + d
+Vertical split pane:	ctrl + b + %
+Horisontal split pane:	ctrl + b + "
+Delete pane:		ctrl + b; x
 help:			google
 
 
