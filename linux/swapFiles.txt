@@ -1,0 +1,3 @@
+When having issues with swap files, just delete the swap file:
+
+rm .<filename>.swp
