@@ -1,0 +1,10 @@
+Hei, dette er en test.
+Det er kun et forsok på å sjekke om
+funksjonen fetchFileContent fungerer.
+// og for å se om den tar bort kommentarer
+:-)
+/* Det hadde isåfall vært nice,
+tenker jeg!
+Gjør ikke du også det?*/
+Eller?
+

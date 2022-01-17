@@ -1,0 +1,7 @@
+https://vim.fandom.com/wiki/Search_and_replace
+
+#search and replace:
+:%s/<oldWord>/<newWord>/gc
+
+#find same word in file:
+SHIFT *
