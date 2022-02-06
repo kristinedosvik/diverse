@@ -1,0 +1,18 @@
+The number corresponds to what section of the manual that page is from; 1 is user commands, while 8 is sysadmin stuff. The man page for man itself (man man) explains it and lists the standard ones:
+
+MANUAL SECTIONS
+    The standard sections of the manual include:
+
+    1      User Commands
+    2      System Calls
+    3      C Library Functions
+    4      Devices and Special Files
+    5      File Formats and Conventions
+    6      Games et. al.
+    7      Miscellanea
+    8      System Administration tools and Daemons
+
+    Distributions customize the manual section to their specifics,
+    which often include additional sections.
+
+source: https://unix.stackexchange.com/questions/3586/what-do-the-numbers-in-a-man-page-mean

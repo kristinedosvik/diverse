@@ -1,0 +1,9 @@
+
+xdg-open // er som å dobbelklikke på filen
+Shift+PrtSc // save screenshot av spesifikt område til Pictures
+Shift+Ctrl+PrtSc // kopiere screenshot av et spesifikt område til clipboard
+grep -Rinw <folder> -e <searchstring> // search for a word in a folder
+ --> R = recursive search
+ --> w = only whole words
+ --> i = ignore case sensivity
+ --> e = search string

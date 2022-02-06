@@ -1,0 +1,12 @@
+Source: https://app.slack.com/client/T27UKUTNX/C280X2ZUH
+
+Run python script:
+python3 <script name>.py
+
+Install package:
+1) sudo apt-get update //Updates something?
+2) python3 -V //check python version
+3) sudo apt get install python3-pip //install pip
+4) pip3 install numpy //install numpy
+5) pip3 show numpy //verify numpy installation
+6) pip3 install --upgrade numpy //upgrade package

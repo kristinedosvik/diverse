@@ -1,0 +1,6 @@
+input to binaryFile.hex:
+
+echo -n -e \\x01\\x02\\x04\\x08 > binaryFile.txt
+
+
+

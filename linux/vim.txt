@@ -5,3 +5,14 @@ https://vim.fandom.com/wiki/Search_and_replace
 
 #find same word in file:
 SHIFT *
+
+#Write file in hex format:
+echo -n -e //<hex number 1> //<hex number 2> > file.hex
+
+#File in hex format:
+:%!xxd // convert to hex file
+:%!xxd -r // convert back to normal text file
+//According to stackoverflow: must back in normal mode to save
+:set binary noendofline // make sure x0a is not appended to the text
+
+

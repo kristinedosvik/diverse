@@ -64,6 +64,7 @@ void integerToString(){
 int main(){
 	prints();
 	integerToString();
-	
+	printf(__DATE__ " " __TIME__ "\n");
+
 	return 0;
 }

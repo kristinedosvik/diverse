@@ -31,8 +31,6 @@ int fetchFileContent(char * filename, char * fileContent)
     }
 
     strcpy(fileContent, config_file_buffer);
-    //printf("FileContent:\n%s\n", fileContent);
-    //printf("config_file_buffer:\n%s\n", config_file_buffer);
 
     return 0;
 }
