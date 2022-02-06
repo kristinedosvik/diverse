@@ -1,6 +1,14 @@
 input to binaryFile.hex:
 
-echo -n -e \\x01\\x02\\x04\\x08 > binaryFile.txt
+echo -n -e \\x01\\x02\\x04\\x08 > binaryFile.hex
+
+When converting this to a hex representation the left side of the file shows the entry points, the middel part of the file shows the hex code, while the right side of the file shows the readable letters.
+
+Vim bruker ascii, som bruker 2 7 bits på å representere chars, altså 0x00 til 0x7e. Dersom vi skriver inn 0x7f som er større enn 0x7e så vil resultatet bli et blått fancy tegn.
+
+Vim bruker altså 8 bits per char (1 byte slik som i C), men klarer bare å vise frem ASCII tegn. Alt som ikke er ASCII tegn vil bli vist som fancy tegn. 
+
+For å redigee en fil sine hex verdier må man gå inn i binary mode, altså legge til et -b flagg når man åpner filen, ellers så vil endringene endres tilbake til noe annet innenfor ASCII sitt domene. Kilde: https://mattoppenheim.com/2020/01/30/using-vim-to-change-character-hexadecimal-values-beyond-standard-ascii-values/ 
 
 
 
