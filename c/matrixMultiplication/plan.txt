@@ -1,0 +1,17 @@
+Vi har et tidsestimat.
+Vil estimere hvordan det blir når vi ser på algoritmens kompleksitet
+Vil estimere hvordan det blir når vi ser på algoritmens funksjoner
+- Hvis ikke det er for mye off foretrekker vi kompleksitetsanalyse
+Vil estimere hvordan det blir når vi ser på algoritmens input størrelse.
+
+########
+
+sjekke om kompleksitet er langt unna funksjonstelling når det kommer til å se hvordan kjøretiden mapper til antall operasjoner.
+
+Gjøre dette for anomaly detection
+
+Gjøre dette for target detection
+
+Teste kjøretiden til anomaly detection og target detection
+
+Skrive bakgrunn og motivasjon
