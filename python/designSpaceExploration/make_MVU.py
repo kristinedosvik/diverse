@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import math as math
 
 def make_SVU(svu_graph, svu_sample):
     
@@ -28,17 +29,17 @@ def make_SVU(svu_graph, svu_sample):
 
 def make_MVU(svu_graphs, weights, sample, check_sensibility):
 
-    svu0_x = sample[1]
-    svu1_x = sample[2]
+    outputted_data_size = sample[1]
+    accuracy = sample[2]
 
-    svu0_y = make_SVU(svu_graphs[0], svu0_x)
-    svu1_y = make_SVU(svu_graphs[1], svu1_x)
-    mvu = svu0_y*weights[0] + svu1_y*weights[1]
+    svu_outputted_data_size = make_SVU(svu_graphs[0], outputted_data_size)
+    svu_accuracy = make_SVU(svu_graphs[1], accuracy)
+    mvu = svu_outputted_data_size*weights[0] + svu_accuracy*weights[1]
 
     if (check_sensibility==1):
         print("sample: ", sample)
-        print("svu0_y: ", svu0_y)
-        print("svu1_y: ", svu1_y)
+        print("svu_outputted_data_size: ", svu_outputted_data_size)
+        print("svu_accuracy: ", svu_accuracy)
         print("mvu: ", mvu)
         print()
     
@@ -76,42 +77,234 @@ def plot_color_by_design(svu_graphs, weights, samples, group_nr, group, group_co
         plt.plot(x, y, "o", color = group_colors[i])
     plt.show()
 
+###################################################
 
 
+def binning_output_data_size(frames, frame_samples, bands, binning_factor):
+    return frames, frame_samples, math.floor(bands/binning_factor)
 
-_2D = 1000
-raw = 10*_2D
-   
-svu0_graph = [[40,0],[70,0.5],[100,1]]
+def binning_accuracy(accuracy, bands, binning_factor):
+    if (binning_factor > 10):
+        return accuracy*0.90
+    else:
+        return accuracy*0.97
 
-svu1_graph = [[_2D,1], [_2D*3, 0.9], [raw/2, 0.2], [raw, 0]]
+def binning_cost(frames, frame_samples, bands):
+    return frame_samples*(frames/4*bands+bands*4)
 
-svu_graphs = [svu0_graph, svu1_graph]
-weights = [0.3, 0.7]
+##############
 
-g0 = ["binning", "x"]
-g1 = ["dimRed_pca", "dimRed_enm", "x"]
-g2 = ["tarDet", "anomDet", "x"]
+def dimRed_pca_output_data_size(frames, frame_samples, dimRed_bands):
+    return frames, frame_samples, dimRed_bands
 
-group_colors = ["red", "yellow", "green", "blue", "pink", "grey", "purple", "brown", "black", "lime"]
+def dimRed_pca_accuracy(accuracy, bands, dimRed_bands):
+    if (dimRed_bands > 12):
+        return accurcy*0.95
+    else:
+        return accuracy*0.80
 
-pipeline1 = [g0[0], g1[0], g2[0]]
-pipeline2 = [g0[1], g1[2], g2[1]]
-pipeline3 = [g0[0], g1[0], g2[2]]
-pipeline4 = [g0[0], g1[1], g2[0]]
-pipeline5 = [g0[1], g1[1], g2[0]]
-pipeline6 = [g0[0], g1[2], g2[1]]
-pipeline7 = [g0[1], g1[1], g2[2]]
+def dimRed_pca_cost(frames, frame_samples, bands, dimRed_bands):
+    return frame_samples*(frames/4*7)+dimRed_bands*bands*frames
+
+##############
+
+def dimRed_enm_output_data_size(frames, frame_samples, dimRed_bands):
+    return frames, frame_samples, dimRed_bands
+
+def dimRed_enm_accuracy(accuracy, bands, dimRed_bands):
+    if (dimRed_bands > 12):
+        return accuracy*0.98
+    else:
+        return accuracy*0.85
+
+def dimRed_enm_cost(frames, frame_samples, bands, dimRed_bands):
+    return 2*(frame_samples*(frames/4*7)+dimRed_bands*bands*frames)
+
+##############
+
+def tarDet_output_data_size(frames, frame_samples):
+    return frames, frame_samples, 1
+
+def tarDet_accuracy(accuracy):
+    return accuracy*0.96
+
+def tarDet_cost(frames, frame_samples, bands):
+    return frame_samples*frames*3*(frames/bands)
+
+##############
+
+def anomDet_output_data_size(frames, frame_samples):
+    return frames, frame_samples, 1
+
+def anomDet_accuracy(accuracy):
+    return accuracy*0.92
+
+def anomDet_cost(frames, frame_samples, bands):
+    return frame_samples*frames*5*(frames/bands)/4
+
+##############
 
 
-samples = [[pipeline2, 30, _2D, 12], [pipeline3, 40, _2D, 55], [pipeline4, 60, _2D*2, 7], [pipeline5, 70, _2D*6, 32], [pipeline6, 100, raw, 19], [pipeline7, 110, _2D*4, 26]]
+#####################################################
 
-print(samples)
 
-mvu = make_MVU(svu_graphs, weights, samples[1], 1)
+def g0_algorithm(algorithm, frames, frame_samples, bands, accuracy, binning_factor):
+    if (algorithm == "binning"):
+        new_frames, new_frame_samples, new_bands = binning_output_data_size(frames, frame_samples, bands, binning_factor)
+        accuracy = binning_accuracy(accuracy, bands, binning_factor)
+        cost = binning_cost(frames, frame_samples, bands)
 
-#plot_MVUs(svu_graphs, weights, samples)
-plot_color_by_design(svu_graphs, weights, samples, 1, g1, group_colors)
+    elif (algorithm == "x"):
+        new_frame_samples = frame_samples
+        new_frames = frames
+        new_bands = bands
+        new_accuracy = accuracy
+        cost = 0
+
+    else:
+        print("Error", algorithm)
+
+    return cost, new_frames, new_frame_samples, new_bands, accuracy
+        
+
+def g1_algorithm(algorithm, frames, frame_samples, bands, accuracy, dimRed_bands):
+    if (algorithm == "dimRed_pca"):
+        new_frames, new_frame_samples, new_bands = dimRed_pca_output_data_size(frames, frame_samples, dimRed_bands)
+        accuracy = dimRed_pca_accuracy(accuracy, bands, dimRed_bands)
+        cost = dimRed_pca_cost(frames, frame_samples, bands, dimRed_bands)
+
+    elif (algorithm == "dimRed_enm"):
+        new_frames, new_frame_samples, new_bands = dimRed_enm_output_data_size(frames, frame_samples, dimRed_bands)
+        accuracy = dimRed_enm_accuracy(accuracy, bands, dimRed_bands)
+        cost = dimRed_enm_cost(frames, frame_samples, bands, dimRed_bands)
+    
+    elif (algorithm == "x"):
+        new_frame_samples = frame_samples
+        new_frames = frames
+        new_bands = bands
+        new_accuracy = accuracy
+        cost = 0
+
+    else:
+        print("Error", algorithm)
+
+    return cost, new_frames, new_frame_samples, new_bands, accuracy
+
+def g2_algorithm(algorithm, frames, frame_samples, bands, accuracy):
+    if (algorithm == "tarDet"):
+        new_frames, new_frame_samples, new_bands = tarDet_output_data_size(frames, frame_samples)
+        accuracy = tarDet_accuracy(accuracy)
+        cost = tarDet_cost(frames, frame_samples, bands)
+
+    elif (algorithm == "anomDet"):
+        new_frames, new_frame_samples, new_bands = anomDet_output_data_size(frames, frame_samples)
+        accuracy = anomDet_accuracy(accuracy)
+        cost = anomDet_cost(frames, frame_samples, bands)
+    
+    elif (algorithm == "x"):
+        new_frame_samples = frame_samples
+        new_frames = frames
+        new_bands = bands
+        new_accuracy = accuracy
+        cost = 0
+
+    else:
+        print("Error", algorithm)
+
+    return cost, new_frames, new_frame_samples, new_bands, accuracy
+
+########################################
+
+def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_factor, dimRed_bands):
+    cost = 0
+    accuracy = 1
+    
+    cost_group, frames, frame_sample, bands, accuracy = g0_algorithm(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor)
+    cost += cost_group
+    
+    cost_group, frames, frame_sample, bands, accuracy = g1_algorithm(pipeline[1], frames, frame_samples, bands, accuracy, dimRed_bands)
+    cost += cost_group
+    
+    cost_group, frames, frame_sample, bands, accuracy = g2_algorithm(pipeline[2], frames, frame_samples, bands, accuracy)
+    cost += cost_group
+
+    return [pipeline, frames*frame_sample*bands, accuracy, cost] 
+
+#print(create_sample_by_pipeline(["binning", "dimRed_pca", "tarDet"], 100, 80, 200, 4, 12))
+
+########################################
+
+def create_pipelines(g0, g1, g2):
+    pipelines = []
+    for i0 in range(0, len(g0)):
+        for i1 in range(0, len(g1)):
+            for i2 in range(0, len(g2)):
+                pipelines.append([g0[i0], g1[i1], g2[i2]])
+    return pipelines
+
+########################################
+
+def create_svu_outputted_data_size_graph(frames, frame_samples, bands):
+    _2D = frames*frame_samples
+    raw = frames*frame_samples*bands
+    graph = [[_2D,1], [_2D*3, 0.9], [raw/2, 0.2], [raw, 0]]
+    return graph
+
+
+########################################
+
+def main():
+
+    frames = 10
+    frame_samples = 16
+    bands = 20
+    binning_factor = 2
+    dimRed_bands = 7
+
+    g0 = ["binning", "x"]
+    g1 = ["dimRed_pca", "dimRed_enm", "x"]
+    g2 = ["tarDet", "anomDet", "x"]
+
+    svu_outputted_data_size_graph = create_svu_outputted_data_size_graph(frames, frame_samples, bands)
+    svu_accuracy_graph = [[0.4,0],[0.7,0.5],[1,1]]
+
+    svu_graphs = [svu_outputted_data_size_graph, svu_accuracy_graph]
+    weights = [0.3, 0.7]
+
+
+    group_colors = ["red", "yellow", "green", "blue", "pink", "grey", "purple", "brown", "black", "lime"]
+
+    #Pipeline:
+    pipelines = create_pipelines(g0, g1, g2)
+    print("Pipelines:\n", pipelines)
+
+    #Samples:
+    samples = []
+    for i in range(0, len(pipelines)):
+        samples.append(create_sample_by_pipeline(pipelines[i], frames, frame_samples, bands, binning_factor, dimRed_bands))
+    print("Samples:\n", samples)
+
+    #Check sensibility of MVU and SVU scores:
+    check_sensibility = 1
+    for i in range(0, len(samples)):
+        make_MVU(svu_graphs, weights, samples[i], check_sensibility)
+    
+    #plots 2D:
+    plot_MVUs(svu_graphs, weights, samples)
+    plot_color_by_design(svu_graphs, weights, samples, 0, g0, group_colors)
+    plot_color_by_design(svu_graphs, weights, samples, 1, g1, group_colors)
+    plot_color_by_design(svu_graphs, weights, samples, 2, g2, group_colors)
+
+    #plots 3D:
+
+
+#####################################################
+
+main()
+
+    
+
+
 
 
 
