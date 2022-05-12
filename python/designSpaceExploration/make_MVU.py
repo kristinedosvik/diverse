@@ -45,17 +45,20 @@ def make_MVU(svu_graphs, weights, sample, check_sensibility):
     
     return mvu
 
-def plot_MVUs(svu_graphs, weights, samples):
+def plot_MVUs(svu_graphs, weights, samples, g0, g1, g2):
     x = []
     y = []
     for i in range(0, len(samples)):
         x.append(samples[i][3])       
         mvu = make_MVU(svu_graphs, weights, samples[i], 0)
         y.append(mvu)
+
     plt.plot(x, y, "o")
+    addSampleLabels(samples, svu_graphs, weights, g0, g1, g2)
+    
     plt.show()
 
-def plot_color_by_design(svu_graphs, weights, samples, group_nr, group, group_colors):
+def plot_color_by_design(svu_graphs, weights, samples, group_nr, group, group_colors, g0, g1, g2):
     
     plot_group = []
     for i in range(0, len(group)):
@@ -75,7 +78,91 @@ def plot_color_by_design(svu_graphs, weights, samples, group_nr, group, group_co
         x = [row[0] for row in plot_group[i]]
         y = [row[1] for row in plot_group[i]]
         plt.plot(x, y, "o", color = group_colors[i])
+
+    addSampleLabels(samples, svu_graphs, weights, g0, g1, g2)
     plt.show()
+
+def make_3D_plot(pipelines, frames_vec, frame_samples_vec, bands_vec, binning_factor_vec, dimRed_bands_vec, svu_graphs, weights, group_colors, g0, g1, g2):
+
+    sample_groups = []
+    for i in range(0, len(frames_vec)):
+        sample_groups.append([])
+    
+    #samples in same columns have the same input sizes, while the row have the same pipeline configuration
+    for p in range(0, len(pipelines)):
+        for v in range(0, len(frames_vec)):
+            sample = create_sample_by_pipeline(pipelines[p], frames_vec[v], frame_samples_vec[v], bands_vec[v], binning_factor_vec[v], dimRed_bands_vec[v])
+            sample_groups[v].append(sample)
+
+    #make plot:
+
+    #varying inputs, same pipeline
+    x = []
+    y = []
+    for p in range(0, len(pipelines)):
+        for v in range(0, len(frames_vec)):
+            mvu = make_MVU(svu_graphs, weights, sample_groups[v][p], 0)
+            y.append(mvu)
+            cost = sample_groups[v][p][3]
+            x.append(cost)
+        plt.plot(x, y, color="black")
+        x.clear()
+        y.clear()
+
+
+    #same inputs, varying pipelines
+    x = []
+    y = []
+    for v in range(0, len(frames_vec)):
+        for p in range(0, len(pipelines)):
+            mvu = make_MVU(svu_graphs, weights, sample_groups[v][p], 0)
+            y.append(mvu)
+            cost = sample_groups[v][p][3]
+            x.append(cost)
+        plt.plot(x, y, "o", color=group_colors[v])
+        x.clear()
+        y.clear()
+
+    #samples = [row[0] for row in sample_groups]
+    samples = sample_groups[0]
+    addSampleLabels(samples, svu_graphs, weights, g0, g1, g2)
+    plt.show()
+    print("Finished 3D plot")
+
+def addSampleLabels(samples, svu_graphs, weights, g0, g1, g2):
+    
+    mvus = []
+    costs = []
+    for i in range(0, len(samples)):
+        mvu = make_MVU(svu_graphs, weights, samples[i], 0)
+        mvus.append(mvu)
+        costs.append(samples[i][3])
+
+    i = 0
+    for x,y in zip(costs, mvus):
+        index_name = create_index_name(samples[i], g0, g1, g2)
+
+        label = f"{index_name}"
+
+        plt.annotate(label, # this is the text
+                     (x,y), # these are the coordinates to position the label
+                     textcoords="offset points", # how to position the text
+                     xytext=(0,10), # distance from text to points (x,y)
+                     color="black",
+                     ha='center') # horizontal alignment can be left, right or center
+        i+=1
+
+
+def create_index_name(sample, g0, g1, g2):
+    name = ""
+    name += str(g0.index(sample[0][0]))
+    name += str(g1.index(sample[0][1]))
+    name += str(g2.index(sample[0][2]))
+    return name
+
+def find_pipeline_from_index_name(index_name, g0, g1, g2):
+    return g0[int(index_name[0])] + ", " + g1[int(index_name[1])] + ", " + g2[int(index_name[2])] + "."
+
 
 ###################################################
 
@@ -250,6 +337,9 @@ def create_svu_outputted_data_size_graph(frames, frame_samples, bands):
     graph = [[_2D,1], [_2D*3, 0.9], [raw/2, 0.2], [raw, 0]]
     return graph
 
+########################################
+
+
 
 ########################################
 
@@ -290,13 +380,23 @@ def main():
         make_MVU(svu_graphs, weights, samples[i], check_sensibility)
     
     #plots 2D:
-    plot_MVUs(svu_graphs, weights, samples)
-    plot_color_by_design(svu_graphs, weights, samples, 0, g0, group_colors)
-    plot_color_by_design(svu_graphs, weights, samples, 1, g1, group_colors)
-    plot_color_by_design(svu_graphs, weights, samples, 2, g2, group_colors)
+    plot_MVUs(svu_graphs, weights, samples, g0, g1, g2)
+    plot_color_by_design(svu_graphs, weights, samples, 0, g0, group_colors, g0, g1, g2)
+    plot_color_by_design(svu_graphs, weights, samples, 1, g1, group_colors, g0, g1, g2)
+    plot_color_by_design(svu_graphs, weights, samples, 2, g2, group_colors, g0, g1, g2)
+
+    frames_vec = [10, 10, 12] 
+    frame_samples_vec = [16, 20, 20] 
+    bands_vec = [20, 20, 25]
+    binning_factor_vec = [2, 2, 2]
+    dimRed_bands_vec = [7, 7, 7]
 
     #plots 3D:
+    make_3D_plot(pipelines, frames_vec, frame_samples_vec, bands_vec, binning_factor_vec, dimRed_bands_vec, svu_graphs, weights, group_colors, g0, g1, g2)
 
+    #Check sample names:
+    sample_index_name = "021"
+    print(sample_index_name, " = ", find_pipeline_from_index_name(sample_index_name, g0, g1, g2))
 
 #####################################################
 
