@@ -385,11 +385,23 @@ def main():
     plot_color_by_design(svu_graphs, weights, samples, 1, g1, group_colors, g0, g1, g2)
     plot_color_by_design(svu_graphs, weights, samples, 2, g2, group_colors, g0, g1, g2)
 
-    frames_vec = [10, 10, 12] 
-    frame_samples_vec = [16, 20, 20] 
-    bands_vec = [20, 20, 25]
-    binning_factor_vec = [2, 2, 2]
-    dimRed_bands_vec = [7, 7, 7]
+    frames_vec = [10, 10, 10, 10, 10] 
+    frame_samples_vec = [16, 16, 16, 16, 16] 
+    bands_vec = [20, 30, 40, 50, 60]
+    binning_factor_vec = [2, 2, 2, 2, 2]
+    dimRed_bands_vec = [7, 7, 7, 7, 7]
+    
+    frames_vec = [10, 20, 30, 40, 50] 
+    frame_samples_vec = [16, 16, 16, 16, 16] 
+    bands_vec = [20, 20, 20, 20, 20]
+    binning_factor_vec = [2, 2, 2, 2, 2]
+    dimRed_bands_vec = [7, 7, 7, 7, 7]
+
+    frames_vec = [10, 10, 10, 10, 10] 
+    frame_samples_vec = [10, 20, 30, 40, 50] 
+    bands_vec = [20, 20, 20, 20, 20]
+    binning_factor_vec = [2, 2, 2, 2, 2]
+    dimRed_bands_vec = [7, 7, 7, 7, 7]
 
     #plots 3D:
     make_3D_plot(pipelines, frames_vec, frame_samples_vec, bands_vec, binning_factor_vec, dimRed_bands_vec, svu_graphs, weights, group_colors, g0, g1, g2)
