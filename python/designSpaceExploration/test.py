@@ -1,3 +1,0 @@
-from targetDetection import *
-
-SAM()
