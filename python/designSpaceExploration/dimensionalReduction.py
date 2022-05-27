@@ -14,8 +14,17 @@ def OC_PCA_hw(frames, framesamples, bands, reducedbands):
     return correlation_matrix_hw(frames, framesamples, bands) + jacobi_algorithm_hw(bands, iterations) + bands * iteration() + matrix_multiplication_hw(reducedbands, bands, bands, frames * framesamples)
    
 def OC_MNF(frames, framesamples, bands, reducedbands):
-    nois_samples = frames * framesamples * bands * subtraction()
-    
+    nois_samples = frames * framesamples * bands * subtraction() \
+    + correlation_matrix(frames, framesamples, bands) \
+    + SUV(bands, bands, "jacobi") \
+    + bands * (sqrt() + division()) \
+    + matrix_multiplication(bands, bands, bands, bands) \
+    + matrix_multiplication(frames*framesamples, bands, bands, bands) \
+    + SUV(frames*framesamples, bands, "arnoldi") \
+    + 2 * matrix_multiplication(bands, bands, bands, bands) \
+    + matrix_multiplication(reducedbands, bands, bands, frames*framesamples) 
 
+def OC_ICA(frames, framesamples, bands, reducedbands):
+    return ..
 
 

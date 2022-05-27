@@ -37,9 +37,50 @@ def vpaddle_2_1():
 def sqrt():
     return 1
 
+def median(size):
+    return sorting(size) + division()
+
+def absolute_value():
+return 1
+
+def minimum():
+    return 1
+
+def mod():
+    return -1
+
+def sign():
+    return 1
+
+def checks():
+    return 1
+
+def trignomitry():
+    return 1
+
 ##################
 ## SW functions ##
 ##################
+
+def optimization(estimate):
+    return -1
+
+def binarysearch(size):
+    return np.log2(size) * (shift() + checks())
+
+def sorting(size):
+    #quicksort:
+    return -1
+
+def arnold(size, iterations):
+    return 1
+
+def SUV(nr_rows, nr_coloumns, algorithm, iterations):
+    matrixes = matrix_multiplication(nr_rows, nr_columns, nr_columns, nr_rows) + matrix_multiplication(nr_columns, nr_rows, nr_rows, nr_columns)
+    if (algorithm == "jacobi"):
+        return matrixes + jacobi(nr_rows, iterations) + jacobi(nr_columns, iterations)
+    else:
+        return matrixes + arnold(nr_rows, iterations) + jacobi(nr_columns, iterations)
 
 def swap():
     return 3*insertion()
@@ -80,7 +121,12 @@ def singular_value_decomposition(nr_rows, nr_coloumns, iterations):
     ATA = matrix_multiplication(nr_rows, nr_coloumns, nr_columns, nr_rows)
     AAT = matrix_multiplication(nr_coloumns, nr_rows, nr_rows, nr_columns)
     
-     
+def mean(samples):
+    return samples * division() + (samples-1) * additions()
+
+def variance(samples):
+    return samples * mean(samples) + subtraction + mean(samples)
+
 
 ##################
 ## HW functions ##
