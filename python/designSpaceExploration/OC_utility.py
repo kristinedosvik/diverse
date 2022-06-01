@@ -41,13 +41,13 @@ def median(size):
     return sorting(size) + division()
 
 def absolute_value():
-return 1
+    return 1
 
 def minimum():
     return 1
 
 def mod():
-    return -1
+    return 1
 
 def sign():
     return 1
@@ -62,8 +62,9 @@ def trignomitry():
 ## SW functions ##
 ##################
 
-def optimization(estimate):
-    return -1
+def optimization(iteration, objective_function, dimension_parameter_space):
+    gradient = dimension_parameter_space * (2 * objective_function  + 2 * subtraction() + division())
+    return iteration * objective_function * gradient
 
 def binarysearch(size):
     return np.log2(size) * (shift() + checks())

@@ -12,36 +12,36 @@ def OC_statisical_threshold_detection(frames, framesamples, bands, num_regions):
 def OC_correlation_detection(frames, framesamples, bands, num_neighbours):
     return frames * framesamples * bands * (correlation_matrix(num_neighbours) + num_neighbours * iteration())
 
-def OC_avaraging_twice_correction(bands):
-    return bands * (4 * (mean(3) + divisio() + subtraction()) + mean(4))
+def OC_avaraging_twice_correction(bad_samples, bands):
+    return bad_samples * bands * (4 * (mean(3) + divisio() + subtraction()) + mean(4))
 
-def OC_nearest_neighbour_correction(bands):
-    return bands * copy_element()
+def OC_nearest_neighbour_correction(bad_samples, bands):
+    return bad_samples * bands * copy_element()
 
-def OC_mean_correction(neigbourlevel, cardinal):
+def OC_mean_correction(bad_samples, neigbourlevel, cardinal):
     if (neighbourlevel == 1):
         if (cardinal == 1):
-            return mean(4)
-        return mean(8)
+            return bad_samples * mean(4)
+        return bad_samples * mean(8)
     elif (neighbourlevel == 2):
         if (cardinal == 1):
-            return mean(8)
-        return mean(16)
+            return bad_samples * mean(8)
+        return bad_samples * mean(16)
     if (cardinal == 1):
-        return mean(12)
-    return mean(24)
+        return bad_samples * mean(12)
+    return bad_samples * mean(24)
 
-def OC_median_correction(neigbourlevel, cardinal):
+def OC_median_correction(bad_samples, neigbourlevel, cardinal):
     if (neighbourlevel == 1):
         if (cardinal == 1):
-            return median(4)
-        return median(8)
+            return bad_samples * median(4)
+        return bad_samples * median(8)
     elif (neighbourlevel == 2):
         if (cardinal == 1):
-            return median(8)
-        return median(16)
+            return bad_samples * median(8)
+        return bad_samples * median(16)
     if (cardinal == 1):
-        return median(12)
-    return median(24)
+        return bad_samples * median(12)
+    return bad_samples * median(24)
 
 

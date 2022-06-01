@@ -1,18 +1,18 @@
 from OC_utility import *
 
-def dos_pixel_georeferencing(frames, framesamples, bands):
+def DOS_georeferencing(frames, framesamples, bands):
     new_frames = frame
     new_frame_samples = frame_samples
     new_bands = bands
     return new_frames, new_frame_samples, new_bands
 
-def dos_pixel_geometricRegistration(frames, framesamples, bands):
+def DOS_geometric_registration(frames, framesamples, bands):
     new_frames = frame ?
     new_frame_samples = frame_samples ?
     new_bands = bands
     return new_frames, new_frame_samples, new_bands
 
-def georeferencing(frames, framesamples, bands):
+def OC_georeferencing(frames, framesamples, bands):
     return frames * framesamples * bands * ( \
     binarysearch(size) \ #?
     + 7 * (4 * subtraction() + 2 multiplication() + addition()) \
@@ -30,7 +30,7 @@ def georeferencing(frames, framesamples, bands):
     + subtraction() + multiplication() + division() \
     + 3 * addition() + multiplication())
 
-def geometric_registration(frames, framesamples, bands, resolution_increse):
+def OC_geometric_registration(frames, framesamples, bands, resolution_increse):
     return frames * framesamples * bands * ( \
     2 * (multiplication() + subtraction()) \
     + 5 * multiplication() + sqrt() + division() + 2 * round_down() \
