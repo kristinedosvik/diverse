@@ -92,8 +92,8 @@ def dot_product(vec_elements):
 def add_sample_to_correlation_matrix(bands):
     return (bands * bands/2 + bands/2) *  (multiplication() + division() + addition()) + (bands * bands/2 - bands/2)
 
-def correlation_matrix(frames, framesample, bands):
-    frames * framesamples * add_sample_to_correlation_matrix(bands)
+def correlation_matrix(samples, bands):
+    samples * add_sample_to_correlation_matrix(bands)
 
 def quadratic_matrix_invertion(size):
     return size*size/2+size/2 * insertion() + size*size/2+size/2 * iteration() + (size-1) * size * swap() + gaussian_elimination(size) + size*size/2-size/2 * insertion() + size * 2 * matrix_vector_equation(size)
@@ -151,5 +151,5 @@ def jacobi_algorithm_sw(matrix_size, iterations):
 def add_sample_to_correlation_matrix_hw(bands):
     return bands * (multiplication() + division() + addition())
 
-def correlation_matrix_hw(frames, framesample, bands):
+def correlation_matrix_hw(frames, framesamples, bands):
     return frames * framesamples * add_sample_to_correlation_matrix_hw(bands)
