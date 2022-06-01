@@ -42,20 +42,21 @@ def make_MVU(svu_graphs, weights, sample, check_sensibility):
         print("svu_outputted_data_size: ", svu_outputted_data_size)
         print("svu_accuracy: ", svu_accuracy)
         print("mvu: ", mvu)
+        print("cost: ", sample[3])
         print()
     
     return mvu
 
-def plot_MVUs(svu_graphs, weights, samples, g0, g1, g2):
+def plot_MVUs(svu_graphs_points, weights, samples, g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast):
     x = []
     y = []
     for i in range(0, len(samples)):
         x.append(samples[i][3])       
-        mvu = make_MVU(svu_graphs, weights, samples[i], 0)
+        mvu = make_MVU(svu_graphs_points, weights, samples[i], 0)
         y.append(mvu)
 
     plt.plot(x, y, "o")
-    addSampleLabels(samples, svu_graphs, weights, g0, g1, g2)
+    #addSampleLabels(samples, svu_graphs_points, weights, g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast)
     
     plt.show()
 
@@ -126,11 +127,11 @@ def make_3D_plot(pipelines, frames_vec, frame_samples_vec, bands_vec, binning_fa
 
     #samples = [row[0] for row in sample_groups]
     samples = sample_groups[0]
-    addSampleLabels(samples, svu_graphs, weights, g0, g1, g2)
+    #addSampleLabels(samples, svu_graphs, weights, g0, g1, g2)
     plt.show()
     print("Finished 3D plot")
 
-def addSampleLabels(samples, svu_graphs, weights, g0, g1, g2):
+def addSampleLabels(samples, svu_graphs, weights, g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast):
     
     mvus = []
     costs = []
@@ -141,7 +142,7 @@ def addSampleLabels(samples, svu_graphs, weights, g0, g1, g2):
 
     i = 0
     for x,y in zip(costs, mvus):
-        index_name = create_index_name(samples[i], g0, g1, g2)
+        index_name = create_index_name(samples[i], g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast)
 
         label = f"{index_name}"
 
@@ -154,11 +155,19 @@ def addSampleLabels(samples, svu_graphs, weights, g0, g1, g2):
         i+=1
 
 
-def create_index_name(sample, g0, g1, g2):
+def create_index_name(sample, g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast):
     name = ""
-    name += str(g0.index(sample[0][0]))
-    name += str(g1.index(sample[0][1]))
-    name += str(g2.index(sample[0][2]))
+    name += str(g11.index(sample[0][0]))
+    name += str(g12.index(sample[0][1]))
+    name += str(g21.index(sample[0][2]))
+    name += str(g22.index(sample[0][3]))
+    name += str(g311.index(sample[0][4]))
+    name += str(g312.index(sample[0][5]))
+    name += str(g32.index(sample[0][6]))
+    name += str(g41.index(sample[0][7]))
+    name += str(g51.index(sample[0][8]))
+    name += str(gLast.index(sample[0][9]))
+
     return name
 
 def find_pipeline_from_index_name(index_name, g0, g1, g2):
@@ -167,18 +176,37 @@ def find_pipeline_from_index_name(index_name, g0, g1, g2):
 
 ########################################
 
-def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_factor, dimRed_bands):
+def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_factor, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D):
     cost = 0
     accuracy = 1
     
-    cost_group, frames, frame_sample, bands, accuracy = g0_algorithm(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor)
+    cost_group, frames, frame_sample, bands, accuracy = g11_algorithm(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor)
     cost += cost_group
     
-    cost_group, frames, frame_sample, bands, accuracy = g1_algorithm(pipeline[1], frames, frame_samples, bands, accuracy, dimRed_bands)
+    cost_group, frames, frame_sample, bands, accuracy = g12_algorithm(pipeline[1], frames, frame_samples, bands, accuracy, binning_factor, whatToBin)
+    cost += cost_group
+
+    cost_group, frames, frame_sample, bands, accuracy = g21_algorithm(pipeline[2], frames, frame_samples, bands, accuracy)
+    cost += cost_group
+
+    cost_group, frames, frame_sample, bands, accuracy = g22_algorithm(pipeline[3], frames, frame_samples, bands, accuracy)
+    cost += cost_group
+
+    cost_group, frames, frame_sample, bands, accuracy = g31_algorithm(pipeline[4], pipeline[5], frames, frame_samples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal)
+    cost += cost_group
+  
+    cost_group, frames, frame_sample, bands, accuracy = g32_algorithm(pipeline[6], frames, frame_samples, bands, accuracy)
+    cost += cost_group
+
+    cost_group, frames, frame_sample, bands, accuracy = g41_algorithm(pipeline[7], frames, frame_samples, bands, accuracy, reducedbands, iterations)
     cost += cost_group
     
-    cost_group, frames, frame_sample, bands, accuracy = g2_algorithm(pipeline[2], frames, frame_samples, bands, accuracy)
+    cost_group, frames, frame_sample, bands, accuracy = g51_algorithm(pipeline[8], frames, frame_samples, bands, accuracy, frame_increase_factor, framesample_increase_factor)
     cost += cost_group
+
+    cost_group, frames, frame_sample, bands, accuracy = gLast_algorithm(pipeline[9], frames, frame_samples, bands, accuracy, outer_window, inner_window, P, D)
+    cost += cost_group
+
 
     return [pipeline, frames*frame_sample*bands, accuracy, cost] 
 
@@ -186,65 +214,98 @@ def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_fa
 
 ########################################
 
-def create_pipelines(g0, g1, g2):
+def create_pipelines(g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast):
     pipelines = []
-    for i0 in range(0, len(g0)):
-        for i1 in range(0, len(g1)):
-            for i2 in range(0, len(g2)):
-                pipelines.append([g0[i0], g1[i1], g2[i2]])
+    for i11 in range(0, len(g11)):
+        for i12 in range(0, len(g12)):
+            for i21 in range(0, len(g21)):
+                for i22 in range(0, len(g22)):
+                    for i311 in range(0, len(g311)):
+                        for i312 in range(0, len(g312)):
+                            for i32 in range(0, len(g32)):
+                                for i41 in range(0, len(g41)):
+                                    for i51 in range(0, len(g51)):
+                                        for iLast in range(0, len(gLast)):
+                                            pipelines.append([g11[i11], g12[i12], g21[i21], g22[i22], g311[i311], g312[i312], g32[i32], g41[i41], g51[i51], gLast[iLast]])
     return pipelines
 
 ########################################
 
-def create_svu_outputted_data_size_graph(frames, frame_samples, bands):
+def create_svu_predefined_graph_points_outputted_data_size(frames, frame_samples, bands):
     _2D = frames*frame_samples
     raw = frames*frame_samples*bands
-    graph = [[_2D,1], [_2D*3, 0.9], [raw/2, 0.2], [raw, 0]]
+    graph = [[_2D,1], [_2D*3, 0.9], [raw/2, 0.2], [raw*10, 0]]
     return graph
 
 ########################################
 
 
 
+g11 = ["x", "spectral_binning"]
+g12 = ["x", "spatial_binning"]
 
-def main():
+g21 = ["x"]#, "thumbnails"]
+g22 = ["x"]#, "subsamples"]
 
-    frames = 10
-    frame_samples = 16
-    bands = 20
-    binning_factor = 2
-    dimRed_bands = 7
+g311 = ["x", "statisical_threshold_detection", "correlation_detection"]
+g312 = ["x", "avaraging_twice_correction", "nearest_neighbour_correction", "mean_correction", "median_correction"]
 
-    g0 = ["binning", "x"]
-    g1 = ["dimRed_pca", "dimRed_enm", "x"]
-    g2 = ["tarDet", "anomDet", "x"]
+g32 = ["x", "smile_and_keystone"]
 
-    svu_outputted_data_size_graph = create_svu_outputted_data_size_graph(frames, frame_samples, bands)
-    svu_accuracy_graph = [[0.4,0],[0.7,0.5],[1,1]]
+g41 = ["x", "PCA_sw", "PCA_hw", "MNF"]
+g51 = ["x", "georeferencing", "geometric_registration"]
+gLast = ["x", "SAM", "CEM", "ACE_R", "target_detection_hw","GRX_R","LRX", "DWRX", "CCSDS123_B1_sw", "CCSDS123_B1_hw","CCSDS123_B2_sw", "CCSDS123_B2_hw"]
 
-    svu_graphs = [svu_outputted_data_size_graph, svu_accuracy_graph]
+group_colors = ["red", "yellow", "green", "blue", "pink", "grey", "purple", "brown", "black", "lime"]
+
+frames = 10
+frame_samples = 16
+bands = 20
+binning_factor = 6
+whatToBin = "frames" 
+num_regions = 8 
+bad_samples = 10 
+neigbourlevel = 2
+cardinal = 1 
+reducedbands = 7 
+iterations = 2 
+frame_increase_factor = 2 
+framesample_increase_factor = 2
+outer_window = 10 
+inner_window = 4 
+P = 12 
+D = 4
+
+
+def mainMVU():
+
+
+    #svu settings:    
+    svu_predefined_graph_points_outputted_data_size = create_svu_predefined_graph_points_outputted_data_size(frames, frame_samples, bands)
+    svu_predefined_graph_points_accuracy = [[0.4,0],[0.7,0.5],[1,1]]
+
+    svu_graphs_points = [svu_predefined_graph_points_outputted_data_size, svu_predefined_graph_points_accuracy]
     weights = [0.3, 0.7]
 
 
-    group_colors = ["red", "yellow", "green", "blue", "pink", "grey", "purple", "brown", "black", "lime"]
-
     #Pipeline:
-    pipelines = create_pipelines(g0, g1, g2)
-    print("Pipelines:\n", pipelines)
+    pipelines = create_pipelines(g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast)
 
     #Samples:
     samples = []
     for i in range(0, len(pipelines)):
-        samples.append(create_sample_by_pipeline(pipelines[i], frames, frame_samples, bands, binning_factor, dimRed_bands))
-    print("Samples:\n", samples)
+        s = create_sample_by_pipeline(pipelines[i], frames, frame_samples, bands, binning_factor, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
+        samples.append(s)
 
     #Check sensibility of MVU and SVU scores:
     check_sensibility = 1
     for i in range(0, len(samples)):
-        make_MVU(svu_graphs, weights, samples[i], check_sensibility)
+        make_MVU(svu_graphs_points, weights, samples[i], check_sensibility)
     
     #plots 2D:
-    plot_MVUs(svu_graphs, weights, samples, g0, g1, g2)
+    plot_MVUs(svu_graphs_points, weights, samples, g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast)
+
+    """
     plot_color_by_design(svu_graphs, weights, samples, 0, g0, group_colors, g0, g1, g2)
     plot_color_by_design(svu_graphs, weights, samples, 1, g1, group_colors, g0, g1, g2)
     plot_color_by_design(svu_graphs, weights, samples, 2, g2, group_colors, g0, g1, g2)
@@ -273,14 +334,9 @@ def main():
     #Check sample names:
     sample_index_name = "021"
     print(sample_index_name, " = ", find_pipeline_from_index_name(sample_index_name, g0, g1, g2))
-
+"""
 #####################################################
 
-main()
-
-    
-
-
-
+mainMVU()    
 
 
