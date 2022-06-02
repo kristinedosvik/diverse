@@ -87,8 +87,7 @@ def plot_color_by_design(svu_graphs, weights, samples, group_nr, group):
     plt.show()
 
 
-def plot_color_by_design_svu(samples, group_nr, group):
-    
+def plot_color_by_design_svu(samples, group_nr, group, axes):
     plot_group = []
     for i in range(0, len(group)):
         plot_group.append([])
@@ -106,11 +105,11 @@ def plot_color_by_design_svu(samples, group_nr, group):
 
         x = [row[0] for row in plot_group[i]]
         y = [row[1] for row in plot_group[i]]
-        plt.plot(x, y, "o", color = group_colors[i])
+        plt.xlim([0,100000000000])
+        axes[group_nr].plot(x, y, "o", color = group_colors[i])
 
-    #addSampleLabels(samples, svu_graphs, weights, g0, g1, g2)
-    plt.show()
-
+    #addSampleLabels(samples, svu_graphs, weights, g0, g1, g2) 
+    
 
 def make_3D_plot(pipelines, frames_vec, frame_samples_vec, bands_vec, binning_factor_vec, dimRed_bands_vec, svu_graphs, weights):
 
@@ -205,34 +204,43 @@ def find_pipeline_from_index_name(index_name, g0, g1, g2):
 
 def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_factor, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D):
     cost = 0
-    accuracy = 1
+    accuracy = 0.8
     
-    cost_group, frames, frame_sample, bands, accuracy = g11_algorithm(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor)
+    cost_group, frames, frame_sample, bands, accuracy_group = g11_algorithm(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor)
     cost += cost_group
+    accuracy *= accuracy_group
     
-    cost_group, frames, frame_sample, bands, accuracy = g12_algorithm(pipeline[1], frames, frame_samples, bands, accuracy, binning_factor, whatToBin)
+    cost_group, frames, frame_sample, bands, accuracy_group = g12_algorithm(pipeline[1], frames, frame_samples, bands, accuracy, binning_factor, whatToBin)
     cost += cost_group
+    accuracy *= accuracy_group
 
-    cost_group, frames, frame_sample, bands, accuracy = g21_algorithm(pipeline[2], frames, frame_samples, bands, accuracy)
+    cost_group, frames, frame_sample, bands, accuracy_group = g21_algorithm(pipeline[2], frames, frame_samples, bands, accuracy)
     cost += cost_group
+    accuracy *= accuracy_group
 
-    cost_group, frames, frame_sample, bands, accuracy = g22_algorithm(pipeline[3], frames, frame_samples, bands, accuracy)
+    cost_group, frames, frame_sample, bands, accuracy_group = g22_algorithm(pipeline[3], frames, frame_samples, bands, accuracy)
     cost += cost_group
+    accuracy *= accuracy_group
 
-    cost_group, frames, frame_sample, bands, accuracy = g31_algorithm(pipeline[4], pipeline[5], frames, frame_samples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal)
+    cost_group, frames, frame_sample, bands, accuracy_group = g31_algorithm(pipeline[4], pipeline[5], frames, frame_samples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal)
     cost += cost_group
+    accuracy *= accuracy_group
   
-    cost_group, frames, frame_sample, bands, accuracy = g32_algorithm(pipeline[6], frames, frame_samples, bands, accuracy)
+    cost_group, frames, frame_sample, bands, accuracy_group = g32_algorithm(pipeline[6], frames, frame_samples, bands, accuracy)
     cost += cost_group
+    accuracy *= accuracy_group
 
-    cost_group, frames, frame_sample, bands, accuracy = g41_algorithm(pipeline[7], frames, frame_samples, bands, accuracy, reducedbands, iterations)
+    cost_group, frames, frame_sample, bands, accuracy_group = g41_algorithm(pipeline[7], frames, frame_samples, bands, accuracy, reducedbands, iterations)
     cost += cost_group
+    accuracy *= accuracy_group
     
-    cost_group, frames, frame_sample, bands, accuracy = g51_algorithm(pipeline[8], frames, frame_samples, bands, accuracy, frame_increase_factor, framesample_increase_factor)
+    cost_group, frames, frame_sample, bands, accuracy_group = g51_algorithm(pipeline[8], frames, frame_samples, bands, accuracy, frame_increase_factor, framesample_increase_factor)
     cost += cost_group
+    accuracy *= accuracy_group
 
-    cost_group, frames, frame_sample, bands, accuracy = gLast_algorithm(pipeline[9], frames, frame_samples, bands, accuracy, outer_window, inner_window, P, D)
+    cost_group, frames, frame_sample, bands, accuracy_group = gLast_algorithm(pipeline[9], frames, frame_samples, bands, accuracy, outer_window, inner_window, P, D)
     cost += cost_group
+    accuracy *= accuracy_group
 
 
     return [pipeline, frames*frame_sample*bands, accuracy, cost] 
@@ -285,21 +293,21 @@ gLast = ["x", "SAM", "CEM", "ACE_R", "target_detection_hw","GRX_R","LRX", "DWRX"
 
 
 download_rate = 1
-frames = 10
-frame_samples = 16
-bands = 20
-binning_factor = 6
+frames = 200
+frame_samples = 680
+bands = 1080
+binning_factor = 9
 whatToBin = "frames" 
-num_regions = 8 
-bad_samples = 10 
+num_regions = 80 
+bad_samples = 600 
 neigbourlevel = 2
 cardinal = 1 
-reducedbands = 7 
+reducedbands = 20 
 iterations = 2 
 frame_increase_factor = 2 
 framesample_increase_factor = 2
-outer_window = 10 
-inner_window = 4 
+outer_window = 60 
+inner_window = 20 
 P = 12 
 D = 4
 
@@ -329,9 +337,17 @@ def mainSVU():
     plt.show()
 
     #color by design
-    plot_color_by_design_svu(samples_, 0, g11)
-    plot_color_by_design_svu(samples_, 9, gLast)
-    plot_color_by_design_svu(samples_, 7, g41)
+    fig,axes = plt.subplots(10, 1)
+    plot_color_by_design_svu(samples_, 0, g11, axes)
+    plot_color_by_design_svu(samples_, 1, g12, axes)
+    plot_color_by_design_svu(samples_, 2, g21, axes)
+    plot_color_by_design_svu(samples_, 3, g22, axes)
+    plot_color_by_design_svu(samples_, 4, g311, axes)
+    plot_color_by_design_svu(samples_, 5, g312, axes)
+    plot_color_by_design_svu(samples_, 6, g32, axes)
+    plot_color_by_design_svu(samples_, 7, g41, axes)
+    plot_color_by_design_svu(samples_, 8, g51, axes)
+    plot_color_by_design_svu(samples_, 9, gLast, axes)
     plt.show()
 
 
