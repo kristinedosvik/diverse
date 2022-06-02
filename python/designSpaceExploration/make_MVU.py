@@ -87,7 +87,7 @@ def plot_color_by_design(svu_graphs, weights, samples, group_nr, group):
     plt.show()
 
 
-def plot_color_by_design_svu(samples, group_nr, group, axes):
+def plot_color_by_design_svu(samples, group_nr, group): #, axes):
     plot_group = []
     for i in range(0, len(group)):
         plot_group.append([])
@@ -105,10 +105,13 @@ def plot_color_by_design_svu(samples, group_nr, group, axes):
 
         x = [row[0] for row in plot_group[i]]
         y = [row[1] for row in plot_group[i]]
-        plt.xlim([0,100000000000])
-        axes[group_nr].plot(x, y, "o", color = group_colors[i])
+        #axes[group_nr].plot(x, y, "o", color = group_colors[i])
+        plt.plot(x, y, "o", color = group_colors[i])
 
-    #addSampleLabels(samples, svu_graphs, weights, g0, g1, g2) 
+
+    #addSampleLabels(samples, svu_graphs, weights, g0, g1, g2)
+    plt.xlim([0,100000000000])
+    plt.show()
     
 
 def make_3D_plot(pipelines, frames_vec, frame_samples_vec, bands_vec, binning_factor_vec, dimRed_bands_vec, svu_graphs, weights):
@@ -337,17 +340,17 @@ def mainSVU():
     plt.show()
 
     #color by design
-    fig,axes = plt.subplots(10, 1)
-    plot_color_by_design_svu(samples_, 0, g11, axes)
-    plot_color_by_design_svu(samples_, 1, g12, axes)
-    plot_color_by_design_svu(samples_, 2, g21, axes)
-    plot_color_by_design_svu(samples_, 3, g22, axes)
-    plot_color_by_design_svu(samples_, 4, g311, axes)
-    plot_color_by_design_svu(samples_, 5, g312, axes)
-    plot_color_by_design_svu(samples_, 6, g32, axes)
-    plot_color_by_design_svu(samples_, 7, g41, axes)
-    plot_color_by_design_svu(samples_, 8, g51, axes)
-    plot_color_by_design_svu(samples_, 9, gLast, axes)
+    #fig,axes = plt.subplots(10, 1)
+    plot_color_by_design_svu(samples_, 0, g11) #, axes)
+    plot_color_by_design_svu(samples_, 1, g12) #, axes)
+    plot_color_by_design_svu(samples_, 2, g21) #, axes)
+    plot_color_by_design_svu(samples_, 3, g22) #, axes)
+    plot_color_by_design_svu(samples_, 4, g311) #, axes)
+    plot_color_by_design_svu(samples_, 5, g312) #, axes)
+    plot_color_by_design_svu(samples_, 6, g32) #, axes)
+    plot_color_by_design_svu(samples_, 7, g41) #, axes)
+    plot_color_by_design_svu(samples_, 8, g51) #, axes)
+    plot_color_by_design_svu(samples_, 9, gLast) #, axes)
     plt.show()
 
 
