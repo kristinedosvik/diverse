@@ -24,7 +24,8 @@ def OC_spectral_binning(frames, framesamples, bands, binningfactor):
 
 def OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin):
     if(whatToBin == "frames"):
-        return framesamples * (np.floor(frames/binningfactor) * binningfactor * bands * addition() + (frames % binningfactor) * bands * addition())
+        return (((binningfactor-1) * addition() + binningfactor * division()) * bands * np.floor(framesamples/binningfactor) + ((framesamples%binningfactor-1) * addition() + framesamples%binningfactor * division()) * bands ) * frames
+
     else:
-        return fames * (np.floor(framesamples/binningfactor) * binningfactor * bands * addition() + (framesamples % binningfactor) * bands * addition())
+        return (((binningfactor-1) * addition() + binningfactor * division()) * bands * np.floor(frames/binningfactor) + ((frames%binningfactor-1) * addition() + frames%binningfactor * division()) * bands ) * framesamples
 

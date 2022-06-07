@@ -243,9 +243,9 @@ def g41_algorithm(algorithm, frames, framesamples, bands, accuracy, reducedbands
     elif (algorithm == "MNF"):
         new_accuracy = 0.9 #no idea
         cost = OC_MNF(frames, framesamples, bands, reducedbands, iterations)
-    #elif (algorithm == "ICA"):
-        #new_accuracy = 1
-        #cost = OC_ICA(frames, framesamples, bands, reducedbands, iterations)
+    elif (algorithm == "ICA"):
+        new_accuracy = 1
+        cost = OC_ICA(frames, framesamples, bands, reducedbands, iterations)
 
     elif (algorithm == "x"):
         new_frame_samples = framesamples

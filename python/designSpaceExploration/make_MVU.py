@@ -56,14 +56,17 @@ def plot_MVUs(svu_graphs_points, weights, samples, g11, g12, g21, g22, g311, g31
         x.append(samples[i][3])       
         mvu = make_MVU(svu_graphs_points, weights, samples[i], 0)
         y.append(mvu)
+        s.append(5)
 
     plt.plot(x, y, "o")
+    #plt.plot(x[-1], y[-1], "o", color = "black", ms = 10)
+    #plt.plot(x[-2], y[-2], "o", color = "olive", ms = 10)
     #addSampleLabels(samples, svu_graphs_points, weights, g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast)
     
     plt.show()
 
-def plot_color_by_design(svu_graphs, weights, samples, group_nr, group):
 
+def plot_color_by_design(svu_graphs, weights, samples, group_nr, group):
     plot_group = []
     for i in range(0, len(group)):
         plot_group.append([])
@@ -81,9 +84,13 @@ def plot_color_by_design(svu_graphs, weights, samples, group_nr, group):
 
         x = [row[0] for row in plot_group[i]]
         y = [row[1] for row in plot_group[i]]
-        plt.plot(x, y, "o", color = group_colors[i])
+        plt.plot(x, y, "o", color = group_colors[i],  ms=s)
+    
+    #plt.plot(x[-1], y[-1], "o", color = "black", ms = 10)
+    #plt.plot(x[-2], y[-2], "o", color = "olive", ms = 10)
 
     #addSampleLabels(samples, svu_graphs, weights, g0, g1, g2)
+
     plt.show()
 
 
@@ -92,7 +99,6 @@ def plot_color_by_design_svu(samples, group_nr, group): #, axes):
     for i in range(0, len(group)):
         plot_group.append([])
 
-
     for i in range(0, len(samples)):
         cost = samples[i][2] 
         svu = samples[i][1]
@@ -100,18 +106,26 @@ def plot_color_by_design_svu(samples, group_nr, group): #, axes):
 
         algorithm_nr = group.index(samples[i][0][group_nr])
         plot_group[algorithm_nr].append(sample)
-    
+
+    plt.figure(group_nr, figsize=(10,4), tight_layout=True)
     for i in range(0, len(group)):
 
         x = [row[0] for row in plot_group[i]]
         y = [row[1] for row in plot_group[i]]
         #axes[group_nr].plot(x, y, "o", color = group_colors[i])
-        plt.plot(x, y, "o", color = group_colors[i])
+        plt.plot(x, y, "o", color = group_colors[i],  ms=4)
+    #plt.plot(samples[-2][2], samples[-2][1], "o", color = "olive", ms = 10)
+    #plt.plot(samples[-1][2], samples[-1][1], "o", color = "black", ms = 10)
+    
 
 
     #addSampleLabels(samples, svu_graphs, weights, g0, g1, g2)
-    plt.xlim([0,100000000000])
-    plt.show()
+    #plt.xlim([1,2e13])
+    plt.grid()
+    plt.xlabel("cost")
+    plt.ylabel("accuracy")
+    plt.xscale("log")
+    plt.title(f"this {group_nr}:")
     
 
 def make_3D_plot(pipelines, frames_vec, frame_samples_vec, bands_vec, binning_factor_vec, dimRed_bands_vec, svu_graphs, weights):
@@ -224,7 +238,7 @@ def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_fa
     cost_group, frames, frame_sample, bands, accuracy_group = g22_algorithm(pipeline[3], frames, frame_samples, bands, accuracy)
     cost += cost_group
     accuracy *= accuracy_group
-
+    
     cost_group, frames, frame_sample, bands, accuracy_group = g31_algorithm(pipeline[4], pipeline[5], frames, frame_samples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal)
     cost += cost_group
     accuracy *= accuracy_group
@@ -252,6 +266,7 @@ def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_fa
 
 ########################################
 
+
 def create_pipelines(g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast):
     pipelines = []
     for i11 in range(0, len(g11)):
@@ -264,7 +279,12 @@ def create_pipelines(g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast):
                                 for i41 in range(0, len(g41)):
                                     for i51 in range(0, len(g51)):
                                         for iLast in range(0, len(gLast)):
-                                            pipelines.append([g11[i11], g12[i12], g21[i21], g22[i22], g311[i311], g312[i312], g32[i32], g41[i41], g51[i51], gLast[iLast]])
+                                            
+                                            if((gLast[iLast] == "x" or gLast[iLast] == "CCSDS123_B1_sw" or gLast[iLast] == "CCSDS123_B1_hw" or gLast[iLast] == "CCSDS123_B2_sw" or gLast[iLast] == "CCSDS123_B2_hw") and (g311[i311] != "x" or g312[i312] != "x" or g32[i32] != "x")):
+                                                #nothing
+                                                continue
+                                            else:
+                                                pipelines.append([g11[i11], g12[i12], g21[i21], g22[i22], g311[i311], g312[i312], g32[i32], g41[i41], g51[i51], gLast[iLast]])
     return pipelines
 
 ########################################
@@ -277,25 +297,10 @@ def create_svu_predefined_graph_points_outputted_data_size(frames, frame_samples
 
 ########################################
 
-
-
-g11 = ["x", "spectral_binning"]
-g12 = ["x", "spatial_binning"]
-
-g21 = ["x"]#, "thumbnails"]
-g22 = ["x"]#, "subsamples"]
-
-g311 = ["x", "statisical_threshold_detection", "correlation_detection"]
-g312 = ["x", "avaraging_twice_correction", "nearest_neighbour_correction", "mean_correction", "median_correction"]
-
-g32 = ["x", "smile_and_keystone"]
-
-g41 = ["x", "PCA_sw", "PCA_hw", "MNF"]
-g51 = ["x", "georeferencing", "geometric_registration"]
-gLast = ["x", "SAM", "CEM", "ACE_R", "target_detection_hw","GRX_R","LRX", "DWRX", "CCSDS123_B1_sw", "CCSDS123_B1_hw","CCSDS123_B2_sw", "CCSDS123_B2_hw"]
-
-
-download_rate = 1
+dr1 =1/1000000 
+dr2 = 1/125000
+download_rate = dr1
+freq = 1/667000000
 frames = 200
 frame_samples = 680
 bands = 1080
@@ -314,17 +319,54 @@ inner_window = 20
 P = 12 
 D = 4
 
+g11 = ["x", "spectral_binning"]
+g12 = ["x"]#, "spatial_binning"]
+
+g21 = ["x"]#, "thumbnails"]
+g22 = ["x"]#, "subsamples"]
+
+g311 = ["x"]#, "statisical_threshold_detection", "correlation_detection"]
+g312 = ["x"]#, "avaraging_twice_correction", "nearest_neighbour_correction", "mean_correction", "median_correction"]
+
+g32 = ["x", "smile_and_keystone"]
+
+g41 = ["x", "PCA_sw", "PCA_hw", "MNF"]
+g51 = ["x"]#, "georeferencing", "geometric_registration"]
+#gLast = ["x"]#, "SAM", "CEM", "ACE_R", "target_detection_hw","GRX_R","LRX", "DWRX", "CCSDS123_B1_sw", "CCSDS123_B1_hw","CCSDS123_B2_sw", "CCSDS123_B2_hw"]
+gLast = ["x", "SAM", "CEM", "ACE_R"] #, "CCSDS123_B1_hw","CCSDS123_B2_sw", "CCSDS123_B2_hw"]
+
+"""
+g11 = ["x", "spectral_binning"]
+g12 = ["x", "spatial_binning"]
+
+g21 = ["x"]#, "thumbnails"]
+g22 = ["x"]#, "subsamples"]
+
+g311 = ["x", "statisical_threshold_detection", "correlation_detection"]
+g312 = ["x", "nearest_neighbour_correction", "mean_correction", "median_correction"]
+
+g32 = ["x", "smile_and_keystone"]
+
+g41 = ["x", "PCA_sw", "PCA_hw", "MNF"]
+g51 = ["x", "georeferencing", "geometric_registration"]
+gLast = ["x", "SAM", "CEM", "ACE_R", "target_detection_hw","GRX_R","LRX", "DWRX", "CCSDS123_B1_sw", "CCSDS123_B1_hw","CCSDS123_B2_sw", "CCSDS123_B2_hw"]
+"""
+
+
 def mainSVU():
 
 
     #Pipeline:
     pipelines = create_pipelines(g11, g12, g21, g22, g311, g312, g32, g41, g51, gLast)
+    pipelines.append(['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']) #olive
+    pipelines.append(['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']) #black
 
     #Samples:
     samples_ = []
     for i in range(0, len(pipelines)):
         s = create_sample_by_pipeline(pipelines[i], frames, frame_samples, bands, binning_factor, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        s_ = [s[0], s[2], s[3] + s[1]*download_rate]
+        #s_ = [s[0], s[2], s[3]*freq] 
+        s_ = [s[0], s[2], s[3]*freq + s[1]*download_rate]
         samples_.append(s_)
         #print("sample: ", s_)
         #print("svu_accuracy: ", s_[1])
@@ -337,14 +379,16 @@ def mainSVU():
    
     #plots 2D:
     plt.plot(x_cost, y_accuracy, "o")
+    #plt.plot(x_cost[-1], y_accuracy[-1], "o", color = "black", ms = 10)
+    #plt.plot(x_cost[-2], y_accuracy[-2], "o", color = "olive", ms = 10)
     plt.show()
 
     #color by design
     #fig,axes = plt.subplots(10, 1)
     plot_color_by_design_svu(samples_, 0, g11) #, axes)
     plot_color_by_design_svu(samples_, 1, g12) #, axes)
-    plot_color_by_design_svu(samples_, 2, g21) #, axes)
-    plot_color_by_design_svu(samples_, 3, g22) #, axes)
+    #plot_color_by_design_svu(samples_, 2, g21) #, axes)
+    #plot_color_by_design_svu(samples_, 3, g22) #, axes)
     plot_color_by_design_svu(samples_, 4, g311) #, axes)
     plot_color_by_design_svu(samples_, 5, g312) #, axes)
     plot_color_by_design_svu(samples_, 6, g32) #, axes)

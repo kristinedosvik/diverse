@@ -24,7 +24,14 @@ def OC_MNF(frames, framesamples, bands, reducedbands, iterations):
     + 2 * matrix_multiplication(bands, bands, bands, bands) \
     + matrix_multiplication(reducedbands, bands, bands, frames*framesamples) 
 
-#def OC_ICA(frames, framesamples, bands, reducedbands):
-#    return ..
-
+def OC_ICA(frames, framesamples, bands, reducedbands, iterations):
+    return correlation_matrix(frames*framesamples, bands) \
+    + quadratic_matrix_invertion(bands) \
+    + matrix_multiplication(frames*framesamples, bands, bands, bands) \
+    + reducedbands * iterations ( \
+    + frames*framesamples * (dot_product(bands) + trignomitry() + subtraction() + (2 * bands + 1) * multiplication() ) + 2 * bands * division + bands * subtraction() \
+    + 2 * dot_product(bands) + bands * subtraction()
+    + bands * multiplication() + bands * addition() + sqrt() + bands * division()) \
+    + matrix_multiplication(frames*framesamples, bands, bands, reducedbands) \
+     
 
