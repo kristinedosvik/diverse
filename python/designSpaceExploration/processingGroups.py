@@ -7,8 +7,7 @@ from smileAndKeystone import *
 from targetDetection import *
 from anomalyDetection import *
 
-def g11_algorithm(algorithm, frames, framesamples, bands, accuracy, binningfactor):
-    
+def g11_algorithm(algorithm, frames, framesamples, bands, accuracy, binningfactor, camera_linse_binning):
     new_frame_samples = 0
     new_frames = 0
     new_bands = 0
@@ -17,7 +16,7 @@ def g11_algorithm(algorithm, frames, framesamples, bands, accuracy, binningfacto
     
     if (algorithm == "spectral_binning"):
         new_frames, new_frame_samples, new_bands = DOS_spectral_binning(frames, framesamples, bands, binningfactor)
-        new_accuracy = 0.8 # no idea
+        new_accuracy = A_spectral_binning(bands, binningfactor, camera_linse_binning)
         cost = OC_spectral_binning(frames, framesamples, bands, binningfactor)
 
     elif (algorithm == "x"):
@@ -43,7 +42,7 @@ def g12_algorithm(algorithm, frames, framesamples, bands, accuracy, binningfacto
     
     if (algorithm == "spatial_binning"):
         new_frames, new_frame_samples, new_bands = DOS_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin)
-        new_accuracy = 0.5 #no idea
+        new_accuracy = A_spatial_binning(frames, framesamples, binningfactor, whatToBin)
         cost = OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin)
 
     elif (algorithm == "x"):
@@ -143,16 +142,16 @@ def g31_algorithm(algorithm_detection, algorithm_correction, frames, framesample
 
     #correction:
     if (algorithm_correction == "avaraging_twice_correction"):
-        new_accuracy = 1.07
+        new_accuracy = 1.05
         cost += OC_avaraging_twice_correction(bad_samples, bands)
     elif(algorithm_correction == "nearest_neighbour_correction"):
-        new_accuracy = 1.07
+        new_accuracy = 1.05
         cost += OC_nearest_neighbour_correction(bad_samples, bands)
     elif(algorithm_correction == "mean_correction"):
-        new_accuracy = 1.07
+        new_accuracy = 1.05
         cost += OC_mean_correction(bad_samples, neigbourlevel, cardinal)
     elif(algorithm_correction == "median_correction"):
-        new_accuracy = 1.07
+        new_accuracy = 1.05
         cost += OC_median_correction(bad_samples, neigbourlevel, cardinal)
 
 
@@ -179,7 +178,7 @@ def g32_algorithm(algorithm, frames, framesamples, bands, accuracy):
     
     if (algorithm == "smile_and_keystone"):
         new_frames, new_frame_samples, new_bands = DOS_smile_and_keystone(frames, framesamples, bands)
-        new_accuracy = 1.07
+        new_accuracy = 1.05
         cost = OC_smile_and_keystone(frames, framesamples, bands)
 
 
@@ -207,7 +206,7 @@ def g33_algorithm(algorithm, frames, framesamples, bands, accuracy):
     
     if (algorithm == "radiometric_calibration"):
         new_frames, new_frame_samples, new_bands = DOS_radiometric_calibration(frames, framesamples, bands)
-        new_accuracy = 1.07
+        new_accuracy = 1.05
         cost = OC_radiometric_calibration(frames, framesamples, bands)
 
 
@@ -235,16 +234,16 @@ def g41_algorithm(algorithm, frames, framesamples, bands, accuracy, reducedbands
     new_frames, new_frame_samples, new_bands = DOS_dimensional_reduction(frames, framesamples, bands, reducedbands)
 
     if (algorithm == "PCA_sw"):
-        new_accuracy = 0.9 #no idea
+        new_accuracy = A_PCA(bands, reducedbands)
         cost = OC_PCA_sw(frames, framesamples, bands, reducedbands, iterations)
     elif (algorithm == "PCA_hw"):
-        new_accuracy = 0.9 #no idea
+        new_accuracy = A_PCA(bands, reducedbands)
         cost = OC_PCA_hw(frames, framesamples, bands, reducedbands, iterations)
     elif (algorithm == "MNF"):
-        new_accuracy = 0.9 #no idea
+        new_accuracy = A_MNF(bands, reducedbands)
         cost = OC_MNF(frames, framesamples, bands, reducedbands, iterations)
     elif (algorithm == "ICA"):
-        new_accuracy = 1
+        new_accuracy = A_ICA(bands, reducedbands)
         cost = OC_ICA(frames, framesamples, bands, reducedbands, iterations)
 
     elif (algorithm == "x"):
@@ -273,7 +272,7 @@ def g51_algorithm(algorithm, frames, framesamples, bands, accuracy, frame_increa
         cost = OC_georeferencing(frames, framesamples, bands)
     elif (algorithm == "geometric_registration"):
         new_frames, new_frame_samples, new_bands = DOS_geometric_registration(frames, framesamples, bands, frame_increase_factor, framesample_increase_factor)
-        new_accuracy = 1.07
+        new_accuracy = 1.05
         cost = OC_geometric_registration(frames, framesamples, bands, frame_increase_factor, framesample_increase_factor)
 
     elif (algorithm == "x"):
@@ -298,36 +297,58 @@ def gLast_algorithm(algorithm, frames, framesamples, bands, accuracy, outer_wind
     cost = 0
     
     #target detection:
-    if (algorithm == "SAM"):
+    if (algorithm == "SAM_sw"):
         new_frames, new_frame_samples, new_bands = DOS_target_detection(frames, framesamples, bands)
-        new_accuracy = 0.1 #no idea
+        new_accuracy = 0.899 
         cost = OC_SAM(frames, framesamples, bands)
-    elif (algorithm == "CEM"):
+    elif (algorithm == "CEM_sw"):
         new_frames, new_frame_samples, new_bands = DOS_target_detection(frames, framesamples, bands)
-        new_accuracy = 0.03
+        new_accuracy = 0.9606
         cost = OC_CEM(frames, framesamples, bands)
-    elif (algorithm == "ACE_R"):
+    elif (algorithm == "ACE_sw"):
         new_frames, new_frame_samples, new_bands = DOS_target_detection(frames, framesamples, bands)
-        new_accuracy = 0.71
+        new_accuracy = 0.9417
         cost = OC_ACE_R(frames, framesamples, bands)
-    elif (algorithm == "target_detection_hw"):
-        new_frames, new_frame_samples, new_bands = DOS_target_detection(frames, framesamples, bands)
-        new_accuracy = 0.71 #must seperate them
-        cost = OC_target_detection_hw(frames, framesamples, bands)
 
+    elif (algorithm == "SAM_hw"):
+        new_frames, new_frame_samples, new_bands = DOS_target_detection(frames, framesamples, bands)
+        new_accuracy = 0.899
+        cost = OC_target_detection_hw(frames, framesamples, bands)
+    elif (algorithm == "CEM_hw"):
+        new_frames, new_frame_samples, new_bands = DOS_target_detection(frames, framesamples, bands)
+        new_accuracy = 0.9606
+        cost = OC_target_detection_hw(frames, framesamples, bands)
+    elif (algorithm == "ACE_hw"):
+        new_frames, new_frame_samples, new_bands = DOS_target_detection(frames, framesamples, bands)
+        new_accuracy = 0.9417
+        cost = OC_target_detection_hw(frames, framesamples, bands)
+    elif (algorithm == "ASMF_hw"):
+        new_frames, new_frame_samples, new_bands = DOS_target_detection(frames, framesamples, bands)
+        new_accuracy = (0.9606+0.9417)/2
+        cost = OC_target_detection_hw(frames, framesamples, bands)
+    
     #anomaly detection:
-    elif (algorithm == "GRX_R"):
+    elif (algorithm == "GRX_sw"):
         new_frames, new_frame_samples, new_bands = DOS_anomaly_detection(frames, framesamples, bands)
-        new_accuracy = 0.94
-        cost = OC_GRX_R(frames, framesamples, bands)
-    elif (algorithm == "LRX"):
+        new_accuracy = 0.9420
+        cost = OC_GRX(frames, framesamples, bands)
+    elif (algorithm == "LRX_sw"):
         new_frames, new_frame_samples, new_bands = DOS_anomaly_detection(frames, framesamples, bands)
-        new_accuracy = 0.96
+        new_accuracy = 0.9604
         cost = OC_LRX(frames, framesamples, bands, outer_window, inner_window)
-    elif (algorithm == "DWRX"):
+    elif (algorithm == "F_MGD_hw"):
         new_frames, new_frame_samples, new_bands = DOS_anomaly_detection(frames, framesamples, bands)
-        new_accuracy = 0.95 # no idea
-        cost = OC_DWRX(frames, framesamples, bands, outer_window, inner_window)
+        new_accuracy = 0.9947
+        cost = OC_F_MGD(frames, framesamples, bands, outer_window, inner_window)
+    elif (algorithm == "FrFT_RX_sw"):
+        new_frames, new_frame_samples, new_bands = DOS_anomaly_detection(frames, framesamples, bands)
+        new_accuracy = 0.9657
+        cost = OC_FrFT_RX(frames, framesamples, bands, outer_window, inner_window)
+    elif (algorithm == "CRD_sw"):
+        new_frames, new_frame_samples, new_bands = DOS_anomaly_detection(frames, framesamples, bands)
+        new_accuracy = 0.9673
+        cost = OC_CRD(frames, framesamples, bands, outer_window, inner_window)
+
 
     #CCSDS123 compression: 
     elif (algorithm == "CCSDS123_B1_sw"):
@@ -340,12 +361,19 @@ def gLast_algorithm(algorithm, frames, framesamples, bands, accuracy, outer_wind
         cost = OC_CCSDS123_B1_hw(frames, framesamples, bands, P, D)
     elif (algorithm == "CCSDS123_B2_sw"):
         new_frames, new_frame_samples, new_bands = DOS_CCSDS123_B2(frames, framesamples, bands)
-        new_accuracy = 0.8 #no idea
+        new_accuracy = 0.9 #no idea
         cost = OC_CCSDS123_B2_sw(frames, framesamples, bands, P, D)
     elif (algorithm == "CCSDS123_B2_hw"):
         new_frames, new_frame_samples, new_bands = DOS_CCSDS123_B2(frames, framesamples, bands)
-        new_accuracy = 0.8 #no idea
+        new_accuracy = 0.9 #no idea
         cost = OC_CCSDS123_B2_hw(frames, framesamples, bands, P, D)
+
+    #Classification: 
+    elif (algorithm == "SVM"):
+        new_frames, new_frame_samples, new_bands = DOS_CCSDS123_B1(frames, framesamples, bands)
+        new_accuracy = 0.967
+        cost = OC_CCSDS123_B1_sw(frames, framesamples, bands, P, D) #wrong!
+
 
     #skip this step:
     elif (algorithm == "x"):
@@ -361,3 +389,45 @@ def gLast_algorithm(algorithm, frames, framesamples, bands, accuracy, outer_wind
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
+def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_factor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D):
+    cost = 0
+    accuracy = 0.9
+    
+    cost_group, frames, frame_sample, bands, accuracy_group = g11_algorithm(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor, camera_linse_binning)
+    cost += cost_group
+    accuracy *= accuracy_group
+    
+    cost_group, frames, frame_sample, bands, accuracy_group = g12_algorithm(pipeline[1], frames, frame_samples, bands, accuracy, binning_factor, whatToBin)
+    cost += cost_group
+    accuracy *= accuracy_group
+
+    cost_group, frames, frame_sample, bands, accuracy_group = g21_algorithm(pipeline[2], frames, frame_samples, bands, accuracy)
+    cost += cost_group
+    accuracy *= accuracy_group
+
+    cost_group, frames, frame_sample, bands, accuracy_group = g22_algorithm(pipeline[3], frames, frame_samples, bands, accuracy)
+    cost += cost_group
+    accuracy *= accuracy_group
+    
+    cost_group, frames, frame_sample, bands, accuracy_group = g31_algorithm(pipeline[4], pipeline[5], frames, frame_samples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal)
+    cost += cost_group
+    accuracy *= accuracy_group
+  
+    cost_group, frames, frame_sample, bands, accuracy_group = g32_algorithm(pipeline[6], frames, frame_samples, bands, accuracy)
+    cost += cost_group
+    accuracy *= accuracy_group
+
+    cost_group, frames, frame_sample, bands, accuracy_group = g41_algorithm(pipeline[7], frames, frame_samples, bands, accuracy, reducedbands, iterations)
+    cost += cost_group
+    accuracy *= accuracy_group
+    
+    cost_group, frames, frame_sample, bands, accuracy_group = g51_algorithm(pipeline[8], frames, frame_samples, bands, accuracy, frame_increase_factor, framesample_increase_factor)
+    cost += cost_group
+    accuracy *= accuracy_group
+
+    cost_group, frames, frame_sample, bands, accuracy_group = gLast_algorithm(pipeline[9], frames, frame_samples, bands, accuracy, outer_window, inner_window, P, D)
+    cost += cost_group
+    accuracy *= accuracy_group
+
+
+    return [pipeline, frames*frame_sample*bands, accuracy, cost] 

@@ -218,12 +218,12 @@ def find_pipeline_from_index_name(index_name, g0, g1, g2):
 
 
 ########################################
-
-def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_factor, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D):
+"""
+def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_factor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D):
     cost = 0
-    accuracy = 0.8
+    accuracy = 1
     
-    cost_group, frames, frame_sample, bands, accuracy_group = g11_algorithm(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor)
+    cost_group, frames, frame_sample, bands, accuracy_group = g11_algorithm(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor, camera_linse_binning)
     cost += cost_group
     accuracy *= accuracy_group
     
@@ -263,7 +263,7 @@ def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_fa
     return [pipeline, frames*frame_sample*bands, accuracy, cost] 
 
 #print(create_sample_by_pipeline(["binning", "dimRed_pca", "tarDet"], 100, 80, 200, 4, 12))
-
+"""
 ########################################
 
 
@@ -301,16 +301,16 @@ dr1 =1/1000000
 dr2 = 1/125000
 download_rate = dr1
 freq = 1/667000000
-frames = 200
-frame_samples = 680
-bands = 1080
+frames = 2000
+frame_samples = 6800
+bands = 120
 binning_factor = 9
 whatToBin = "frames" 
 num_regions = 80 
 bad_samples = 600 
 neigbourlevel = 2
 cardinal = 1 
-reducedbands = 20 
+reducedbands = 10 
 iterations = 2 
 frame_increase_factor = 2 
 framesample_increase_factor = 2
@@ -319,7 +319,7 @@ inner_window = 20
 P = 12 
 D = 4
 
-g11 = ["x", "spectral_binning"]
+g11 = ["x"]#, "spectral_binning"]
 g12 = ["x"]#, "spatial_binning"]
 
 g21 = ["x"]#, "thumbnails"]
@@ -328,12 +328,12 @@ g22 = ["x"]#, "subsamples"]
 g311 = ["x"]#, "statisical_threshold_detection", "correlation_detection"]
 g312 = ["x"]#, "avaraging_twice_correction", "nearest_neighbour_correction", "mean_correction", "median_correction"]
 
-g32 = ["x", "smile_and_keystone"]
+g32 = ["x"]#, "smile_and_keystone"]
 
-g41 = ["x", "PCA_sw", "PCA_hw", "MNF"]
+g41 = ["x", "PCA_sw", "PCA_hw", "MNF", "ICA"]
 g51 = ["x"]#, "georeferencing", "geometric_registration"]
 #gLast = ["x"]#, "SAM", "CEM", "ACE_R", "target_detection_hw","GRX_R","LRX", "DWRX", "CCSDS123_B1_sw", "CCSDS123_B1_hw","CCSDS123_B2_sw", "CCSDS123_B2_hw"]
-gLast = ["x", "SAM", "CEM", "ACE_R"] #, "CCSDS123_B1_hw","CCSDS123_B2_sw", "CCSDS123_B2_hw"]
+gLast = ["x", "SAM", "CEM", "ACE_R", "target_detection_hw"] #, "CCSDS123_B1_hw","CCSDS123_B2_sw", "CCSDS123_B2_hw"]
 
 """
 g11 = ["x", "spectral_binning"]

@@ -28,10 +28,73 @@ def OC_ICA(frames, framesamples, bands, reducedbands, iterations):
     return correlation_matrix(frames*framesamples, bands) \
     + quadratic_matrix_invertion(bands) \
     + matrix_multiplication(frames*framesamples, bands, bands, bands) \
-    + reducedbands * iterations ( \
-    + frames*framesamples * (dot_product(bands) + trignomitry() + subtraction() + (2 * bands + 1) * multiplication() ) + 2 * bands * division + bands * subtraction() \
+    + reducedbands * iterations * ( \
+    frames*framesamples * (dot_product(bands) + trignomitry() + subtraction() + (2 * bands + 1) * multiplication() ) + 2 * bands * division() + bands * subtraction() \
     + 2 * dot_product(bands) + bands * subtraction()
     + bands * multiplication() + bands * addition() + sqrt() + bands * division()) \
     + matrix_multiplication(frames*framesamples, bands, bands, reducedbands) \
      
+def A_PCA(bands, reducedbands):
+    #based on 1752x3325x144 image, with 144 bands
+    c20 = 20/144
+    c15 = 15/144
+    c10 = 10/144
+    c5 = 5/144
+    c2 = 2/144
+    
+    if (reducedbands/bands > c20):
+        return 0.9653
+    elif(reducedbands/bands > c15):
+        return 0.9652
+    elif(reducedbands/bands > c20):
+        return 0.9651
+    elif(reducedbands/bands > c5):
+        return 0.96
+    elif(reducedbands/bands > c2):
+        return 0.925
+    else:
+        return 0
+
+def A_MNF(bands, reducedbands):
+    #based on 1752x3325x144 image, with 144 bands
+    c20 = 20/144
+    c15 = 15/144
+    c10 = 10/144
+    c5 = 5/144
+    c2 = 2/144
+    
+    if (reducedbands/bands > c20):
+        return 0.9653
+    elif(reducedbands/bands > c15):
+        return 0.9652
+    elif(reducedbands/bands > c20):
+        return 0.965
+    elif(reducedbands/bands > c5):
+        return 0.94
+    elif(reducedbands/bands > c2):
+        return 0.924
+    else:
+        return 0
+
+def A_ICA(bands, reducedbands):
+    #based on 1752x3325x144 image, with 144 bands
+    c20 = 20/144
+    c15 = 15/144
+    c10 = 10/144
+    c5 = 5/144
+    c2 = 2/144
+    
+    if (reducedbands/bands > c20):
+        return 0.951
+    elif(reducedbands/bands > c15):
+        return 0.95
+    elif(reducedbands/bands > c20):
+        return 0.9351
+    elif(reducedbands/bands > c5):
+        return 0.934
+    elif(reducedbands/bands > c2):
+        return 0.93
+    else:
+        return 0
+
 

@@ -24,3 +24,4 @@ def OC_target_detection_hw(frames, framesamples, bands):
     return frames * framesamples * (3 * bands + division() + 3) + 2 * bands + division() + 3
 
 
+
