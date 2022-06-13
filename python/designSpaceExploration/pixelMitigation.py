@@ -6,42 +6,19 @@ def DOS_pixel_mitigation(frames, framesamples, bands):
     new_bands = bands
     return new_frames, new_frame_samples, new_bands
 
-def OC_statisical_threshold_detection(frames, framesamples, bands, num_regions):
-    return bands * num_regions * (variance (frames*framesamples/num_regions ) + multiplication() + frames * framesamples / num_regions * iteration())
+def OC_statisical_threshold_detection(frames, framesamples, bands, num_neighbours):
+    return ((division() + num_neighbours*subtraction() + num_neighbours*multiplication()) + (2*division() + addition() + subtraction()) + (multiplication() + compare() + addition() + subtraction()))*bands*frames*framesamples + (division() + num_neighbours * addition())*bands
     
 def OC_correlation_detection(frames, framesamples, bands, num_neighbours):
-    return frames * framesamples * bands * (correlation_matrix(num_neighbours, bands) + num_neighbours * iteration())
-
-def OC_avaraging_twice_correction(bad_samples, bands):
-    return bad_samples * bands * (4 * (mean(3) + division() + subtraction()) + mean(4))
+    return (correlation_matrix(num_neighbours, 1) + num_neighbours*check())*bands + (update_correlation_matrix(num_neighbours, 1) + checks())*bands*frames*framesamples
 
 def OC_nearest_neighbour_correction(bad_samples, bands):
-    return bad_samples * bands * copy_element()
+    return bad_samples * copy_element()
 
-def OC_mean_correction(bad_samples, neighbourlevel, cardinal):
-    if (neighbourlevel == 1):
-        if (cardinal == 1):
-            return bad_samples * mean(4)
+def OC_mean_correction(bad_samples):
         return bad_samples * mean(8)
-    elif (neighbourlevel == 2):
-        if (cardinal == 1):
-            return bad_samples * mean(8)
-        return bad_samples * mean(16)
-    if (cardinal == 1):
-        return bad_samples * mean(12)
-    return bad_samples * mean(24)
 
 def OC_median_correction(bad_samples, neighbourlevel, cardinal):
-    if (neighbourlevel == 1):
-        if (cardinal == 1):
-            return bad_samples * median(4)
-        return bad_samples * median(8)
-    elif (neighbourlevel == 2):
-        if (cardinal == 1):
-            return bad_samples * median(8)
-        return bad_samples * median(16)
-    if (cardinal == 1):
-        return bad_samples * median(12)
-    return bad_samples * median(24)
-
+return bad_samples * median(8)
+    
 

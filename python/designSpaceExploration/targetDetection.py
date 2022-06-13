@@ -12,7 +12,7 @@ def DOS_target_detection(frames, framesamples, bands):
     return new_frames, new_frame_samples, new_bands
 
 def OC_SAM(frames, framesamples, bands):
-    return dot_product(bands) + frames * framesamples * (2 * dot_product(bands) + 2 * multiplication() + division())
+    return dot_product(bands) + ((3 * dot_product(bands) + 2*multiplication+division()) - dot_product(bands))*framesamples*frames
 
 def OC_CEM(frames, framesamples, bands):
     return correlation_matrix(frames * framesamples, bands) + quadratic_matrix_invertion(bands) + matrix_vector_multiplication(bands, bands) + dot_product(bands) + frames * framesamples * (dot_product(bands) + division())

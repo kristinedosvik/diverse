@@ -1,6 +1,18 @@
 import math as math
 import numpy as np
 
+##Make sure to have the following for bad pixel check
+#correlation_matrix(num_neighbours, 1)
+#update_correlation_matrix(num_neighbours, 1)
+#correlation_matrix_hw(frames*framesamples, bands)
+#jacobi_algorithm_hw(bands, iterations) 
+#sorting_hw(bands)
+#SVU_jacobi()
+#SVU_anorldi()
+#matrix_multiplication_hw(reducedbands, bands, bands, frames*framesamples)
+#update_matrix_inversion(bands)
+#distance(bands)
+
 def addition():
     return 1
 
@@ -64,9 +76,28 @@ def trignomitry():
 def shift():
     return 1
 
+def simd():
+    return 1
+
+def compare():
+    return 1
+
+def exp():
+    return 1
+
+def log():
+    return 1
+
 ##################
 ## SW functions ##
 ##################
+
+def distance(num_elements):
+    return num_elements * multiplication() + (num_elements-1)*subtraction() + sqrt()
+
+
+def diagonal_matrix_multiplication(size):
+    return size*size*multiplication()
 
 def optimization(iteration, objective_function, dimension_parameter_space):
     gradient = dimension_parameter_space * (2 * objective_function  + 2 * subtraction() + division())

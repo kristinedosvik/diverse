@@ -19,15 +19,14 @@ def DOS_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin):
     return new_frames, new_frame_samples, new_bands
 
 def OC_spectral_binning(frames, framesamples, bands, binningfactor):
-    return frames * (framesamples * find_index() + 
-            framesamples * ((np.floor(bands/binningfactor) * (vpaddle_4_2() + vpaddle_2_1()) + binningfactor%4 * addition()) + bands%binningfactor * addition()))
+    return ((2 * simd()) * bands * np.floor(binningfactor/4) + (np.floor(binningfactor/4) + binningfactor%4)*addition()*bands*np.floor(framesamples/binningfactor) + (framesamples%binningfactor-1)*addition())*frames
+
 
 def OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin):
     if(whatToBin == "frames"):
-        return (((binningfactor-1) * addition() + binningfactor * division()) * bands * np.floor(framesamples/binningfactor) + ((framesamples%binningfactor-1) * addition() + framesamples%binningfactor * division()) * bands ) * frames
-
+        return ((division() + (binningfactor-1) * addition()) * bands * np.floor(frames/binningfactor) + (division() + (frames%binningfactor - 1)*addition())*bands)*framesamples
     else:
-        return (((binningfactor-1) * addition() + binningfactor * division()) * bands * np.floor(frames/binningfactor) + ((frames%binningfactor-1) * addition() + frames%binningfactor * division()) * bands ) * framesamples
+        return ((division() + (binningfactor-1) * addition()) * bands * np.floor(framesamples/binningfactor) + (division() + (framesamples%binningfactor - 1)*addition())*bands)*frames
 
 
 def A_spectral_binning(bands, binningfactor, camera_linse_binning):
