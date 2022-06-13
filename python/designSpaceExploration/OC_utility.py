@@ -3,7 +3,7 @@ import numpy as np
 
 ##Make sure to have the following for bad pixel check
 #correlation_matrix(num_neighbours, 1)
-#update_correlation_matrix(num_neighbours, 1)
+#pdate_correlation_matrix(num_neighbours, 1)
 #correlation_matrix_hw(frames*framesamples, bands)
 #jacobi_algorithm_hw(bands, iterations) 
 #sorting_hw(bands)
@@ -68,6 +68,9 @@ def sign():
     return 1
 
 def checks():
+    return 1
+
+def check():
     return 1
 
 def trignomitry():

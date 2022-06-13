@@ -141,18 +141,15 @@ def g31_algorithm(algorithm_detection, algorithm_correction, frames, framesample
         print("Error", algorithm_detection)
 
     #correction:
-    if (algorithm_correction == "avaraging_twice_correction"):
+    if(algorithm_correction == "nearest_neighbour_correction"):
         new_accuracy = 1.05
-        cost += OC_avaraging_twice_correction(bad_samples, bands)
-    elif(algorithm_correction == "nearest_neighbour_correction"):
-        new_accuracy = 1.05
-        cost += OC_nearest_neighbour_correction(bad_samples, bands)
+        cost += OC_nearest_neighbour_correction(bad_samples)
     elif(algorithm_correction == "mean_correction"):
         new_accuracy = 1.05
-        cost += OC_mean_correction(bad_samples, neigbourlevel, cardinal)
+        cost += OC_mean_correction(bad_samples)
     elif(algorithm_correction == "median_correction"):
         new_accuracy = 1.05
-        cost += OC_median_correction(bad_samples, neigbourlevel, cardinal)
+        cost += OC_median_correction(bad_samples)
 
 
     elif (algorithm_detection == "x" or algorithm_correction == "x"):
