@@ -47,6 +47,12 @@ outer_window = 60
 inner_window = 20
 P = 12
 D = 4
+dot_product_blocks = framesamples
+kernel_element = 9
+fractional_domains = 10
+num_neighbours = 8
+num_classes = 4 
+total_num_support_vectors = 1096
 
 frames_vec = [956, 956, 956, 956, 956]
 frame_samples_vec = [684, 684, 684, 684, 684]
@@ -108,7 +114,8 @@ def pipeline_name(sample):
     name += "anomaly detection"
     return name
 
-def make_3D_plot_anomalyDetection(pipelines, frames_vec, frame_samples_vec, bands_vec, spec_binning_factor_vec, spat_binning_factor_vec, dimRed_bands_vec, spec_vec, spat_vec):
+
+def make_3D_plot_anomalyDetection(frames_vec, frame_samples_vec, bands_vec, spec_binning_factor_vec, spat_binning_factor_vec, dimRed_bands_vec, spec_vec, spat_vec, dimRed_vec):
 
 	#make num 3D groups:
     pipeline_name_vec = []
@@ -120,11 +127,11 @@ def make_3D_plot_anomalyDetection(pipelines, frames_vec, frame_samples_vec, band
     
 
     for i in range(0, len(frames_vec)):
-        grx_sw = create_sample_by_pipeline(pipeline_GRX_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        lrx_sw = create_sample_by_pipeline(pipeline_LRX_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        f_mgd_hw = create_sample_by_pipeline(pipeline_F_MGD_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        frfr_rx_sw = create_sample_by_pipeline(pipeline_FrFT_RX_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        crd_sw = create_sample_by_pipeline(pipeline_CRD_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
+        grx_sw = create_sample_by_pipeline(pipeline_GRX_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        lrx_sw = create_sample_by_pipeline(pipeline_LRX_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        f_mgd_hw = create_sample_by_pipeline(pipeline_F_MGD_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        frfr_rx_sw = create_sample_by_pipeline(pipeline_FrFT_RX_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        crd_sw = create_sample_by_pipeline(pipeline_CRD_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
         
         pipeline_name_vec.append(pipeline_name(grx_sw))
         samples_grx_sw.append(grx_sw)
@@ -148,7 +155,7 @@ def make_3D_plot_anomalyDetection(pipelines, frames_vec, frame_samples_vec, band
         y.append(score)
         x.append(cost)
         plt.text(0, 0.8-i/100, pipeline_name_vec[i], color = group_colors[i])
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -158,7 +165,7 @@ def make_3D_plot_anomalyDetection(pipelines, frames_vec, frame_samples_vec, band
         cost = samples_lrx_sw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -168,7 +175,7 @@ def make_3D_plot_anomalyDetection(pipelines, frames_vec, frame_samples_vec, band
         cost = samples_f_mgd_hw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -178,7 +185,7 @@ def make_3D_plot_anomalyDetection(pipelines, frames_vec, frame_samples_vec, band
         cost = samples_frfr_rx_sw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -188,7 +195,7 @@ def make_3D_plot_anomalyDetection(pipelines, frames_vec, frame_samples_vec, band
         cost = samples_crd_sw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 

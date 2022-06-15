@@ -23,53 +23,61 @@ def RGB(red, green, blue):
 		rgb += hex(blue)[-2] + hex(blue)[-1]
 	return rgb
 
-group_colors = ["red", "yellow", "green", "blue", "pink", "grey", "purple", "brown", "black", "lime", "black", "cyan", "magenta", "tan", "maroon"]
+group_colors = ["red", "yellow", "green", "blue", "pink", "grey", "purple", "brown", "darkgrey", "lime", "black", "cyan", "magenta", "tan", "maroon"]
 
 dr1 =1/1000000
 dr2 = 1/125000
 download_rate = dr1
 freq = 1/667000000
-frames = 956
-framesamples = 684
-bands = 1080
+frames = 95
+#frames = 956
+framesamples = 68
+#framesamples = 684
+bands = 108
+#bands = 1080
 binningfactor = 9
 camera_linse_binning = -1
 whatToBin = "frames"
 num_regions = 80
-bad_samples = 600
+bad_samples = 60
 neigbourlevel = 2
 cardinal = 1
-reducedbands = 10
 iterations = 2
 frame_increase_factor = 2
 framesample_increase_factor = 2
-outer_window = 60
-inner_window = 20
+outer_window = 20
+inner_window = 6
 P = 12
 D = 4
+dot_product_blocks = framesamples*frames/1.4
+kernel_element = 9
+fractional_domains = 10
+num_neighbours = 8
+num_classes = 4 
+total_num_support_vectors = 1096
 
-frames_vec = [956, 956, 956, 956, 956] 
-frame_samples_vec = [684, 684, 684, 684, 684] 
+frames_vec = [956,956, 956, 956, 956] 
+frame_samples_vec = [684,684, 684, 684, 684] 
 bands_vec = [1080, 1080, 1080, 1080, 1080]
-spec_binning_factor_vec = [9, 9, 9, 9, 9]
-spat_binning_factor_vec = [9, 9, 9, 9, 9]
-dimRed_bands_vec = [12, 12, 12, 12, 12]
+spec_binning_factor_vec = [9,9, 9, 9, 9]
+spat_binning_factor_vec = [9,9, 9, 9, 9]
+dimRed_bands_vec = [12, 12, 12, 12, 12, 12]
 spec_vec = ["x", "spectral_binning", "spectral_binning", "spectral_binning", "spectral_binning"]
 spat_vec = ["x", "x", "x", "x", "spatial_binning"]
-dimRed_vec = ["x", "x", "PCA_hw", "PCA_sw", "PCA_hw"]
+dimRed_vec = ["x", "PCA_hw", "PCA_hw", "PCA_hw", "PCA_hw"]
 
 
 
-def pipeline_ccsds123_b1_hw(i):
+def pipeline_ccsds123_b1_hw(i, spec_vec, spat_vec, dimRed_vec):
     return [spec_vec[i], spat_vec[i], "x", "x", "x", "x", "x", dimRed_vec[i], "x", "CCSDS123_B1_hw"]
 
-def pipeline_ccsds123_b1_sw(i):
+def pipeline_ccsds123_b1_sw(i, spec_vec, spat_vec, dimRed_vec):
     return [spec_vec[i], spat_vec[i], "x", "x", "x", "x", "x", dimRed_vec[i], "x", "CCSDS123_B1_sw"]
 
-def pipeline_ccsds123_b2_hw(i):
+def pipeline_ccsds123_b2_hw(i, spec_vec, spat_vec, dimRed_vec):
     return [spec_vec[i], spat_vec[i], "x", "x", "x", "x", "x", dimRed_vec[i], "x", "CCSDS123_B2_hw"]
 
-def pipeline_ccsds123_b2_sw(i):
+def pipeline_ccsds123_b2_sw(i, spec_vec, spat_vec, dimRed_vec):
     return [spec_vec[i], spat_vec[i], "x", "x", "x", "x", "x", dimRed_vec[i], "x", "CCSDS123_B2_sw"]
 
 def pipeline_name(sample):
@@ -100,7 +108,7 @@ def pipeline_name(sample):
     return name
 
 
-def make_3D_plot_compression(pipelines, frames_vec, frame_samples_vec, bands_vec, spec_binning_factor_vec, spat_binning_factor_vec, dimRed_bands_vec, spec_vec, spat_vec):
+def make_3D_plot_compression(frames_vec, frame_samples_vec, bands_vec, spec_binning_factor_vec, spat_binning_factor_vec, dimRed_bands_vec, spec_vec, spat_vec, dimRed_vec):
 
 	#make num 3D groups:
     pipeline_name_vec = []
@@ -109,10 +117,10 @@ def make_3D_plot_compression(pipelines, frames_vec, frame_samples_vec, bands_vec
     samples_ccsds123_b2_hw = []
     samples_ccsds123_b2_sw = []
     for i in range(0, len(frames_vec)):
-        b1_hw = create_sample_by_pipeline(pipeline_ccsds123_b1_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        b1_sw = create_sample_by_pipeline(pipeline_ccsds123_b1_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        b2_hw = create_sample_by_pipeline(pipeline_ccsds123_b2_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        b2_sw = create_sample_by_pipeline(pipeline_ccsds123_b2_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
+        b1_hw = create_sample_by_pipeline(pipeline_ccsds123_b1_hw(i, spec_vec, spat_vec, dimRed_vec), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, dimRed_bands_vec[i], dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        b1_sw = create_sample_by_pipeline(pipeline_ccsds123_b1_sw(i, spec_vec, spat_vec, dimRed_vec), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, dimRed_bands_vec[i], dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        b2_hw = create_sample_by_pipeline(pipeline_ccsds123_b2_hw(i, spec_vec, spat_vec, dimRed_vec), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, dimRed_bands_vec[i], dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        b2_sw = create_sample_by_pipeline(pipeline_ccsds123_b2_sw(i, spec_vec, spat_vec, dimRed_vec), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, dimRed_bands_vec[i], dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
         
         pipeline_name_vec.append(pipeline_name(b1_hw))
 
@@ -120,6 +128,11 @@ def make_3D_plot_compression(pipelines, frames_vec, frame_samples_vec, bands_vec
         samples_ccsds123_b1_sw.append(b1_sw)
         samples_ccsds123_b2_hw.append(b2_hw)
         samples_ccsds123_b2_sw.append(b2_sw)
+
+        print("b1_hw, ", b1_hw[3])
+        print("b1_sw, ", b1_sw[3])
+        print("b2_hw, ", b2_hw[3])
+        print("b2_sw, ",b2_sw[3])
         
         #return [pipeline, frames*frame_sample*bands, accuracy, cost]
     #make plot:
@@ -135,7 +148,7 @@ def make_3D_plot_compression(pipelines, frames_vec, frame_samples_vec, bands_vec
         y.append(score)
         x.append(cost)
         plt.text(0, 0.8-i/100, pipeline_name_vec[i], color = group_colors[i])
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -145,7 +158,7 @@ def make_3D_plot_compression(pipelines, frames_vec, frame_samples_vec, bands_vec
         cost = samples_ccsds123_b1_sw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -155,7 +168,7 @@ def make_3D_plot_compression(pipelines, frames_vec, frame_samples_vec, bands_vec
         cost = samples_ccsds123_b2_hw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -165,7 +178,7 @@ def make_3D_plot_compression(pipelines, frames_vec, frame_samples_vec, bands_vec
         cost = samples_ccsds123_b2_sw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -187,14 +200,15 @@ def make_3D_plot_compression(pipelines, frames_vec, frame_samples_vec, bands_vec
         x.clear()
         y.clear()
 
-    plt.annotate(compression_names[0], (samples_ccsds123_b1_hw[0][3], samples_ccsds123_b1_hw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
-    plt.annotate(compression_names[1], (samples_ccsds123_b1_sw[0][3], samples_ccsds123_b1_sw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
-    plt.annotate(compression_names[2], (samples_ccsds123_b2_hw[0][3], samples_ccsds123_b2_hw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
-    plt.annotate(compression_names[3], (samples_ccsds123_b2_sw[0][3], samples_ccsds123_b2_sw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+    plt.annotate(compression_names[0], (samples_ccsds123_b1_hw[0][3], samples_ccsds123_b1_hw[0][2]), textcoords="offset points", xytext=(0,10), color="grey", ha='center')
+    plt.annotate(compression_names[1], (samples_ccsds123_b1_sw[0][3], samples_ccsds123_b1_sw[0][2]), textcoords="offset points", xytext=(0,10), color="grey", ha='center')
+    plt.annotate(compression_names[2], (samples_ccsds123_b2_hw[0][3], samples_ccsds123_b2_hw[0][2]), textcoords="offset points", xytext=(0,10), color="grey", ha='center')
+    plt.annotate(compression_names[3], (samples_ccsds123_b2_sw[0][3], samples_ccsds123_b2_sw[0][2]), textcoords="offset points", xytext=(0,10), color="grey", ha='center')
     plt.show()
 
     print("finito")
     
+
 
 print(make_3D_plot_compression(frames_vec, frame_samples_vec, bands_vec, spec_binning_factor_vec, spat_binning_factor_vec, dimRed_bands_vec, spec_vec, spat_vec, dimRed_vec))
 

@@ -7,6 +7,7 @@ from georeferencing_and_geometricRegistration import *
 from pixelMitigation import *
 from smileAndKeystone import *
 from targetDetection import *
+from classification import *
 from anomalyDetection import *
 
 def RGB(red, green, blue):
@@ -47,6 +48,12 @@ outer_window = 60
 inner_window = 20
 P = 12
 D = 4
+dot_product_blocks = framesamples
+kernel_element = 9
+fractional_domains = 10
+num_neighbours = 8
+num_classes = 4 
+total_num_support_vectors = 1096
 
 x_ = 0
 spectral_binning = OC_spectral_binning(frames, framesamples, bands, binningfactor)
@@ -55,9 +62,9 @@ spatial_binning = OC_spatial_binning(frames, framesamples, bands, binningfactor,
 statisical_threshold_detection = OC_statisical_threshold_detection(frames, framesamples, bands, num_regions)
 correlation_detection = OC_correlation_detection(frames, framesamples, bands, num_regions)
 
-nearest_neighbour_correction = OC_nearest_neighbour_correction(bad_samples, bands)
-mean_correction = OC_mean_correction(bad_samples, neigbourlevel, cardinal)
-median_correction = OC_median_correction(bad_samples, neigbourlevel, cardinal)
+nearest_neighbour_correction = OC_nearest_neighbour_correction(bad_samples)
+mean_correction = OC_mean_correction(bad_samples)
+median_correction = OC_median_correction(bad_samples)
 
 smile_and_keystone =  OC_smile_and_keystone(frames, framesamples, bands)
 
@@ -67,24 +74,29 @@ georeferencing = OC_georeferencing(frames, framesamples, bands)
 geometric_registration = OC_geometric_registration(frames, framesamples, bands, frame_increase_factor, framesample_increase_factor)
 
 PCA_sw = OC_PCA_sw(frames, framesamples, bands, reducedbands, iterations)
-PCA_hw = OC_PCA_hw(frames, framesamples, bands, reducedbands, iterations)
+PCA_hw = OC_PCA_hw(frames, framesamples, bands, reducedbands, iterations, dot_product_blocks)
 ICA = OC_ICA(frames, framesamples, bands, reducedbands, iterations)
 MNF = OC_MNF(frames, framesamples, bands, reducedbands, iterations)
 
 SAM = OC_SAM(frames, framesamples, bands)
+SAM_hw = OC_SAM_hw(frames, framesamples, bands)
 CEM = OC_CEM(frames, framesamples, bands)
 ACE_R = OC_ACE_R(frames, framesamples, bands)
 target_detection_hw = OC_target_detection_hw(frames, framesamples, bands)
 
-GRX_R = OC_GRX_R(frames, framesamples, bands)
-LRX = OC_LRX(frames, framesamples, bands, outer_window, inner_window) 
+
+SVM = OC_SVM(frames, framesamples, bands, num_classes, total_num_support_vectors)
+
+GRX_R = OC_GRX(frames, framesamples, bands)
+LRX = OC_LRX(frames, framesamples, bands, outer_window, inner_window)
+FrFT_RX = OC_FrFT_RX(frames, framesamples, bands, fractional_domains)
+CRD = OC_CRD(frames, framesamples, bands, num_neighbours)
+F_MGD = OC_F_MGD(frames, framesamples, bands, kernel_element)
 
 CCSDS123_B1_sw = OC_CCSDS123_B1_sw(frames, framesamples, bands, P, D)
 CCSDS123_B1_hw = OC_CCSDS123_B1_hw(frames, framesamples, bands, P, D)
 CCSDS123_B2_sw = OC_CCSDS123_B2_sw(frames, framesamples, bands, P, D)
 CCSDS123_B2_hw = OC_CCSDS123_B2_hw(frames, framesamples, bands, P, D)
-
-SVM = 100 
 
 
 colors_1crimson = [RGB(220,20,60)]
@@ -106,52 +118,43 @@ colors_6blue = [RGB(0,0,255), RGB(0,0,205), RGB(0,0,155), RGB(0,0,105), RGB(0,0,
 #georeferencing, geometric_registration, PCA_sw, PCA_hw, ICA, MNF, SAM, CEM, ACE_R, target_detection_hw, GRX_R, LRX, CCSDS123_B1_sw, CCSDS123_B1_hw, CCSDS123_B2_sw, CCSDS123_B2_hw]
 
 colors_costs = ["black", colors_3turkis[0], colors_3turkis[1], colors_3ligthblue[0], colors_3ligthblue[1], colors_3pink[0], colors_3pink[1], colors_3pink[2], colors_5brown[0], colors_5gray[1], \
-colors_5purple[0], colors_5purple[1], colors_yellow[0], colors_yellow[1], colors_yellow[2], colors_yellow[3], colors_6red[0], colors_6red[1], colors_6red[2], colors_6red[3], \
-colors_6green[0], colors_6green[1], colors_6blue[0], colors_6blue[1], colors_6blue[2], colors_6blue[3], colors_1crimson[0]]
+colors_5purple[0], colors_5purple[1], colors_yellow[0], colors_yellow[1], colors_yellow[2], colors_yellow[3], colors_6red[0], colors_6red[1], colors_6red[2], colors_6red[3], colors_6red[4], \
+"grey", colors_6green[0], colors_6green[1], colors_6green[2], colors_6green[3], colors_6green[4], colors_6blue[0], colors_6blue[1], colors_6blue[2], colors_6blue[3], colors_1crimson[0]]
 
-algorithms_names = ["x", "spectral_binning", "spatial_binning", "statisical_threshold_detection", "correlation_detection", "nearest_neighbour_correction", "mean_correction", "median_correction", "smile_and_keystone", "georeferencing", "geometric_registration", "PCA_sw", "PCA_hw", "MNF", "SAM", "CEM", "ACE_R", "target_detection_hw","GRX_R","LRX","CCSDS123_B1_sw", "CCSDS123_B1_hw","CCSDS123_B2_sw", "CCSDS123_B2_hw"]
-algorithms = [x_, spectral_binning, spatial_binning, statisical_threshold_detection, correlation_detection, nearest_neighbour_correction, mean_correction, median_correction, smile_and_keystone, georeferencing, geometric_registration, PCA_sw, PCA_hw, MNF, SAM, CEM, ACE_R, target_detection_hw, GRX_R, LRX, CCSDS123_B1_sw, CCSDS123_B1_hw,CCSDS123_B2_sw, CCSDS123_B2_hw]
+algorithms_names = ["x", "spectral binning", "spatial binning", "statisical threshold detection", "correlation detection", "nearest neighbour correction", "mean correction", "median correction", "smile and keystone", "georeferencing", "geometric registration", "PCA sw", "PCA hw", "MNF", "SAM", "SAM hw", "CEM", "ACE", "target_detection hw", "SVM", "GRX R","LRX", "FrFT RX", "CRD", "F MGD", "CCSDS123 B1 sw", "CCSDS123 B1 hw","CCSDS123 B2 sw", "CCSDS123 B2 hw"]
+algorithms = [x_, spectral_binning, spatial_binning, statisical_threshold_detection, correlation_detection, nearest_neighbour_correction, mean_correction, median_correction, smile_and_keystone, georeferencing, geometric_registration, PCA_sw, PCA_hw, MNF, SAM, SAM_hw, CEM, ACE_R, target_detection_hw, SVM, GRX_R, LRX, FrFT_RX, CRD, F_MGD, CCSDS123_B1_sw, CCSDS123_B1_hw,CCSDS123_B2_sw, CCSDS123_B2_hw]
 
-plt.figure(1, figsize=(17,4), tight_layout=True)
+############### PLOTS ##############
+
+#### Overwiew, with and without grids ####
+"""
+plt.figure(1, figsize=(11,4), tight_layout=True)
 #Fig 1)
 for i in range(0, len(algorithms)):
-	plt.plot(algorithms[i], 0, "o", color = colors_costs[i])
-	plt.annotate(i, (algorithms[i], 0), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+	plt.plot(algorithms[i]*freq, 0, "o", color = colors_costs[i])
+	plt.annotate(i, (algorithms[i]*freq, 0), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 	i_and_name = str(i) + ": " + algorithms_names[i]
-	plt.text(1e21, 12-i, i_and_name, color = colors_costs[i])
+	plt.text(1e12, 14-i, i_and_name, color = colors_costs[i])
 
 plt.grid()
-plt.ylim(-13,13)
+plt.ylim(-15,15)
 plt.xscale("log")
 #plt.show()
-plt.savefig("plot_cost.png")
+#plt.savefig("plot_cost_withoutGrid.png")
+"""
 
-#Fig 2)
-plt.figure(2, figsize=(17,4), tight_layout=True)
+#### zoomed in ####
+plt.figure(1, figsize=(4,4), tight_layout=True)
+#Fig 1)
 for i in range(0, len(algorithms)):
-	plt.plot(algorithms[i], 0, "o", color = colors_costs[i])
-	plt.annotate(i, (algorithms[i], 0), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+	plt.plot(algorithms[i]*freq, 0, "o", color = colors_costs[i])
+	plt.annotate(i, (algorithms[i]*freq, 0), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 	i_and_name = str(i) + ": " + algorithms_names[i]
-	plt.text(1e21, 12-i, i_and_name, color = colors_costs[i])
+	plt.text(1e12, 14-i, i_and_name, color = colors_costs[i])
 
-plt.grid()
-plt.ylim(-13,13)
-plt.xlim(2e11,1e12)
+#plt.grid()
+plt.xlim(1.05879e0, 1.0588e0)
+plt.ylim(-15,15)
 plt.xscale("log")
-#plt.show()
-plt.savefig("plot_cost_zoomed2.png")
-
-#Fig 3)
-plt.figure(3, figsize=(17,4), tight_layout=True)
-for i in range(0, len(algorithms)):
-	plt.plot(algorithms[i], 0, "o", color = colors_costs[i])
-	plt.annotate(i, (algorithms[i], 0), textcoords="offset points", xytext=(0,10), color="black", ha='center')
-	i_and_name = str(i) + ": " + algorithms_names[i]
-	plt.text(1e21, 12-i, i_and_name, color = colors_costs[i])
-
-plt.grid()
-plt.ylim(-13,13)
-plt.xlim(1e9,1e11)
-plt.xscale("log")
-#plt.show()
-plt.savefig("plot_cost_zoomed1.png")
+plt.show()
+#plt.savefig("plot_cost__and_.png")

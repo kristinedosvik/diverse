@@ -29,19 +29,6 @@ def OC_CCSDS123_B1_sw(frames, framesamples, bands, P, bit_resolution):
     + division() + addition() + round_down()\
     + division() + 2*addition() + round_down() \
     )
-
-
-    + round_down() + 2 * addition() + 4 * shift() + subtraction() \
-    + dot_product(P) + addition() + 2 * subtraction() + 2 * shift() + copy_element() + mod() \
-    + 4 * addition() + P * (shift() + subtraction()) \
-    + addition() \
-    + round_down() + 2 * multiplication() + shift() + sign() \
-    + 3 * addition() + round_down() + subtraction() + division() \
-    +  shift() + subtraction() \
-    + round_down() + 2 * shift() + mod() \
-    + addition() + shift() + multiplication() + division() + D * shift() \
-    + round_down() + addition() + shift() \
-    + round_down() + 2 * addition() + shift())
     
 def OC_CCSDS123_B1_hw(frames, framesamples, bands, P, D):
     return frames * framesamples * bands + 12 + np.log2(P) + 1

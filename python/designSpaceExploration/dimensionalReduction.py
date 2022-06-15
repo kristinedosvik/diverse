@@ -7,17 +7,35 @@ def DOS_dimensional_reduction(frames, framesamples, bands, reducedbands):
     return new_frames, new_frame_samples, new_bands
 
 def OC_PCA_sw(frames, framesamples, bands, reducedbands, iterations):
+    #print("SW:")
+    #print("frames: ", frames)
+    #print("framesamples: ", framesamples)
+    #print("bands: ", bands)
+    #print("correlation_matrix: ", correlation_matrix(frames*framesamples, bands))
+    #print("J SW pca:")
+    #print("jacobi_algorithm_sw: ", jacobi_algorithm_sw(bands, iterations))
+    #print("sorting: ", sorting(bands))
+    #print("matrix_multiplication: ", matrix_multiplication(reducedbands, bands, bands, frames*framesamples))
     return correlation_matrix(frames*framesamples, bands) + jacobi_algorithm_sw(bands, iterations) + sorting(bands) + matrix_multiplication(reducedbands, bands, bands, frames*framesamples)
     
-def OC_PCA_hw(frames, framesamples, bands, reducedbands, iterations):
-    return correlation_matrix_hw(frames*framesamples, bands) + jacobi_algorithm_hw(bands, iterations) + sorting_hw(bands) + matrix_multiplication_hw(reducedbands, bands, bands, frames*framesamples)
+def OC_PCA_hw(frames, framesamples, bands, reducedbands, iterations, dot_product_blocks):
+    #print("HW:")
+    #print("frames: ", frames)
+    #print("framesamples: ", framesamples)
+    #print("bands: ", bands)
+    #print("correlation_matrix_hw: ", correlation_matrix_hw(frames*framesamples, bands, dot_product_blocks))
+    #print("jacobi_algorithm_hw: ", jacobi_algorithm_hw(bands, iterations, dot_product_blocks))
+    #print("sorting_hw: ", sorting_hw(bands))
+    #print("matrix_multiplication_hw: ", matrix_multiplication_hw(reducedbands, bands, bands, frames*framesamples, dot_product_blocks))
+    print("OC_PCA, ", correlation_matrix_hw(frames*framesamples, bands, dot_product_blocks) + jacobi_algorithm_hw(bands, iterations, dot_product_blocks) + sorting_hw(bands) + matrix_multiplication_hw(reducedbands, bands, bands, frames*framesamples, dot_product_blocks))
+    return correlation_matrix_hw(frames*framesamples, bands, dot_product_blocks) + jacobi_algorithm_hw(bands, iterations, dot_product_blocks) + sorting_hw(bands) + matrix_multiplication_hw(reducedbands, bands, bands, frames*framesamples, dot_product_blocks)
    
 def OC_MNF(frames, framesamples, bands, reducedbands, iterations):
-    return frames*framesamples*bands*subtraction() + SVU_jacobi() + SVU_anorldi() + bands*sqrt() + diagonal_matrix_multiplication(bands) + matrix_multiplication(frames*framesamples, bands, bands, bands) + matrix_multiplication(bands, bands, bands, bands) + matrix_multiplication(reducedbands, bands, bands, frames*framesamples)
+    return frames*framesamples*bands*subtraction() + SUV(frames*framesamples, bands, iterations) + SUV(bands, bands, iterations) + bands*sqrt() + diagonal_matrix_multiplication(bands) + matrix_multiplication(frames*framesamples, bands, bands, bands) + matrix_multiplication(bands, bands, bands, bands) + matrix_multiplication(reducedbands, bands, bands, frames*framesamples)
 
 def OC_ICA(frames, framesamples, bands, reducedbands, iterations):
     return correlation_matrix(frames*framesamples, bands) \
-    + quadratic_matrix_invertion(bands) \
+    + matrix_inversion(bands) \
     + matrix_multiplication(frames*framesamples, bands, bands, bands) \
     + reducedbands * iterations * ( \
     frames*framesamples * (dot_product(bands) + trignomitry() + subtraction() + (2 * bands + 1) * multiplication() ) + 2 * bands * division() + bands * subtraction() \

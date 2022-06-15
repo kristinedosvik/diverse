@@ -1,7 +1,7 @@
 from OC_utility import *
 
 
-def DOS_classification(frames, framesamples, bands, num_classes):
+def DOS_classification(frames, framesamples, bands):
     new_frames = frames
     new_frame_samples = framesamples
     new_bands = 1

@@ -30,12 +30,12 @@ def OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin):
 
 
 def A_spectral_binning(bands, binningfactor, camera_linse_binning):
-    print(resolution_factor_spectral(bands, binningfactor, camera_linse_binning) * (1 + snr_factor_spectral(binningfactor)/10000))
+    #print(resolution_factor_spectral(bands, binningfactor, camera_linse_binning) * (1 + snr_factor_spectral(binningfactor)/10000))
     return resolution_factor_spectral(bands, binningfactor, camera_linse_binning) * (1 + snr_factor_spectral(binningfactor)/10000)
 
 
 def A_spatial_binning(frames, framesamples, binningfactor, whatToBin):
-    print(resolution_factor_spatial(frames, framesamples, binningfactor, whatToBin) * (1 + snr_factor_spatial(binningfactor)/100000))
+    #print(resolution_factor_spatial(frames, framesamples, binningfactor, whatToBin) * (1 + snr_factor_spatial(binningfactor)/100000))
     return resolution_factor_spatial(frames, framesamples, binningfactor, whatToBin) * (1 + snr_factor_spatial(binningfactor)/100000)
 
 

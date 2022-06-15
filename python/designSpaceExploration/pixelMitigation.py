@@ -10,7 +10,7 @@ def OC_statisical_threshold_detection(frames, framesamples, bands, num_neighbour
     return ((division() + num_neighbours*subtraction() + num_neighbours*multiplication()) + (2*division() + addition() + subtraction()) + (multiplication() + compare() + addition() + subtraction()))*bands*frames*framesamples + (division() + num_neighbours * addition())*bands
     
 def OC_correlation_detection(frames, framesamples, bands, num_neighbours):
-    return correlation_matrix(num_neighbours, 1) + num_neighbours*check()*bands + (update_correlation_matrix(num_neighbours, 1) + checks())*bands*frames*framesamples
+    return correlation_matrix(num_neighbours, 1) + num_neighbours*check()*bands + (update_correlation_matrix(1) + checks())*bands*frames*framesamples
 
 def OC_nearest_neighbour_correction(bad_samples):
     return bad_samples * copy_element()

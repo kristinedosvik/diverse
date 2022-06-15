@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 
 from binning import *
 from targetDetection import *
+from classification import *
 from dimensionalReduction import *
 from processingGroups import *
 
@@ -47,6 +48,12 @@ outer_window = 60
 inner_window = 20
 P = 12
 D = 4
+dot_product_blocks = framesamples
+kernel_element = 9
+fractional_domains = 10
+num_neighbours = 8
+num_classes = 4 
+total_num_support_vectors = 1096
 
 frames_vec = [956, 956, 956, 956, 956]
 frame_samples_vec = [684, 684, 684, 684, 684]
@@ -87,6 +94,9 @@ def pipeline_ace_sw(i):
 def pipeline_asmf_hw(i):
     return [spec_vec[i], spat_vec[i], "x", "x", bad_p_det_vec[i], bad_p_cor_vec[i], snk_vec[i], dimRed_vec[i], geo_ref_vec[i], "ASMF_hw"]
 
+def pipeline_svm_sw(i):
+    return [spec_vec[i], spat_vec[i], "x", "x", bad_p_det_vec[i], bad_p_cor_vec[i], snk_vec[i], dimRed_vec[i], geo_ref_vec[i], "SVM"]
+
 def pipeline_name(sample):
     name = ""
     temp = sample[0][0]
@@ -126,15 +136,19 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
     samples_ace_hw = []
     samples_ace_sw = []
     samples_asmf_hw = []
+    samples_svm = []
+
+    
 
     for i in range(0, len(frames_vec)):
-        sam_hw = create_sample_by_pipeline(pipeline_sam_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        sam_sw = create_sample_by_pipeline(pipeline_sam_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        cem_hw = create_sample_by_pipeline(pipeline_cem_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        cem_sw = create_sample_by_pipeline(pipeline_cem_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        ace_hw = create_sample_by_pipeline(pipeline_ace_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        ace_sw = create_sample_by_pipeline(pipeline_ace_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
-        asmf_hw = create_sample_by_pipeline(pipeline_asmf_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D)
+        sam_hw = create_sample_by_pipeline(pipeline_sam_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        sam_sw = create_sample_by_pipeline(pipeline_sam_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        cem_hw = create_sample_by_pipeline(pipeline_cem_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        cem_sw = create_sample_by_pipeline(pipeline_cem_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        ace_hw = create_sample_by_pipeline(pipeline_ace_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        ace_sw = create_sample_by_pipeline(pipeline_ace_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        asmf_hw = create_sample_by_pipeline(pipeline_asmf_hw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+        svm = create_sample_by_pipeline(pipeline_svm_sw(i), frames_vec[i], frame_samples_vec[i], bands_vec[i], spec_binning_factor_vec[i], camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
         pipeline_name_vec.append(pipeline_name(sam_hw))
         samples_sam_hw.append(sam_hw)
         samples_sam_sw.append(sam_sw)
@@ -143,6 +157,7 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
         samples_ace_hw.append(ace_hw)
         samples_ace_sw.append(ace_sw)
         samples_asmf_hw.append(asmf_hw)
+        samples_svm.append(svm)
 
         #return [pipeline, frames*frame_sample*bands, accuracy, cost]
     #make plot:
@@ -151,14 +166,14 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
     #1)
     x = []
     y = []
-    targetDetection_names = ["sam_hw", "sam_sw", "cem_hw", "cem_sw", "ace_hw", "ace_sw", "asmf_hw"]
+    targetDetection_names = ["sam_hw", "sam_sw", "cem_hw", "cem_sw", "ace_hw", "ace_sw", "asmf_hw", "svm"]
     for i in range(0, len(frames_vec)):
         score = samples_sam_hw[i][2]
         cost = samples_sam_hw[i][3]
         y.append(score)
         x.append(cost)
         plt.text(0, 0.8-i/100, pipeline_name_vec[i], color = group_colors[i])
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -168,7 +183,7 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
         cost = samples_sam_sw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -178,7 +193,7 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
         cost = samples_cem_hw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -188,7 +203,7 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
         cost = samples_cem_sw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -198,7 +213,7 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
         cost = samples_ace_hw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -208,7 +223,7 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
         cost = samples_ace_sw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -218,7 +233,17 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
         cost = samples_asmf_hw[i][3]
         y.append(score)
         x.append(cost)
-    plt.plot(x, y, color="black")
+    plt.plot(x, y, color="grey")
+    x.clear()
+    y.clear()
+
+    #8)
+    for i in range(0, len(frames_vec)):
+        score = samples_svm[i][2]
+        cost = samples_svm[i][3]
+        y.append(score)
+        x.append(cost)
+    plt.plot(x, y, color="grey")
     x.clear()
     y.clear()
 
@@ -233,6 +258,7 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
         y.append(samples_ace_hw[i][2])
         y.append(samples_ace_sw[i][2])
         y.append(samples_asmf_hw[i][2])
+        y.append(samples_svm[i][2])
         
         x.append(samples_sam_hw[i][3])
         x.append(samples_sam_sw[i][3])
@@ -241,6 +267,7 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
         x.append(samples_ace_hw[i][3])
         x.append(samples_ace_sw[i][3])
         x.append(samples_asmf_hw[i][3])
+        x.append(samples_svm[i][3])
 
         plt.plot(x, y, "o", color=group_colors[i])
         x.clear()
@@ -253,6 +280,7 @@ def make_3D_plot_targetDetection(pipelines, frames_vec, frame_samples_vec, bands
     plt.annotate(targetDetection_names[4], (samples_ace_hw[0][3], samples_ace_hw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
     plt.annotate(targetDetection_names[5], (samples_ace_sw[0][3], samples_ace_sw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
     plt.annotate(targetDetection_names[6], (samples_asmf_hw[0][3], samples_asmf_hw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+    plt.annotate(targetDetection_names[7], (samples_svm[0][3], samples_svm[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 
     plt.show()
 
