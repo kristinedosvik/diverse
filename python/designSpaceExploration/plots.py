@@ -94,7 +94,7 @@ CRD = OC_CRD(frames, framesamples, bands, num_neighbours)
 F_MGD = OC_F_MGD(frames, framesamples, bands, kernel_element)
 
 CCSDS123_B1_sw = OC_CCSDS123_B1_sw(frames, framesamples, bands, P, D)
-CCSDS123_B1_hw = OC_CCSDS123_B1_hw(frames, framesamples, bands, P, D)
+CCSDS123_B1_hw = OC_CCSDS123_B1_hw(frames, framesamples, bands, P, D)  + 200000000
 CCSDS123_B2_sw = OC_CCSDS123_B2_sw(frames, framesamples, bands, P, D)
 CCSDS123_B2_hw = OC_CCSDS123_B2_hw(frames, framesamples, bands, P, D)
 
@@ -153,8 +153,8 @@ for i in range(0, len(algorithms)):
 	plt.text(1e12, 14-i, i_and_name, color = colors_costs[i])
 
 #plt.grid()
-plt.xlim(7e6, 1e7)
+plt.xlim(9.6e-4, 1e-3)
 plt.ylim(-15,15)
 plt.xscale("log")
-plt.show()
-#plt.savefig("plot_cost_23.png")
+#plt.show()
+plt.savefig("plot_cost_24_15.png")
