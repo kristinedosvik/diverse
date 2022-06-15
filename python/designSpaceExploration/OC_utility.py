@@ -1,17 +1,6 @@
 import math as math
 import numpy as np
 
-##Make sure to have the following for bad pixel check
-#correlation_matrix(num_neighbours, 1)
-#pdate_correlation_matrix(num_neighbours, 1)
-#correlation_matrix_hw(frames*framesamples, bands)
-#jacobi_algorithm_hw(bands, iterations) 
-#sorting_hw(bands)
-#SVU_jacobi()
-#SVU_anorldi()
-#matrix_multiplication_hw(reducedbands, bands, bands, frames*framesamples)
-#update_matrix_inversion(bands)
-#distance(bands)
 
 def addition():
     return 1
@@ -40,15 +29,6 @@ def round_down():
 def round_up():
     return 1
 
-def find_index():
-    return multiplication() + addition()
-
-def vpaddle_4_2():
-    return 1
-
-def vpaddle_2_1():
-    return 1
-
 def sqrt():
     return 1
 
@@ -56,9 +36,6 @@ def median(size):
     return sorting(size) + division()
 
 def absolute_value():
-    return 1
-
-def minimum():
     return 1
 
 def mod():
@@ -91,108 +68,88 @@ def exp():
 def log():
     return 1
 
+def clip():
+    return 1
+
+def divide():
+    return 1
+
 ##################
 ## SW functions ##
 ##################
 
 def distance(num_elements):
-    return num_elements * multiplication() + (num_elements-1)*subtraction() + sqrt()
+    return num_elements*multiplication() + (n-1)*subtraction() + sqrt()
 
-
-def diagonal_matrix_multiplication(size):
-    return size*size*multiplication()
 
 def optimization(iteration, objective_function, dimension_parameter_space):
-    gradient = dimension_parameter_space * (2 * objective_function  + 2 * subtraction() + division())
-    return iteration * objective_function * gradient
-
-def binarysearch(size):
-    return np.log2(size) * (shift() + checks())
+    return 5000 # no idea
 
 def sorting(size):
-    #quicksort:
-    return -1
+    return size*log2(size) * (divide() + compare())
 
-def arnold(size, iterations):
-    return 1
-
-def SUV(nr_rows, nr_coloumns, algorithm, iterations):
-    matrixes = matrix_multiplication(nr_rows, nr_coloumns, nr_coloumns, nr_rows) + matrix_multiplication(nr_coloumns, nr_rows, nr_rows, nr_coloumns)
-    if (algorithm == "jacobi"):
-        return matrixes + jacobi_algorithm_sw(nr_rows, iterations) + jacobi_algorithm_sw(nr_coloumns, iterations)
-    else:
-        #return matrixes + arnold(nr_rows, iterations) + jacobi_algorithm_sw(nr_coloumns, iterations)
-        return matrixes + jacobi_algorithm_sw(nr_rows, iterations) + jacobi_algorithm_sw(nr_coloumns, iterations)
-
-def swap():
-    return 3*insertion()
+    
+def update_inversion_matrix(bands):
+    return bands**2 *multiplication() + 4*matrix_multiplication(bands, bands, bands, bands) + 2*matrix_vector_multiplication(bands, bands, bands) + 2*dot_product(bands)+2*bands**2*division() + (2*bands+1)*subtraction() + addition()
 
 def dot_product(vec_elements):
-    return vec_elements*(vec_elements-1)
-
-def add_sample_to_correlation_matrix(bands):
-    return (bands * bands/2 + bands/2) *  (multiplication() + division() + addition()) + (bands * bands/2 - bands/2)
+    return vec_elements*multiplication() + (vec_elements-1)*addition()
 
 def correlation_matrix(samples, bands):
-    return samples * add_sample_to_correlation_matrix(bands)
+    return matrix_multiplication(samples, bands, bands, samples) + samples**2 * division()
 
-def quadratic_matrix_invertion(size):
-    return size*size/2+size/2 * insertion() + size*size/2+size/2 * iteration() + (size-1) * size * swap() + gaussian_elimination(size) + size*size/2-size/2 * insertion() + size * 2 * matrix_vector_equation(size)
+def update_correlation_matrix(bands)
+    return bands**2 * (multiplication()+addition())
+
+def diagonal_matrix_multiplication(bands):
+    return bands*bands*multiplication()
+
+def matrix_inversion(size):
+    return gaussian_row_echelon_form(size) + (size**2/2 + size/2) *copy_element() + 2*size*system_of_equations(size)
 
 def matrix_vector_multiplication(row, coloumns):
-    return row*dot_product(coloumns)
+    return matrix_multiplication(nr_rows_m, nr_coloumns_m, nr_coloumns_v, 1)
 
-def gaussian_elimination(size):
-    return size * (division() + multiplication()) + size*size/2-size/2 * size * (multiplication() + subtraction())
+def gaussian_row_echelon_form(size):
+    return size * division() + (size**2/2 + size/2) * subtraction()
 
-def matrix_vector_equation(size):
-    return 2 * gaussian_elimination(size) + 2 * size * (multiplication() + subtraction()) + size * division()
+def system_of_equations(size):
+    return 2* (size * division() + (size**2/2 + size/2 + size) * subtraction())
+    
 
 def matrix_multiplication(nr_rows_m1, nr_coloumns_m1, nr_rows_m2, nr_coloumns_m2):
-    if (nr_coloumns_m1 != nr_rows_m2):
-        print("Matrix multiplication error: n1xm1 * n2xm2, where m1 != n2")
-        return -1
-    else:
-        return nr_rows_m1*nr_coloumns_m2*dot_product(nr_coloumns_m1)
+    return nr_rows_m1*nr_coloumns_m2*dot_product(nr_rows_m2)
 
-def jacobi_algorithm_sw(matrix_size, iterations):
-    trignometry = 4*multiplication() + subtraction() + 3*division() + 3*addition() + 2*sqrt()
-    return iterations * (matrix_size-1) * (3 * matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size) + matrix_size/2*trignometry)
+def jacobi_algorithm_sw(matrix_size, extra_iterations):
+    return N/2*(N-1)*(3*matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size) + N/2*13) + extra_iterations*(3*matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size) + N/2*13)
 
-def singular_value_decomposition(nr_rows, nr_coloumns, iterations):
-    ATA = matrix_multiplication(nr_rows, nr_coloumns, nr_coloumns, nr_rows)
-    AAT = matrix_multiplication(nr_coloumns, nr_rows, nr_rows, nr_coloumns)
+def SUV(nr_rows, nr_coloumns, extra_iterations):
+    return matrix_multiplication(nr_rows, nr_coloumns, nr_coloumns, nr_rows) + matrix_multiplication(nr_coloumns, nr_rows, nr_rows, nr_coloumns) + jacobi_algorithm_sw(nr_coloumns, extra_iterations) + jacobi_algorithm_sw(nr_rows, extra_iterations) + N*sqrt()
     
 def mean(samples):
-    return samples * division() + (samples-1) * addition()
+    return samples * addition() + division()
 
 def variance(samples):
-    return samples * mean(samples) + subtraction() + mean(samples)
+    return samples * (addition()+subtraction()+multiplication()) + division()
 
-def sherman_morris_update(size):
-    return size
 
 ##################
 ## HW functions ##
 ##################
 
-def dot_product_hw(size):
-    return multiplication() + np.ceil(math.log2(size))
+def dot_product_hw(vec_elements):
+    return vec_elements*multiplication() + np.ceil(np.log2(vec_elements))*addition()
 
-def matrix_multiplication_hw(nr_rows_m1, nr_coloumns_m1, nr_rows_m2, nr_coloumns_m2):
-    if (nr_coloumns_m1 != nr_rows_m2):
-        print("Matrix multiplication error: n1xm1 * n2xm2, where m1 != n2")
-        return -1
-    else:
-        return nr_rows_m1*nr_coloumns_m2*dot_product_hw(nr_coloumns_m1)
-
-def jacobi_algorithm_hw(matrix_size, iterations):
-    trignometry = 4*multiplication() + 3*division() + 3*addition() + 2*sqrt()
-    return iterations * ((matrix_size-1) * (3 * matrix_multiplication_hw(matrix_size, matrix_size, matrix_size, matrix_size) + trignometry))
+def sorting_hw(elements):
+    return elements
 
 
-def add_sample_to_correlation_matrix_hw(bands):
-    return bands * (multiplication() + division() + addition())
+def matrix_multiplication_hw(nr_rows_m1, nr_coloumns_m1, nr_rows_m2, nr_coloumns_m2, dot_product_blocks):
+    return nr_rows_m1 * nr_coloumns_m2 / dot_product_blocks * dot_product_hw(nr_coloumns_m2)
 
-def correlation_matrix_hw(samples, bands):
-    return samples * add_sample_to_correlation_matrix_hw(bands)
+def jacobi_algorithm_hw(matrix_size, iterations, dot_product_blocks):
+    return N/2*(N-1)*(3*matrix_multiplication_hw(matrix_size, matrix_size, matrix_size, matrix_size, dot_product_blocks) + 12) + extra_iterations*(3*matrix_multiplication_hw(matrix_size, matrix_size, matrix_size, matrix_size, dot_product_blocks) + 12)
+
+def correlation_matrix_hw(samples, bands, dot_product_blocks):
+    return matrix_multiplication_hw(samples, bands, bands, samples, dot_product_blocks) + samples**2 * division()
+
