@@ -144,7 +144,7 @@ plt.xscale("log")
 """
 
 #### zoomed in ####
-plt.figure(1, figsize=(4,4), tight_layout=True)
+plt.figure(1, figsize=(17,4), tight_layout=True)
 #Fig 1)
 for i in range(0, len(algorithms)):
 	plt.plot(algorithms[i]*freq, 0, "o", color = colors_costs[i])
@@ -153,8 +153,8 @@ for i in range(0, len(algorithms)):
 	plt.text(1e12, 14-i, i_and_name, color = colors_costs[i])
 
 #plt.grid()
-plt.xlim(1.05879e0, 1.0588e0)
+plt.xlim(7e6, 1e7)
 plt.ylim(-15,15)
 plt.xscale("log")
 plt.show()
-#plt.savefig("plot_cost__and_.png")
+#plt.savefig("plot_cost_23.png")
