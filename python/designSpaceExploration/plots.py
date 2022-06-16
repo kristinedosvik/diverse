@@ -153,10 +153,10 @@ for i in range(0, len(algorithms)):
 	i_and_name = str(i) + ": " + algorithms_names[i]
 	plt.text(1e12, 14-i, i_and_name, color = colors_costs[i])
 
-plt.grid()
-plt.xlim(1e2, 3e2)
+#plt.grid()
+plt.xlim(1e3, 2e4)
 plt.ylim(-15,15)
 plt.xscale("log")
 plt.show()
-#plt.savefig("plot_cost_30_and_10.png")
+#plt.savefig("plot_cost.png")
 #"""
