@@ -73,99 +73,42 @@ p0 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x"]
 pNMF = ["x", "x", "x", "x", "x", "x", "x", "MNF", "x", "x"]
 
 #compression pipelines:
-p1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_sw"]
-p2 = ["spectral_binning", "spatial_binning", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_sw"]
+p1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "F_MGD"]
+p2 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "SAM_hw", "x", "x"]
 
 p3 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_hw"]
-p4 = ["spectral_binning", "spatial_binning", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_hw"]
+p4 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_hw"]
 
-p5 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_sw"]
-p6 = ["spectral_binning", "spatial_binning", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_sw"]
+p5 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CEM_hw"]
+p6 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "ACE_hw"]
+p7 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "ASMF_hw"]
 
-p7 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"]
-p8 = ["spectral_binning", "spatial_binning", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"]
+p8 = ["spectral_binning", "x", "x", "radiometric_calibration", "x", "x", "x", "x", "x", "CEM_hw"]
+p9 = ["spectral_binning", "x", "x", "radiometric_calibration", "x", "x", "x", "x", "x", "ACE_hw"]
+p10 = ["spectral_binning", "x", "x", "radiometric_calibration", "x", "x", "x", "x", "x", "ASMF_hw"]
 
-#Dim Red as compression
-p9 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "x"]
-p10 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "x"]
-p11 = ["spectral_binning", "spatial_binning", "x", "x", "x", "x", "x", "PCA_hw", "x", "x"]
-p12 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "x"]
-p13 = ["spectral_binning", "spatial_binning", "x", "x", "x", "x", "x", "PCA_sw", "x", "x"]
-p14 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "MNF", "x", "x"]
+p11 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CEM_hw"]
+p12 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "ACE_hw"]
+p13 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "ASMF_hw"]
 
-#Target Detection:
-p15 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "SAM_sw"]
-p16 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "SAM_sw"]
-p17 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "SAM_sw"]
-p18 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "SAM_sw"]
+p14 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"]
+p15 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"]
 
-p19 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "x", "SAM_sw"]
-p20 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "geometric_registration", "SAM_sw"]
-p21 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "PCA_hw", "geometric_registration", "SAM_sw"]
+p16 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_sw"]
+p17 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_sw"]
 
-p15 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "SAM_hw"]
-p16 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "SAM_hw"]
-p17 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "SAM_hw"]
-p18 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "SAM_hw"]
-
-p19 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "x", "SAM_hw"]
-p20 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "geometric_registration", "SAM_hw"]
-p21 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "PCA_hw", "geometric_registration", "SAM_hw"]
-
-p15 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CEM_hw"]
-p16 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CEM_hw"]
-p17 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "CEM_hw"]
-p18 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "CEM_hw"]
-
-p19 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "x", "CEM_hw"]
-p20 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "geometric_registration", "CEM_hw"]
-p21 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "PCA_hw", "geometric_registration", "CEM_hw"]
-
-p22 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CEM_sw"]
-p23 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CEM_sw"]
-p24 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "CEM_sw"]
-p25 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "CEM_sw"]
-
-p26 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "x", "CEM_sw"]
-p27 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "geometric_registration", "CEM_sw"]
-p28 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "PCA_hw", "geometric_registration", "CEM_sw"]
-
-p29 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "ACE_hw"]
-p30 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "ACE_hw"]
-p31 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "ACE_hw"]
-p32 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "ACE_hw"]
-
-p33 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "x", "ACE_hw"]
-p34 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "geometric_registration", "ACE_hw"]
-p35 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "PCA_hw", "geometric_registration", "ACE_hw"]
-
-p36 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "ACE_sw"]
-p37 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "ACE_sw"]
-p38 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "ACE_sw"]
-p39 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "ACE_sw"]
-
-p40 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "x", "ACE_sw"]
-p41 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "geometric_registration", "ACE_sw"]
-p42 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "PCA_hw", "geometric_registration", "ACE_sw"]
-
-p43 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "ASMF_hw"]
-p44 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "ASMF_hw"]
-p45 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "ASMF_hw"]
-p46 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "ASMF_hw"]
-
-p47 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "x", "ASMF_hw"]
-p48 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_hw", "geometric_registration", "ASMF_hw"]
-p49 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "PCA_hw", "geometric_registration", "ASMF_hw"]
+p18 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "x"]
+p19 = ["x", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "x"]
 
 
-#p0 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "PCA_sw", "x", "CCSDS123_B1_hw"]
-#p1 = ["spectral_binning", "spatial_binning", "x", "x", "bad_p_det_vec", "bad_p_cor_vec", "smile_and_keystone", "MNF", "geometric_registration", "CCSDS123_B2_sw"]
-#p2 = ["x", "spatial_binning", "x", "x", "x", "x", "x", "ICA", "x", "CCSDS123_B1_sw"]
 
-pipeline_vec_all = [p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p3, p33, p34, p35, p36, p37, p38, p39, p40, p41, p4, p43, p44, p45, p46, p47, p48, p49]
-pipeline_vec_compr = [pNMF, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14]
-pipeline_vec_tardet = [pNMF, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p3, p33, p34, p35, p36, p37, p38, p39, p40, p41, p4, p43, p44, p45, p46, p47, p48, p49]
-pipeline_vec = pipeline_vec_tardet
+
+
+
+pipeline_vec_all = [p0, pNMF, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18]#, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p3, p33, p34, p35, p36, p37, p38, p39, p40, p41, p4, p43, p44, p45, p46, p47, p48, p49]
+#pipeline_vec_compr = [pNMF, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14]
+#pipeline_vec_tardet = [pNMF, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p3, p33, p34, p35, p36, p37, p38, p39, p40, p41, p4, p43, p44, p45, p46, p47, p48, p49]
+pipeline_vec = pipeline_vec_all
 
 
 
@@ -218,13 +161,13 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		plt.text(1e10, 1-i*0.008, i_and_name, color = colors_all[i])
+		plt.text(1e4, 1-i*0.04, i_and_name, color = colors_all[i])
 
 	plt.grid()
 	plt.title('Cost Vs. Accuracy')
 	plt.xlabel('Cost')
 	plt.ylabel('Accuracy')
-	#plt.xlim(9.6e-4, 1e-3)
+	plt.xlim(1e-1, 1e6)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
 	#plt.show()
@@ -242,13 +185,13 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		plt.text(1e10, 1-i*0.008, i_and_name, color = colors_all[i])
+		plt.text(1e4, 1-i*0.04, i_and_name, color = colors_all[i])
 
 	plt.grid()
 	plt.title('Processing + Downloading Time Vs. Accuracy')
 	plt.xlabel('Processing + Downloading Time')
 	plt.ylabel('Accuracy')
-	#plt.xlim(9.6e-4, 1e-3)
+	plt.xlim(1e-1, 1e6)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
 	#plt.show()
@@ -270,14 +213,14 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		plt.text(1e10, 1-i*0.008, i_and_name, color = colors_all[i])
+		plt.text(1e4, 1-i*0.04, i_and_name, color = colors_all[i])
 
 	plt.grid()
 	title_name = 'Cost Vs. MVU (Acc: ' + str(svu_acc_weight) + ' & Size: ' + str(svu_size_weight) + ')'
 	plt.title(title_name)
 	plt.xlabel('Cost')
 	plt.ylabel('MVU')
-	#plt.xlim(9.6e-4, 1e-3)
+	plt.xlim(1e-1, 1e6)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
 	plt.show()
