@@ -220,9 +220,9 @@ def make_3D_plot_anomalyDetection(frames_vec, frame_samples_vec, bands_vec, spec
         y.clear()
 
     plt.annotate(targetDetection_names[0], (samples_grx_sw[0][3], samples_grx_sw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
-    plt.annotate(targetDetection_names[1], (samples_lrx_sw[0][3], samples_lrx_sw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+    plt.annotate(targetetection_names[1], (samples_lrx_sw[0][3], samples_lrx_sw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
     plt.annotate(targetDetection_names[2], (samples_f_mgd_hw[0][3], samples_f_mgd_hw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
-    plt.annotate(targetDetection_names[3], (samples_frfr_rx_sw[0][3], samples_frfr_rx_sw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+    plt.annotate(targetDDetection_names[3], (samples_frfr_rx_sw[0][3], samples_frfr_rx_sw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
     plt.annotate(targetDetection_names[4], (samples_crd_sw[0][3], samples_crd_sw[0][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 
     plt.show()

@@ -119,10 +119,10 @@ colors_6blue = [RGB(0,0,255), RGB(0,0,205), RGB(0,0,155), RGB(0,0,105), RGB(0,0,
 
 colors_costs = ["black", colors_3turkis[0], colors_3turkis[1], colors_3ligthblue[0], colors_3ligthblue[1], colors_3pink[0], colors_3pink[1], colors_3pink[2], colors_5brown[0], colors_5gray[1], \
 colors_5purple[0], colors_5purple[1], colors_yellow[0], colors_yellow[1], colors_yellow[2], colors_yellow[3], colors_6red[0], colors_6red[1], colors_6red[2], colors_6red[3], colors_6red[4], \
-"grey", colors_6green[0], colors_6green[1], colors_6green[2], colors_6green[3], colors_6green[4], colors_6blue[0], colors_6blue[1], colors_6blue[2], colors_6blue[3], colors_1crimson[0]]
+"grey", colors_6green[0], colors_6green[1], colors_6green[2], colors_6green[3], colors_6green[4], colors_6blue[0], colors_6blue[1], colors_6blue[2], colors_6blue[3], colors_1crimson[0], colors_yellow[4]]
 
-algorithms_names = ["x", "spectral binning", "spatial binning", "statisical threshold detection", "correlation detection", "nearest neighbour correction", "mean correction", "median correction", "smile and keystone", "georeferencing", "geometric registration", "PCA sw", "PCA hw", "MNF", "SAM", "SAM hw", "CEM", "ACE", "target_detection hw", "SVM", "GRX R","LRX", "FrFT RX", "CRD", "F MGD", "CCSDS123 B1 sw", "CCSDS123 B1 hw","CCSDS123 B2 sw", "CCSDS123 B2 hw"]
-algorithms = [x_, spectral_binning, spatial_binning, statisical_threshold_detection, correlation_detection, nearest_neighbour_correction, mean_correction, median_correction, smile_and_keystone, georeferencing, geometric_registration, PCA_sw, PCA_hw, MNF, SAM, SAM_hw, CEM, ACE_R, target_detection_hw, SVM, GRX_R, LRX, FrFT_RX, CRD, F_MGD, CCSDS123_B1_sw, CCSDS123_B1_hw,CCSDS123_B2_sw, CCSDS123_B2_hw]
+algorithms_names = ["x", "spectral binning", "spatial binning", "statisical threshold detection", "correlation detection", "nearest neighbour correction", "mean correction", "median correction", "smile and keystone", "georeferencing", "geometric registration", "PCA sw", "PCA hw", "MNF", "SAM", "SAM hw", "CEM", "ACE", "target_detection hw", "SVM", "GRX R","LRX", "FrFT RX", "CRD", "F MGD", "CCSDS123 B1 sw", "CCSDS123 B1 hw","CCSDS123 B2 sw", "CCSDS123 B2 hw", "ICA"]
+algorithms = [x_, spectral_binning, spatial_binning, statisical_threshold_detection, correlation_detection, nearest_neighbour_correction, mean_correction, median_correction, smile_and_keystone, georeferencing, geometric_registration, PCA_sw, PCA_hw, MNF, SAM, SAM_hw, CEM, ACE_R, target_detection_hw, SVM, GRX_R, LRX, FrFT_RX, CRD, F_MGD, CCSDS123_B1_sw, CCSDS123_B1_hw,CCSDS123_B2_sw, CCSDS123_B2_hw, ICA]
 
 ############### PLOTS ##############
 
@@ -152,9 +152,9 @@ for i in range(0, len(algorithms)):
 	i_and_name = str(i) + ": " + algorithms_names[i]
 	plt.text(1e12, 14-i, i_and_name, color = colors_costs[i])
 
-#plt.grid()
-plt.xlim(9.6e-4, 1e-3)
+plt.grid()
+#plt.xlim(9.6e-4, 1e-3)
 plt.ylim(-15,15)
 plt.xscale("log")
-#plt.show()
-plt.savefig("plot_cost_24_15.png")
+plt.show()
+#plt.savefig("plot_cost.png")

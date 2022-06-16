@@ -432,4 +432,147 @@ def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_fa
     accuracy *= accuracy_group
     
 
-    return [pipeline, frames*frame_sample*bands, accuracy, cost] 
+    return [pipeline, frames*frame_sample*bands, accuracy, cost]
+
+
+def add_processingmodule_name_to_string(old_string, processing_name):
+    if(processing_name == "spectral_binning"):
+        old_string += " B (spec),"
+
+    elif(processing_name == "spectral_binning"):
+        old_string += " B (spec),"
+
+    elif(processing_name == "spatial_binning"):
+        old_string += " B (spat),"
+
+    elif(processing_name == "statisical_threshold_detection"):
+        old_string += " Bad Pix Det (stat),"
+
+    elif(processing_name == "correlation_detection"):
+        old_string += " Bad Pix Det (corr),"
+
+    elif(processing_name == "nearest_neighbour_correction"):
+        old_string += " Bad Pix Corr (neighbor),"
+
+    elif(processing_name == "mean_correction"):
+        old_string += " Bad Pix Corr (mean),"
+
+    elif(processing_name == "median_correction"):
+        old_string += " Bad Pix Corr (median),"
+
+    elif(processing_name == "smile_and_keystone"):
+        old_string += " SnK,"
+
+    elif(processing_name == "georeferencing"):
+        old_string += " georef,"
+
+    elif(processing_name == "geometric_registration"):
+        old_string += " resample,"
+
+    elif(processing_name == "PCA_sw"):
+        old_string += " PCA (sw),"
+
+    elif(processing_name == "PCA_hw"):
+        old_string += " PCA (hw),"
+
+    elif(processing_name == "MNF"):
+        old_string += " MNF,"
+
+    elif(processing_name == "ICA"):
+        old_string += " ICA,"
+
+    elif(processing_name == "SAM_sw"):
+        old_string += " SAM (sw),"
+
+    elif(processing_name == "SAM_hw"):
+        old_string += " SAM (hw),"
+
+    elif(processing_name == "CEM_sw"):
+        old_string += " CEM (sw),"
+
+    elif(processing_name == "CEM_hw"):
+        old_string += " CEM (hw),"
+
+    elif(processing_name == "ACE_hw"):
+        old_string += " ACE (hw),"
+
+    elif(processing_name == "ACE_sw"):
+        old_string += " ACE (sw),"
+
+    elif(processing_name == "ASMF_hw"):
+        old_string += " ASMF (hw),"
+
+    elif(processing_name == "SVM"):
+        old_string += " SVM,"
+
+    elif(processing_name == "GRX_sw"):
+        old_string += " GRX (sw),"
+
+    elif(processing_name == "LRX_sw"):
+        old_string += " LRX (sw),"
+
+    elif(processing_name == "F_MGD_hw"):
+        old_string += " F-MGD (hw),"
+
+    elif(processing_name == "FrFT_RX_sw"):
+        old_string += " FrFT-RX (sw),"
+
+    elif(processing_name == "CRD_sw"):
+        old_string += " CRD (sw),"
+
+    elif(processing_name == "CCSDS123_B1_sw"):
+        old_string += " Compr B1 (sw),"
+
+    elif(processing_name == "CCSDS123_B1_hw"):
+        old_string += " Compr B1 (hw),"
+
+    elif(processing_name == "CCSDS123_B2_sw"):
+        old_string += " Compr B2 (sw),"
+
+    elif(processing_name == "CCSDS123_B2_hw"):
+        old_string += " Compr B2 (hw),"
+
+    elif(processing_name == "x"):
+        return old_string
+
+    else:
+        print("Unknown name, ", processing_name)   
+
+    return old_string
+
+def RGB(red, green, blue):
+    rgb = "#"
+    if(red < 16):
+        rgb += "0" + hex(red)[-1]
+    else:
+        rgb += hex(red)[-2] + hex(red)[-1]
+    if(green < 16):
+        rgb += "0" + hex(green)[-1]
+    else:
+        rgb += hex(green)[-2] + hex(green)[-1]
+    if(blue < 16):
+        rgb += "0" + hex(blue)[-1]
+    else:
+        rgb += hex(blue)[-2] + hex(blue)[-1]
+    return rgb
+
+colors_1crimson = [RGB(220,20,60)]
+
+colors_3turkis = [RGB(69,139,116), RGB(102,205,170), RGB(127,244,212)]
+colors_3ligthblue = [RGB(83,134,139), RGB(122,197,205), RGB(152,245,255)]
+colors_3pink = [RGB(139,10,80), RGB(205,16,118), RGB(255,20,147)]
+
+colors_5brown = [RGB(138,51,36), RGB(156,102,31), RGB(139,131,120), RGB(205,192,176), RGB(238,223,204)]
+colors_5gray = [RGB(40,40,40), RGB(91,91,91), RGB(132,132,132), RGB(183,183,183), RGB(215,215,215)]
+colors_5purple = [RGB(72,61,139), RGB(104,34,139), RGB(154,50,205), RGB(191,62,255), RGB(238,130,238)]
+colors_yellow = [RGB(139,105,20), RGB(205,155,29), RGB(255,215,0), RGB(255,255,0), RGB(244,246,143)]
+
+colors_6red = [RGB(255,0,0), RGB(205,0,0), RGB(155,0,0), RGB(105,0,0), RGB(55,0,0), RGB(10,0,0)]
+colors_6green = [RGB(0,255,0), RGB(0,205,0), RGB(0,155,0), RGB(0,105,0), RGB(0,55,0), RGB(0,10,0)]
+colors_6blue = [RGB(0,0,255), RGB(0,0,205), RGB(0,0,155), RGB(0,0,105), RGB(0,0,55), RGB(0,0,10)]
+
+colors_costs = ["black", colors_3turkis[0], colors_3turkis[1], colors_3ligthblue[0], colors_3ligthblue[1], colors_3pink[0], colors_3pink[1], colors_3pink[2], colors_5brown[0], colors_5gray[1], \
+colors_5purple[0], colors_5purple[1], colors_yellow[0], colors_yellow[1], colors_yellow[2], colors_yellow[3], colors_6red[0], colors_6red[1], colors_6red[2], colors_6red[3], colors_6red[4], \
+"grey", colors_6green[0], colors_6green[1], colors_6green[2], colors_6green[3], colors_6green[4], colors_6blue[0], colors_6blue[1], colors_6blue[2], colors_6blue[3], colors_1crimson[0]]
+
+colors_all = [RGB(138,51,36), RGB(156,102,31), RGB(139,131,120), RGB(205,192,176), RGB(238,223,204), RGB(139,10,80), RGB(205,16,118), RGB(255,20,147), RGB(83,134,139), RGB(122,197,205), RGB(152,245,255), RGB(69,139,116), RGB(102,205,170), RGB(127,244,212), RGB(0,0,255), RGB(0,0,205), RGB(0,0,155), RGB(0,0,105), RGB(0,0,55), RGB(0,0,10), RGB(0,255,0), RGB(0,205,0), RGB(0,155,0), RGB(0,105,0), RGB(0,55,0), RGB(0,10,0), RGB(255,0,0), RGB(205,0,0), RGB(155,0,0), RGB(105,0,0), RGB(55,0,0), RGB(10,0,0), RGB(139,105,20), RGB(205,155,29), RGB(255,215,0), RGB(255,255,0), RGB(244,246,143), RGB(72,61,139), RGB(104,34,139), RGB(154,50,205), RGB(191,62,255), RGB(238,130,238), RGB(40,40,40), RGB(91,91,91), RGB(132,132,132), RGB(183,183,183), RGB(215,215,215)]
