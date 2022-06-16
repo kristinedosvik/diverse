@@ -140,7 +140,7 @@ for i in range(0, len(algorithms)):
 plt.grid()
 plt.ylim(-15,15)
 plt.xscale("log")
-plt.show()
+#plt.show()
 plt.savefig("plot_cost_withGrid.png")
 """
 
