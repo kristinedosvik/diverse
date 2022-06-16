@@ -1,4 +1,5 @@
 from binning import *
+from radiometricCalibration import *
 from compression import *
 from dimensionalReduction import *
 from georeferencing_and_geometricRegistration import *
@@ -93,10 +94,10 @@ def g22_algorithm(algorithm, frames, framesamples, bands, accuracy):
     new_accuracy = 1
     cost = 0
     
-    if (algorithm == "subsamples"):
-        new_frames, new_frame_samples, new_bands = DOS_subsamples(frames, framesamples, bands)
-        new_accuracy = 1
-        cost = OC_subsamples(frames, framesamples, bands)
+    if (algorithm == "radiometric_calibration"):
+        new_frames, new_frame_samples, new_bands = DOS_radiometricCalibration(frames, framesamples, bands)
+        new_accuracy = 1.05
+        cost = OC_radiometricCalibration(frames, framesamples, bands)
 
     elif (algorithm == "x"):
         new_frame_samples = framesamples
@@ -444,6 +445,9 @@ def add_processingmodule_name_to_string(old_string, processing_name):
 
     elif(processing_name == "spatial_binning"):
         old_string += " B (spat),"
+    
+    elif(processing_name == "radiometric_calibration"):
+        old_string += " Dark current,"
 
     elif(processing_name == "statisical_threshold_detection"):
         old_string += " Bad Pix Det (stat),"

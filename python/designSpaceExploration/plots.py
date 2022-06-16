@@ -9,6 +9,7 @@ from smileAndKeystone import *
 from targetDetection import *
 from classification import *
 from anomalyDetection import *
+from radiometricCalibration import *
 
 def RGB(red, green, blue):
 	rgb = "#"
@@ -59,6 +60,8 @@ x_ = 0
 spectral_binning = OC_spectral_binning(frames, framesamples, bands, binningfactor)
 spatial_binning = OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin)
 
+radiometric_calibration = OC_radiometricCalibration(frames, framesamples, bands)
+
 statisical_threshold_detection = OC_statisical_threshold_detection(frames, framesamples, bands, num_regions)
 correlation_detection = OC_correlation_detection(frames, framesamples, bands, num_regions)
 
@@ -67,8 +70,6 @@ mean_correction = OC_mean_correction(bad_samples)
 median_correction = OC_median_correction(bad_samples)
 
 smile_and_keystone =  OC_smile_and_keystone(frames, framesamples, bands)
-
-radiometric_calibration = 100 #OC_radiometric_calibration(frames, framesamples, bands)
 
 georeferencing = OC_georeferencing(frames, framesamples, bands)
 geometric_registration = OC_geometric_registration(frames, framesamples, bands, frame_increase_factor, framesample_increase_factor)
@@ -94,7 +95,7 @@ CRD = OC_CRD(frames, framesamples, bands, num_neighbours)
 F_MGD = OC_F_MGD(frames, framesamples, bands, kernel_element)
 
 CCSDS123_B1_sw = OC_CCSDS123_B1_sw(frames, framesamples, bands, P, D)
-CCSDS123_B1_hw = OC_CCSDS123_B1_hw(frames, framesamples, bands, P, D)  + 200000000
+CCSDS123_B1_hw = OC_CCSDS123_B1_hw(frames, framesamples, bands, P, D)
 CCSDS123_B2_sw = OC_CCSDS123_B2_sw(frames, framesamples, bands, P, D)
 CCSDS123_B2_hw = OC_CCSDS123_B2_hw(frames, framesamples, bands, P, D)
 
@@ -117,17 +118,17 @@ colors_6blue = [RGB(0,0,255), RGB(0,0,205), RGB(0,0,155), RGB(0,0,105), RGB(0,0,
 #x = [x, spectral_binning, spatial_binning, statisical_threshold_detection, correlation_detection, nearest_neighbour_correction, mean_correction, median_correction, smile_and_keystone, radiometric_calibration,\
 #georeferencing, geometric_registration, PCA_sw, PCA_hw, ICA, MNF, SAM, CEM, ACE_R, target_detection_hw, GRX_R, LRX, CCSDS123_B1_sw, CCSDS123_B1_hw, CCSDS123_B2_sw, CCSDS123_B2_hw]
 
-colors_costs = ["black", colors_3turkis[0], colors_3turkis[1], colors_3ligthblue[0], colors_3ligthblue[1], colors_3pink[0], colors_3pink[1], colors_3pink[2], colors_5brown[0], colors_5gray[1], \
+colors_costs = ["black", colors_3turkis[0], colors_3turkis[1], colors_3turkis[2], colors_3ligthblue[0], colors_3ligthblue[1], colors_3pink[0], colors_3pink[1], colors_3pink[2], colors_5brown[0], colors_5gray[1], \
 colors_5purple[0], colors_5purple[1], colors_yellow[0], colors_yellow[1], colors_yellow[2], colors_yellow[3], colors_6red[0], colors_6red[1], colors_6red[2], colors_6red[3], colors_6red[4], \
 "grey", colors_6green[0], colors_6green[1], colors_6green[2], colors_6green[3], colors_6green[4], colors_6blue[0], colors_6blue[1], colors_6blue[2], colors_6blue[3], colors_1crimson[0], colors_yellow[4]]
 
-algorithms_names = ["x", "spectral binning", "spatial binning", "statisical threshold detection", "correlation detection", "nearest neighbour correction", "mean correction", "median correction", "smile and keystone", "georeferencing", "geometric registration", "PCA sw", "PCA hw", "MNF", "SAM", "SAM hw", "CEM", "ACE", "target_detection hw", "SVM", "GRX R","LRX", "FrFT RX", "CRD", "F MGD", "CCSDS123 B1 sw", "CCSDS123 B1 hw","CCSDS123 B2 sw", "CCSDS123 B2 hw", "ICA"]
-algorithms = [x_, spectral_binning, spatial_binning, statisical_threshold_detection, correlation_detection, nearest_neighbour_correction, mean_correction, median_correction, smile_and_keystone, georeferencing, geometric_registration, PCA_sw, PCA_hw, MNF, SAM, SAM_hw, CEM, ACE_R, target_detection_hw, SVM, GRX_R, LRX, FrFT_RX, CRD, F_MGD, CCSDS123_B1_sw, CCSDS123_B1_hw,CCSDS123_B2_sw, CCSDS123_B2_hw, ICA]
+algorithms_names = ["x", "spectral binning", "spatial binning", "statisical threshold detection", "correlation detection", "nearest neighbour correction", "mean correction", "median correction", "smile and keystone", "georeferencing", "geometric registration", "PCA sw", "PCA hw", "MNF", "SAM", "SAM hw", "CEM", "ACE", "target_detection hw", "GRX R","LRX", "FrFT RX", "CRD", "F MGD", "CCSDS123 B1 sw", "CCSDS123 B1 hw","CCSDS123 B2 sw", "CCSDS123 B2 hw", "ICA", "radiometric_calibration", "SVM"]
+algorithms = [x_, spectral_binning, spatial_binning, statisical_threshold_detection, correlation_detection, nearest_neighbour_correction, mean_correction, median_correction, smile_and_keystone, georeferencing, geometric_registration, PCA_sw, PCA_hw, MNF, SAM, SAM_hw, CEM, ACE_R, target_detection_hw, GRX_R, LRX, FrFT_RX, CRD, F_MGD, CCSDS123_B1_sw, CCSDS123_B1_hw,CCSDS123_B2_sw, CCSDS123_B2_hw, ICA, radiometric_calibration,  SVM]
 
 ############### PLOTS ##############
 
 #### Overwiew, with and without grids ####
-"""
+
 plt.figure(1, figsize=(11,4), tight_layout=True)
 #Fig 1)
 for i in range(0, len(algorithms)):
@@ -139,8 +140,8 @@ for i in range(0, len(algorithms)):
 plt.grid()
 plt.ylim(-15,15)
 plt.xscale("log")
-#plt.show()
-#plt.savefig("plot_cost_withoutGrid.png")
+plt.show()
+plt.savefig("plot_cost_withGrid.png")
 """
 
 #### zoomed in ####
@@ -158,3 +159,4 @@ plt.ylim(-15,15)
 plt.xscale("log")
 plt.show()
 #plt.savefig("plot_cost.png")
+"""
