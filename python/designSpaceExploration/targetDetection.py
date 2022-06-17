@@ -15,7 +15,7 @@ def OC_SAM(frames, framesamples, bands):
     return dot_product(bands) + ((3 * dot_product(bands) + 2*multiplication()+division()) - dot_product(bands))*framesamples*frames
 
 def OC_SAM_hw(frames, framesamples, bands):
-    return frames*framesamples + dot_product(bands) + 2*multiplication() + division()
+    return frames*framesamples + dot_product_hw(bands) + 2*multiplication() + division()
 
 def OC_CEM(frames, framesamples, bands):
     return correlation_matrix(frames * framesamples, bands) + matrix_inversion(bands) + matrix_vector_multiplication(bands, bands) + dot_product(bands) + frames * framesamples * (dot_product(bands) + division())

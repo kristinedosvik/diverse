@@ -154,7 +154,7 @@ for i in range(0, len(algorithms)):
 	plt.text(1e12, 14-i, i_and_name, color = colors_costs[i])
 
 #plt.grid()
-plt.xlim(1e3, 2e4)
+#plt.xlim(1e3, 2e4)
 plt.ylim(-15,15)
 plt.xscale("log")
 plt.show()

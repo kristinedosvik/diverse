@@ -148,7 +148,7 @@ def variance(samples):
 ##################
 
 def dot_product_hw(vec_elements):
-    return vec_elements*multiplication() + np.ceil(np.log2(vec_elements))*addition()
+    return multiplication() + np.ceil(np.log2(vec_elements))*addition()
 
 def sorting_hw(elements):
     return elements
