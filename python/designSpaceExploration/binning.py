@@ -19,7 +19,7 @@ def DOS_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin):
     return new_frames, new_frame_samples, new_bands
 
 def OC_spectral_binning(frames, framesamples, bands, binningfactor):
-    return ((2 * simd()) * bands * np.floor(binningfactor/4) + (np.floor(binningfactor/4) + binningfactor%4)*addition()*bands*np.floor(framesamples/binningfactor) + (framesamples%binningfactor-1)*addition())*frames
+    return (2*simd() * np.floor(bands/binningfactor)*np.floor(binningfactor/4) + (np.floor(binningfactor/4)+binningfactor%4)*addition()*np.floor(bands/binningfactor) + (bands%binningfactor-1)*addition())*frames*framesamples
 
 
 def OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin):
@@ -30,12 +30,10 @@ def OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin):
 
 
 def A_spectral_binning(bands, binningfactor, camera_linse_binning):
-    #print(resolution_factor_spectral(bands, binningfactor, camera_linse_binning) * (1 + snr_factor_spectral(binningfactor)/10000))
     return resolution_factor_spectral(bands, binningfactor, camera_linse_binning) * (1 + snr_factor_spectral(binningfactor)/10000)
 
 
 def A_spatial_binning(frames, framesamples, binningfactor, whatToBin):
-    #print(resolution_factor_spatial(frames, framesamples, binningfactor, whatToBin) * (1 + snr_factor_spatial(binningfactor)/100000))
     return resolution_factor_spatial(frames, framesamples, binningfactor, whatToBin) * (1 + snr_factor_spatial(binningfactor)/100000)
 
 

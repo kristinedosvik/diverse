@@ -57,6 +57,8 @@ num_classes = 4
 total_num_support_vectors = 1096
 
 x_ = 0
+
+
 spectral_binning = OC_spectral_binning(frames, framesamples, bands, binningfactor)
 spatial_binning = OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin)
 
@@ -154,7 +156,7 @@ for i in range(0, len(algorithms)):
 	plt.text(1e12, 14-i, i_and_name, color = colors_costs[i])
 
 #plt.grid()
-#plt.xlim(1e3, 2e4)
+plt.xlim(1e0, 2e0)
 plt.ylim(-15,15)
 plt.xscale("log")
 plt.show()

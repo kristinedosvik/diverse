@@ -3,9 +3,15 @@ from processingGroups import *
 
 
 def create_svu_predefined_graph_points_outputted_data_size(frames, framesamples, bands):
-    _2D = frames*framesamples*16
-    raw = frames*framesamples*bands*16
-    graph = [[_2D,1], [_2D*3, 0.9], [raw/2, 0.1], [raw+3*_2D, 0]]
+    best_case = frames*framesamples*1*16
+    bands_10 = frames*framesamples*10*16
+    bands_20 = frames*framesamples*20*16
+    #assume bands = 120
+    divided_4 = frames*framesamples*120/4*16
+    divided_2 = frames*framesamples*120/2*16
+    worst_case = frames*framesamples*120*16
+    
+    graph = [[best_case,1], [bands_10, 0.95], [bands_20, 0.85], [divided_4, 0.2], [divided_2, 0.1], [worst_case, 0]]
     return graph
 
 def make_SVU(svu_graph, svu_sample):
@@ -167,14 +173,14 @@ def make_pipeline_plot(pipeline_vec):
 
 	#Prepare MVU score:
 	svu_graph_size = create_svu_predefined_graph_points_outputted_data_size(frames, framesamples, bands)
-	svu_graph_accuracy = [[0.4,0], [0.7,0.5], [1,1]]
+	svu_graph_accuracy = [[0.4,0], [0.7,0.4], [0.8, 0.8], [1,1]]
 
 	svu_acc_weight = 0.5
 	svu_size_weight = 0.5
 
 
 	##### Plotting cost Vs. accuracy #####
-	plt.figure(1, figsize=(17,4), tight_layout=True)
+	plt.figure(1, figsize=(17,15), tight_layout=True)
 	for i in range(0, len(pipeline_vec)):
 		#plot samples:
 		plt.plot(samples[i][3]*freq, samples[i][2], "o", color=colors_all[i])
@@ -185,21 +191,21 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		plt.text(1e4, 1-i*0.04, i_and_name, color = colors_all[i])
+		plt.text(1e4, 0.86-i*0.005, i_and_name, color = colors_all[i])
 
 	plt.grid()
 	plt.title('Cost Vs. Accuracy')
 	plt.xlabel('Cost')
 	plt.ylabel('Accuracy')
-	plt.xlim(1e-1, 1e6)
+	#plt.xlim(1e-1, 1e6)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
 	#plt.show()
-	plt.savefig("plot_low_coss_accuracy.png")
+	#plt.savefig("plot_low_coss_accuracy.png")
 
 
 	##### Plotting processing + downloading time Vs. accuracy #####
-	plt.figure(2, figsize=(17,4), tight_layout=True)
+	plt.figure(2, figsize=(17,15), tight_layout=True)
 	for i in range(0, len(pipeline_vec)):
 		#plot samples:
 		plt.plot(samples[i][3]*freq+samples[i][1]*16*download_rate, samples[i][2], "o", color=colors_all[i])
@@ -210,23 +216,44 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		plt.text(1e4, 1-i*0.04, i_and_name, color = colors_all[i])
+		plt.text(1e4, 0.86-i*0.0051, i_and_name, color = colors_all[i])
+
+	best_case = frames*framesamples*1*16*download_rate
+	bands_10 = frames*framesamples*10*16*download_rate
+	bands_20 = frames*framesamples*20*16*download_rate
+	divided_4 = frames*framesamples*120/4*16*download_rate
+	divided_2 = frames*framesamples*120/2*16*download_rate
+	worst_case = frames*framesamples*120*16*download_rate
+	plt.plot(best_case, 0.8, "o", color="black")
+	plt.plot(bands_10, 0.8, "o", color="black")
+	plt.plot(bands_20, 0.8, "o", color="black")
+	plt.plot(divided_4, 0.8, "o", color="black")
+	plt.plot(divided_2, 0.8, "o", color="black")
+	plt.plot(worst_case, 0.8, "o", color="black")
+	
+	plt.text(best_case, 0.8, "B", color = "black")
+	plt.text(bands_10, 0.8, "X", color = "black")
+	plt.text(bands_20, 0.8, "XX", color = "black")
+	plt.text(divided_4, 0.8, "IV", color = "black")
+	plt.text(divided_2, 0.8, "II", color = "black")
+	plt.text(worst_case, 0.8, "W", color = "black")
+	print("divided_4", divided_4)
+	print("divided_2", divided_2)
+	print("worst_case", worst_case)
 
 	plt.grid()
 	plt.title('Processing + Downloading Time Vs. Accuracy')
 	plt.xlabel('Processing + Downloading Time')
 	plt.ylabel('Accuracy')
-	plt.xlim(1e-1, 1e6)
+	##plt.xlim(1e-1, 1e6)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
 	#plt.show()
-	plt.savefig("plot_low_cost_total_processing.png")
+	#plt.savefig("plot_low_cost_total_processing.png")
 
-	svu_graph_size = create_svu_predefined_graph_points_outputted_data_size(frames, framesamples, bands)
-	svu_graph_accuracy = [[0.4,0],[0.7,0.5],[1,1]]
 
 	##### Plotting cost Vs. MUV(accuracy, data output) #####
-	plt.figure(3, figsize=(17,4), tight_layout=True)
+	plt.figure(3, figsize=(17,15), tight_layout=True)
 	for i in range(0, len(pipeline_vec)):
 		#plot samples:
 		mvu = svu_acc_weight*make_SVU(svu_graph_accuracy, samples[i][2]) + svu_size_weight*make_SVU(svu_graph_size, samples[i][1]*16)
@@ -242,15 +269,36 @@ def make_pipeline_plot(pipeline_vec):
 		plt.text(1e4, 1-i*0.04, i_and_name, color = colors_all[i])
 
 	plt.grid()
-	title_name = 'Cost Vs. MVU (Acc: ' + str(svu_acc_weight) + ' & Size: ' + str(svu_size_weight) + ')'
+	title_name = 'Cost Vs. MVU (Acc: ' + str(svu_acc_weight) + ' + Size: ' + str(svu_size_weight) + ')'
 	plt.title(title_name)
 	plt.xlabel('Cost')
 	plt.ylabel('MVU')
-	plt.xlim(1e-1, 1e6)
+	#plt.xlim(1e-1, 1e6)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
 	#plt.show()
-	plt.savefig("plot_low_cost_mvu.png")
+	#plt.savefig("plot_low_cost_mvu.png")
 
 
+
+	#"""
+	##### Plotting SVU graf #####
+	svu_graph_size_x = [row[0] for row in svu_graph_size]
+	svu_graph_size_y = [row[1] for row in svu_graph_size]
+	plt.figure(4, figsize=(17,4), tight_layout=True)
+	plt.plot(svu_graph_size_x, svu_graph_size_y, color="grey")
+	plt.xscale("linear")
+	
+	svu_graph_accuracy_x = [row[0] for row in svu_graph_accuracy]
+	svu_graph_accuracy_y = [row[1] for row in svu_graph_accuracy]
+	plt.figure(5, figsize=(17,4), tight_layout=True)
+	plt.plot(svu_graph_accuracy_x, svu_graph_accuracy_y, color="blue")
+	plt.xscale("linear")
+	#"""
+
+	plt.show()
+
+
+print(framesamples*frames*120)
+print(framesamples*frames*120/2)
 make_pipeline_plot(pipeline_vec)

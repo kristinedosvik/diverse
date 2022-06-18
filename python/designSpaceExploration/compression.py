@@ -2,7 +2,7 @@ from OC_utility import *
 
 def DOS_CCSDS123_B1(frames, framesamples, bands):
     new_frames = frames
-    new_frame_samples = framesamples/2.5
+    new_frame_samples = framesamples/2 #2.5
     new_bands = bands
     return new_frames, new_frame_samples, new_bands
 
