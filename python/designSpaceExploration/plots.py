@@ -75,6 +75,7 @@ target_detection_hw = OC_target_detection_hw(frames, framesamples, bands)
 
 
 SVM = OC_SVM(frames, framesamples, bands, num_classes, total_num_support_vectors)
+print("SVM: ", SVM*freq)
 
 GRX_R = OC_GRX(frames, framesamples, bands)
 LRX = OC_LRX(frames, framesamples, bands, outer_window, inner_window)

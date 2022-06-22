@@ -22,8 +22,8 @@ def OC_CEM(frames, framesamples, bands):
     
 
 def OC_ACE_R(frames, framesamples, bands):
-    #return correlation_matrix(frames * framesamples, bands) + matrix_inversion(bands) + matrix_vector_multiplication(bands, bands) + dot_product(bands) + frames * framesamples * ( matrix_vector_multiplication(bands, bands) * 2 *  dot_product(bands) + 2 * multiplication() + division())
-    return frames * framesamples * ( matrix_vector_multiplication(bands, bands) * 2 +  dot_product(bands) + 2 * multiplication() + division())
+    return correlation_matrix(frames * framesamples, bands) + matrix_inversion(bands) + matrix_vector_multiplication(bands, bands) + dot_product(bands) + frames * framesamples * ( matrix_vector_multiplication(bands, bands) + 2 *  dot_product(bands) + 2 * multiplication() + division())
+    #return frames * framesamples * ( matrix_vector_multiplication(bands, bands) + 2 * dot_product(bands) + 2 * multiplication() + division())
     
     #return correlation_matrix(frames * framesamples, bands)
 
