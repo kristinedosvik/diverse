@@ -19,7 +19,7 @@ def DOS_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin):
     return new_frames, new_frame_samples, new_bands
 
 def OC_spectral_binning(frames, framesamples, bands, binningfactor):
-    return (2*simd() * np.floor(bands/binningfactor)*np.floor(binningfactor/4) + (np.floor(binningfactor/4)+binningfactor%4)*addition()*np.floor(bands/binningfactor) + (bands%binningfactor-1)*addition())*frames*framesamples
+    return (2*simd() * np.floor(bands/binningfactor)*np.floor(binningfactor/4) + (np.floor(binningfactor/4)+binningfactor%4)*addition()*np.floor(bands/binningfactor) + (bands%binningfactor-1)*addition())*frames*framesamples/frames
 
 
 def OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin):

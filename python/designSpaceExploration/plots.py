@@ -10,6 +10,7 @@ from targetDetection import *
 from classification import *
 from anomalyDetection import *
 from radiometricCalibration import *
+from data_inputs import *
 
 def RGB(red, green, blue):
 	rgb = "#"
@@ -28,43 +29,18 @@ def RGB(red, green, blue):
 	return rgb
 
 
-dr1 =1/1000000
-dr2 = 1/125000
-download_rate = dr1
-freq = 1/667000000
-frames = 956
-framesamples = 684
-bands = 1080
-binningfactor = 9
-whatToBin = "frames"
-num_regions = 80
-bad_samples = 600
-neigbourlevel = 2
-cardinal = 1
-reducedbands = 10
-iterations = 2
-frame_increase_factor = 2
-framesample_increase_factor = 2
-outer_window = 60
-inner_window = 20
-P = 12
-D = 4
-dot_product_blocks = framesamples
-kernel_element = 9
-fractional_domains = 10
-num_neighbours = 8
-num_classes = 4 
-total_num_support_vectors = 1096
 
-x_ = 0
 
 
 spectral_binning = OC_spectral_binning(frames, framesamples, bands, binningfactor)
+print("spectral_binning: ", spectral_binning*freq)
+
 spatial_binning = OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin)
 
 radiometric_calibration = OC_radiometricCalibration(frames, framesamples, bands)
 
 statisical_threshold_detection = OC_statisical_threshold_detection(frames, framesamples, bands, num_regions)
+print("statisical_threshold_detection: ", statisical_threshold_detection*freq)
 correlation_detection = OC_correlation_detection(frames, framesamples, bands, num_regions)
 
 nearest_neighbour_correction = OC_nearest_neighbour_correction(bad_samples)
@@ -72,20 +48,30 @@ mean_correction = OC_mean_correction(bad_samples)
 median_correction = OC_median_correction(bad_samples)
 
 smile_and_keystone =  OC_smile_and_keystone(frames, framesamples, bands)
+print("smile_and_keystone: ", smile_and_keystone*freq)
 
 georeferencing = OC_georeferencing(frames, framesamples, bands)
 geometric_registration = OC_geometric_registration(frames, framesamples, bands, frame_increase_factor, framesample_increase_factor)
+print("georeferencing: ", georeferencing*freq)
+print("geometric_registration: ", geometric_registration*freq)
 
 PCA_sw = OC_PCA_sw(frames, framesamples, bands, reducedbands, iterations)
 PCA_hw = OC_PCA_hw(frames, framesamples, bands, reducedbands, iterations, dot_product_blocks)
+print("PCA sw: ", PCA_sw*freq)
+print("PCA hw: ", PCA_hw*freq)
+
 ICA = OC_ICA(frames, framesamples, bands, reducedbands, iterations)
 MNF = OC_MNF(frames, framesamples, bands, reducedbands, iterations)
 
 SAM = OC_SAM(frames, framesamples, bands)
+print("SAM: ", SAM*freq)
 SAM_hw = OC_SAM_hw(frames, framesamples, bands)
 CEM = OC_CEM(frames, framesamples, bands)
 ACE_R = OC_ACE_R(frames, framesamples, bands)
+print("CEM: ", CEM*freq)
+print("ACE_R: ", ACE_R*freq)
 target_detection_hw = OC_target_detection_hw(frames, framesamples, bands)
+
 
 
 SVM = OC_SVM(frames, framesamples, bands, num_classes, total_num_support_vectors)
@@ -95,6 +81,8 @@ LRX = OC_LRX(frames, framesamples, bands, outer_window, inner_window)
 FrFT_RX = OC_FrFT_RX(frames, framesamples, bands, fractional_domains)
 CRD = OC_CRD(frames, framesamples, bands, num_neighbours)
 F_MGD = OC_F_MGD(frames, framesamples, bands, kernel_element)
+print("GRX_R: ", GRX_R*freq)
+print("LRX: ", LRX*freq)
 
 CCSDS123_B1_sw = OC_CCSDS123_B1_sw(frames, framesamples, bands, P, D)
 CCSDS123_B1_hw = OC_CCSDS123_B1_hw(frames, framesamples, bands, P, D)
@@ -156,7 +144,7 @@ for i in range(0, len(algorithms)):
 	plt.text(1e12, 14-i, i_and_name, color = colors_costs[i])
 
 #plt.grid()
-plt.xlim(1e0, 2e0)
+#plt.xlim(1e0, 2e0)
 plt.ylim(-15,15)
 plt.xscale("log")
 plt.show()

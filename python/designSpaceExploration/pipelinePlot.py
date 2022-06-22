@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from processingGroups import *
+from data_inputs import *
 
 
 def create_svu_predefined_graph_points_outputted_data_size(frames, framesamples, bands):
@@ -40,35 +41,6 @@ def make_SVU(svu_graph, svu_sample):
     return svu_value
 
 
-
-dr1 =1/1000000
-dr2 = 1/125000
-download_rate = dr1
-freq = 1/667000000
-frames = 956
-framesamples = 684
-bands = 1080
-binningfactor = 9
-camera_linse_binning = -1
-whatToBin = "frames"
-num_regions = 80
-bad_samples = 600
-neigbourlevel = 2
-cardinal = 1
-reducedbands = 10
-iterations = 2
-frame_increase_factor = 2
-framesample_increase_factor = 2
-outer_window = 60
-inner_window = 20
-P = 12
-D = 4
-dot_product_blocks = framesamples
-kernel_element = 9
-fractional_domains = 10
-num_neighbours = 8
-num_classes = 4 
-total_num_support_vectors = 1096
 
 
 #return [spec_vec[i], spat_vec[i], "x", "x", bad_p_det_vec[i], bad_p_cor_vec[i], snk_vec[i], dimRed_vec[i], geo_ref_vec[i], "GRX_sw"]

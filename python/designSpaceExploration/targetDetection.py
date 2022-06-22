@@ -19,9 +19,13 @@ def OC_SAM_hw(frames, framesamples, bands):
 
 def OC_CEM(frames, framesamples, bands):
     return correlation_matrix(frames * framesamples, bands) + matrix_inversion(bands) + matrix_vector_multiplication(bands, bands) + dot_product(bands) + frames * framesamples * (dot_product(bands) + division())
+    
 
 def OC_ACE_R(frames, framesamples, bands):
-    return correlation_matrix(frames * framesamples, bands) + matrix_inversion(bands) + matrix_vector_multiplication(bands, bands) + dot_product(bands) + frames * framesamples * ( matrix_vector_multiplication(bands, bands) * 2 *  dot_product(bands) + 2 * multiplication() + division())
+    #return correlation_matrix(frames * framesamples, bands) + matrix_inversion(bands) + matrix_vector_multiplication(bands, bands) + dot_product(bands) + frames * framesamples * ( matrix_vector_multiplication(bands, bands) * 2 *  dot_product(bands) + 2 * multiplication() + division())
+    return frames * framesamples * ( matrix_vector_multiplication(bands, bands) * 2 +  dot_product(bands) + 2 * multiplication() + division())
+    
+    #return correlation_matrix(frames * framesamples, bands)
 
 def OC_target_detection_hw(frames, framesamples, bands):
     return frames * framesamples * (3 * bands + division() + 3) + 2 * bands + division() + 3

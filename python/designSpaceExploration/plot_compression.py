@@ -4,67 +4,13 @@ from binning import *
 from compression import *
 from dimensionalReduction import *
 from processingGroups import *
+from data_inputs import *
 
 
-
-def RGB(red, green, blue):
-	rgb = "#"
-	if(red < 16):
-		rgb += "0" + hex(red)[-1]
-	else:
-		rgb += hex(red)[-2] + hex(red)[-1]
-	if(green < 16):
-		rgb += "0" + hex(green)[-1]
-	else:
-		rgb += hex(green)[-2] + hex(green)[-1]
-	if(blue < 16):
-		rgb += "0" + hex(blue)[-1]
-	else:
-		rgb += hex(blue)[-2] + hex(blue)[-1]
-	return rgb
 
 group_colors = ["red", "yellow", "green", "blue", "pink", "grey", "purple", "brown", "darkgrey", "lime", "black", "cyan", "magenta", "tan", "maroon"]
 
-dr1 =1/1000000
-dr2 = 1/125000
-download_rate = dr1
-freq = 1/667000000
-frames = 95
-#frames = 956
-framesamples = 68
-#framesamples = 684
-bands = 108
-#bands = 1080
-binningfactor = 9
-camera_linse_binning = -1
-whatToBin = "frames"
-num_regions = 80
-bad_samples = 60
-neigbourlevel = 2
-cardinal = 1
-iterations = 2
-frame_increase_factor = 2
-framesample_increase_factor = 2
-outer_window = 20
-inner_window = 6
-P = 12
-D = 4
-dot_product_blocks = framesamples*frames/1.4
-kernel_element = 9
-fractional_domains = 10
-num_neighbours = 8
-num_classes = 4 
-total_num_support_vectors = 1096
 
-frames_vec = [956,956, 956, 956, 956] 
-frame_samples_vec = [684,684, 684, 684, 684] 
-bands_vec = [1080, 1080, 1080, 1080, 1080]
-spec_binning_factor_vec = [9,9, 9, 9, 9]
-spat_binning_factor_vec = [9,9, 9, 9, 9]
-dimRed_bands_vec = [12, 12, 12, 12, 12, 12]
-spec_vec = ["x", "spectral_binning", "spectral_binning", "spectral_binning", "spectral_binning"]
-spat_vec = ["x", "x", "x", "x", "spatial_binning"]
-dimRed_vec = ["x", "PCA_hw", "PCA_hw", "PCA_hw", "PCA_hw"]
 
 
 
