@@ -262,6 +262,6 @@ for i in range(0, len(algorithms_2)):
 plt.xlim(0, 10)
 plt.ylim(-15,15)
 #plt.xscale("log")
-#plt.show()
-plt.savefig("plot_1_to_3.png")
+plt.show()
+#plt.savefig("plot.png")
 
