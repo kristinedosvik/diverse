@@ -203,7 +203,7 @@ RGB(156,102,31), "brown"]
 
 
 
-algorithms_names = ["x", "Spectral binning", "Spatial binning", "Statisical threshold detection", "Correlation detection", "Mean threshold detection", "Nearest neighbour correction", "Mean correction", "Median correction", "Smile and keystone", "radiometric_calibration", "Georeferencing", "Geometric registration", "PCA (sw)", "PCA (hw)", "MNF", "ICA", "SAM (sw)", "SAM (hw)", "CEM (sw)", "ACE (sw)", "Target detection (hw)", "SVM", "GRX","LRX", "FrFT RX", "CRD", "F MGD", "CCSDS123 B1 (sw)", "CCSDS123 B1 (hw)","CCSDS123 B2 (sw)", "CCSDS123 B2 (hw)"]
+algorithms_names = ["x", "Spectral binning", "Spatial binning", "Statisical threshold detection", "Correlation detection", "Mean threshold detection", "Nearest neighbour correction", "Mean correction", "Median correction", "Smile and keystone", "radiometric_calibration", "Georeferencing", "Geometric registration", "PCA (sw)", "PCA (hw)", "MNF", "ICA", "SAM (sw)", "SAM (hw)", "CEM (sw)", "ACE (sw)", "Target detection (hw)", "SVM", "GRX","LRX", "FrFT RX", "CRD", "F MGD (hw)", "CCSDS123 B1 (sw)", "CCSDS123 B1 (hw)","CCSDS123 B2 (sw)", "CCSDS123 B2 (hw)"]
 algorithms = [x_, spectral_binning, spatial_binning, statisical_threshold_detection, correlation_detection, mean_threshold_detection, nearest_neighbour_correction, mean_correction, median_correction, smile_and_keystone, radiometric_calibration, georeferencing, geometric_registration, PCA_sw, PCA_hw, MNF, ICA, SAM, SAM_hw, CEM, ACE_R, target_detection_hw, SVM, GRX_R, LRX, FrFT_RX, CRD, F_MGD, CCSDS123_B1_sw, CCSDS123_B1_hw, CCSDS123_B2_sw, CCSDS123_B2_hw]
 algorithms_1 = [x_, spectral_binning_1, spatial_binning_1, statisical_threshold_detection_1, correlation_detection_1, mean_threshold_detection_1, nearest_neighbour_correction_1, mean_correction_1, median_correction_1, smile_and_keystone_1, radiometric_calibration_1, georeferencing_1, geometric_registration_1, PCA_sw_1, PCA_hw_1, MNF_1, ICA_1, SAM_1, SAM_hw_1, CEM_1, ACE_R_1, target_detection_hw_1, SVM_1, GRX_R_1, LRX_1, FrFT_RX_1, CRD_1, F_MGD_1, CCSDS123_B1_sw_1, CCSDS123_B1_hw_1, CCSDS123_B2_sw_1, CCSDS123_B2_hw_1]
 algorithms_2 = [x_, spectral_binning_2, spatial_binning_2, statisical_threshold_detection_2, correlation_detection_2, mean_threshold_detection_2, nearest_neighbour_correction_2, mean_correction_2, median_correction_2, smile_and_keystone_2, radiometric_calibration_2, georeferencing_2, geometric_registration_2, PCA_sw_2, PCA_hw_2, MNF_2, ICA_2, SAM_2, SAM_hw_2, CEM_2, ACE_R_2, target_detection_hw_2, SVM_2, GRX_R_2, LRX_2, FrFT_RX_2, CRD_2, F_MGD_2, CCSDS123_B1_sw_2, CCSDS123_B1_hw_2, CCSDS123_B2_sw_2, CCSDS123_B2_hw_2]
@@ -227,23 +227,28 @@ plt.savefig("plot_cost_withGrid.png")
 """
 
 #### zoomed in ####
-plt.figure(1, figsize=(10,5), tight_layout=True)
+plt.figure(1, figsize=(13,7), tight_layout=True)
 
+#### bands = bands ####
 for i in range(0, len(algorithms)):
 	plt.plot(algorithms[i]*freq, 10, "o", color = color_cost_2[i])
 	plt.annotate(i, (algorithms[i]*freq, 10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 	i_and_name = str(i) + ": " + algorithms_names[i]
 	plt.text(2e7, 14-i, i_and_name, color = color_cost_2[i])
 
-
+#### bands = bands_1 ####
 for i in range(0, len(algorithms_1)):
+	if(algorithms_1[i] == spectral_binning_1 or algorithms_1[i] == spatial_binning_1):
+		continue
 	plt.plot(algorithms_1[i]*freq, 0, "o", color = color_cost_2[i])
 	plt.annotate(i, (algorithms_1[i]*freq, 0), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 	i_and_name = str(i) + ": " + algorithms_names[i]
 	#plt.text(2e7, 14-i, i_and_name, color = color_cost_2[i])
 
-
+#### bands = bands_2 ####
 for i in range(0, len(algorithms_2)):
+	if(i <= 16):
+		continue
 	plt.plot(algorithms_2[i]*freq, -10, "o", color = color_cost_2[i])
 	plt.annotate(i, (algorithms_2[i]*freq, -10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 	i_and_name = str(i) + ": " + algorithms_names[i]
@@ -255,6 +260,6 @@ plt.grid()
 #plt.xlim(1e0, 2e0)
 plt.ylim(-15,15)
 plt.xscale("log")
-plt.show()
-#plt.savefig("plot_cost.png")
+#plt.show()
+plt.savefig("plot_3_different_band_nrs.png")
 #"""
