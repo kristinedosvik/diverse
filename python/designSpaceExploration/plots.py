@@ -231,13 +231,13 @@ plt.figure(1, figsize=(13,7), tight_layout=True)
 
 #### bands = bands ####
 for i in range(0, len(algorithms)):
-	plt.plot(algorithms[i]*freq, 10, "o", color = color_cost_2[i])
-	#plt.plot(i, 10, "o", color = color_cost_2[i])
-	plt.annotate(i, (algorithms[i]*freq, 10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
-	#plt.annotate(i, (i, 10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+	#plt.plot(algorithms[i]*freq, 10, "o", color = color_cost_2[i])
+	plt.plot(i, 10, "o", color = color_cost_2[i])
+	#plt.annotate(i, (algorithms[i]*freq, 10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+	plt.annotate(i, (i, 10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 	i_and_name = str(i) + ": " + algorithms_names[i]
 	plt.text(2e7, 14-i, i_and_name, color = color_cost_2[i])
-
+"""
 #### bands = bands_1 ####
 for i in range(0, len(algorithms_1)):
 	if(algorithms_1[i] == spectral_binning_1 or algorithms_1[i] == spatial_binning_1):
@@ -256,12 +256,12 @@ for i in range(0, len(algorithms_2)):
 	i_and_name = str(i) + ": " + algorithms_names[i]
 
 	#plt.text(2e7, 14-i, i_and_name, color = color_cost_2[i])
-
+"""
 
 #plt.grid()
-#plt.xlim(0, 10)
+plt.xlim(0, 10)
 plt.ylim(-15,15)
-plt.xscale("log")
-plt.show()
-#plt.savefig("plot.png")
+#plt.xscale("log")
+#plt.show()
+plt.savefig("plot_1_to_3.png")
 
