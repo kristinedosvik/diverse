@@ -99,10 +99,10 @@ def correlation_matrix(samples, bands):
     #Endret til å følge proseduren i target detection code
     #return matrix_multiplication(samples, bands, bands, samples) + samples**2 * division()
     #return matrix_multiplication(bands, samples, samples, bands) + samples**2 * division()
-    return samples * (multiplication() + bands**2 * (3*addition() + multiplication() + division()))
+    return samples * bands**2 * (addition() + multiplication() + division())
 
-def update_correlation_matrix(bands):
-    return bands**2 * (multiplication()+addition())
+def update_correlation_matrix(addedSamples, bands):
+    return addedSamples * bands**2 * (addition() + multiplication() + division())
 
 def diagonal_matrix_multiplication(bands):
     return bands*bands*multiplication()
@@ -125,10 +125,16 @@ def matrix_multiplication(nr_rows_m1, nr_coloumns_m1, nr_rows_m2, nr_coloumns_m2
 def jacobi_algorithm_sw(matrix_size, extra_iterations):
     #print("J SW:")
     #print(matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size))
-    return matrix_size/2*(matrix_size-1)*(3*matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size) + matrix_size/2*13) + extra_iterations*(3*matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size) + matrix_size/2*13)
+    return (matrix_size/2*(matrix_size-1)+extra_iterations)*(matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size)+dot_product_hw(2)*matrix_size*2 + matrix_size/2*13)
 
+def qr_eigen_vec_val(bands, iterations):
+    qr = bands*(distance(bands) + bands*division()) + (bands**2/2-bands/2)*(dot_product(bands)+bands*subtraction())
+    rq = matrix_multiplication(bands, bands, bands, bands)
+    eigen = iterations*(qr+rq)
+    return eigen
+    
 def SUV(nr_rows, nr_coloumns, extra_iterations):
-    return matrix_multiplication(nr_rows, nr_coloumns, nr_coloumns, nr_rows) + matrix_multiplication(nr_coloumns, nr_rows, nr_rows, nr_coloumns) + jacobi_algorithm_sw(nr_coloumns, extra_iterations) + jacobi_algorithm_sw(nr_rows, extra_iterations) + nr_coloumns*sqrt()
+    return matrix_multiplication(nr_rows, nr_coloumns, nr_coloumns, nr_rows) + matrix_multiplication(nr_coloumns, nr_rows, nr_rows, nr_coloumns) + qr_eigen_vec_val(nr_coloumns, extra_iterations) + qr_eigen_vec_val(nr_rows, extra_iterations) + nr_coloumns*sqrt()
     
 def mean(samples):
     return samples * addition() + division()

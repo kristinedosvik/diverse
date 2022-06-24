@@ -7,13 +7,21 @@ def DOS_dimensional_reduction(frames, framesamples, bands, reducedbands):
     return new_frames, new_frame_samples, new_bands
 
 def OC_PCA_sw(frames, framesamples, bands, reducedbands, iterations):
-    return correlation_matrix(frames*framesamples, bands) + jacobi_algorithm_sw(bands, iterations) + sorting(bands) + matrix_multiplication(reducedbands, bands, bands, frames*framesamples)
+    return correlation_matrix(frames*framesamples, bands) + qr_eigen_vec_val(bands, iterations) \
+    + sorting(bands) + matrix_multiplication(reducedbands, bands, bands, frames*framesamples)
     
 def OC_PCA_hw(frames, framesamples, bands, reducedbands, iterations, dot_product_blocks):
     return correlation_matrix_hw(frames*framesamples, bands, dot_product_blocks) + jacobi_algorithm_hw(bands, iterations, dot_product_blocks) + sorting_hw(bands) + matrix_multiplication_hw(reducedbands, bands, bands, frames*framesamples, dot_product_blocks)
    
 def OC_MNF(frames, framesamples, bands, reducedbands, iterations):
-    return frames*framesamples*bands*subtraction() + SUV(frames*framesamples, bands, iterations) + SUV(bands, bands, iterations) + bands*sqrt() + diagonal_matrix_multiplication(bands) + matrix_multiplication(frames*framesamples, bands, bands, bands) + matrix_multiplication(bands, bands, bands, bands) + matrix_multiplication(reducedbands, bands, bands, frames*framesamples)
+    nois_matrix = frames*framesamples*bands*subtraction()
+    correlation_matrix_noise = correlation_matrix(frames*framesamples, bands)
+    eigen_vecs = qr_eigen_vec_val(bands, iterations)
+    correlation_matrix_adjusted = 2*matrix_multiplication(bands,bands,bands,bands)
+
+    return OC_PCA_sw(frames, framesamples, bands, reducedbands, iterations) + nois_matrix + correlation_matrix_noise + eigen_vecs + correlation_matrix_adjusted
+
+    #return frames*framesamples*bands*subtraction() + SUV(frames*framesamples, bands, iterations) + SUV(bands, bands, iterations) + bands*sqrt() + diagonal_matrix_multiplication(bands) + matrix_multiplication(frames*framesamples, bands, bands, bands) + matrix_multiplication(bands, bands, bands, bands) + matrix_multiplication(reducedbands, bands, bands, frames*framesamples)
 
 def OC_ICA(frames, framesamples, bands, reducedbands, iterations):
     return correlation_matrix(frames*framesamples, bands) \

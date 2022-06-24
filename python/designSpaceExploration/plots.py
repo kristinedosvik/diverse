@@ -61,7 +61,9 @@ print("PCA sw: ", PCA_sw*freq)
 print("PCA hw: ", PCA_hw*freq)
 
 ICA = OC_ICA(frames, framesamples, bands, reducedbands, iterations)
+print("ICA: ", ICA*freq)
 MNF = OC_MNF(frames, framesamples, bands, reducedbands, iterations)
+print("MNF: ", MNF*freq)
 
 SAM = OC_SAM(frames, framesamples, bands)
 print("SAM: ", SAM*freq)
@@ -84,6 +86,11 @@ CRD = OC_CRD(frames, framesamples, bands, num_neighbours)
 F_MGD = OC_F_MGD(frames, framesamples, bands, kernel_element)
 print("GRX_R: ", GRX_R*freq)
 print("LRX: ", LRX*freq)
+print("FrFT_RX: ", FrFT_RX*freq)
+print("CRD: ", CRD*freq)
+print("F_MGD: ", F_MGD*freq)
+
+
 
 CCSDS123_B1_sw = OC_CCSDS123_B1_sw(frames, framesamples, bands, P, D)
 CCSDS123_B1_hw = OC_CCSDS123_B1_hw(frames, framesamples, bands, P, D)
