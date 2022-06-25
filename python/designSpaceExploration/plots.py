@@ -13,21 +13,6 @@ from anomalyDetection import *
 from radiometricCalibration import *
 from data_inputs import *
 
-def RGB(red, green, blue):
-	rgb = "#"
-	if(red < 16):
-		rgb += "0" + hex(red)[-1]
-	else:
-		rgb += hex(red)[-2] + hex(red)[-1]
-	if(green < 16):
-		rgb += "0" + hex(green)[-1]
-	else:
-		rgb += hex(green)[-2] + hex(green)[-1]
-	if(blue < 16):
-		rgb += "0" + hex(blue)[-1]
-	else:
-		rgb += hex(blue)[-2] + hex(blue)[-1]
-	return rgb
 
 
 
@@ -190,16 +175,7 @@ CCSDS123_B2_sw_2 = OC_CCSDS123_B2_sw(frames, framesamples, bands_2_reduction, P,
 CCSDS123_B2_hw_2 = OC_CCSDS123_B2_hw(frames, framesamples, bands_2_reduction, P, D)
 
 
-color_cost_2 = ["black", RGB(255,128,128), RGB(255,0,0), RGB(200,0,0), RGB(148,3,3), \
-#RGB(255,146,205), RGB(255,0,137), RGB(229,0,122), RGB(198,0,105), RGB(179,0,96), \
-RGB(225,144,225), RGB(209,0,209), RGB(141,0,141), RGB(80,0,80), \
-RGB(158,158,255), RGB(0,0,255), RGB(0,0,125), RGB(0,0,50), \
-RGB(127,247,255), RGB(0,212,228), RGB(1,182,195), RGB(3,152,162), \
-RGB(138,255,138), RGB(0,255,0), RGB(0,174,0), RGB(0,100,0), \
-RGB(255,255,0), RGB(191,191,0), RGB(148,148,0), \
-RGB(255,229,166), RGB(255,179,0), RGB(154,109,3), RGB(105,74,0), \
-RGB(182,182,182), RGB(82,82,82), \
-RGB(156,102,31), "brown"]
+
 
 
 

@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from processingGroups import *
 from data_inputs import *
+import random
 
 
 def create_svu_predefined_graph_points_outputted_data_size(frames, framesamples, bands):
@@ -11,8 +12,9 @@ def create_svu_predefined_graph_points_outputted_data_size(frames, framesamples,
     divided_4 = frames*framesamples*120/4*16
     divided_2 = frames*framesamples*120/2*16
     worst_case = frames*framesamples*120*16
+    raw_cube = frames*framesamples*bands*16
     
-    graph = [[best_case,1], [bands_10, 0.95], [bands_20, 0.85], [divided_4, 0.2], [divided_2, 0.1], [worst_case, 0]]
+    graph = [[best_case,1], [bands_10, 0.95], [bands_20, 0.85], [divided_4, 0.2], [divided_2, 0.1], [worst_case, 0.01], [raw_cube, 0]]
     return graph
 
 def make_SVU(svu_graph, svu_sample):
@@ -41,78 +43,65 @@ def make_SVU(svu_graph, svu_sample):
     return svu_value
 
 
+p0 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x"] # infeasable sample
 
+#B1 (hw)
 
-#return [spec_vec[i], spat_vec[i], "x", "x", bad_p_det_vec[i], bad_p_cor_vec[i], snk_vec[i], dimRed_vec[i], geo_ref_vec[i], "GRX_sw"]
-pipeline_sizes = 10
-#p0 = ["spectral_binning", "spatial_binning", "x", "x", "OC_statisical_threshold_detection", "OC_median_correction", "smile_and_keystone", "MNF", "geometric_registration", "CCSDS123_B2_sw"]
-p0 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x"]
-p1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "x"]
+p1_c1 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_hw"] #infeasable sample
+p2_c1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_hw"]
+p3_c1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CCSDS123_B1_hw"]
+p4_c1 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B1_hw"]
+p5_c1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "CCSDS123_B1_hw"]
+p6_c1 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B1_hw"]
+p7_c1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "CCSDS123_B1_hw"]
+p8_c1 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "ICA", "x", "CCSDS123_B1_hw"]
+p9_c1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "MNF", "x", "CCSDS123_B1_hw"]
+p10_c1 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "MNF", "x", "CCSDS123_B1_hw"]
 
-pNMF = ["x", "x", "x", "x", "x", "x", "x", "MNF", "x", "x"]
+#B2 (hw)
 
-#compression pipelines:
-p2 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "F_MGD_hw"]
-p3 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "F_MGD_hw"]
-p4 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "SAM_hw"]
-p5 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "SAM_hw"]
+p1_c2 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"] #infeasable sample
+p2_c2 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"]
+p3_c2 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CCSDS123_B2_hw"]
+p4_c2 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B2_hw"]
+p5_c2 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "CCSDS123_B2_hw"]
+p6_c2 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B2_hw"]
 
+#B1 (sw)
 
-p6 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_hw"]
-p7 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_hw"]
+p1_c3 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_sw"] #infeasable sample
+p2_c3 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_sw"]
+p3_c3 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CCSDS123_B1_sw"]
+p4_c3 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B1_sw"]
+p5_c3 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B1_sw"]
+p6_c3 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "CCSDS123_B1_sw"]
+p7_c3 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B1_sw"]
+p8_c3 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B1_sw"]
 
-p8 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CEM_hw"]
-p9 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CEM_hw"]
-p10 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "ACE_hw"]
-p11 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "ACE_hw"]
-p12 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "ASMF_hw"]
-p13 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "ASMF_hw"]
+#B2 (sw)
 
-
-
-p14 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"]
-p15 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"]
-
-p16 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "SAM_sw"]
-p17 = ["spectral_binning", "x", "x", "radiometric_calibration", "x", "x", "x", "x", "x", "SAM_sw"]
-p18 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "SAM_sw"]
-
-p19 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_sw"]
-p20 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_sw"]
-
-p21 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "x"]
-p22 = ["spectral_binning", "x", "x", "radiometric_calibration", "x", "x", "x", "PCA_hw", "x", "x"]
-p23 = ["x", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "x"]
-
-"""
-p21 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "SVM"]
-p22 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "SVM"]
-
-p23 = ["spectral_binning", "x", "x", "radiometric_calibration", "x", "x", "smile_and_keystone", "x", "x", "SVM"]
-p24 = ["spectral_binning", "x", "x", "radiometric_calibration", "x", "x", "x", "x", "x", "SVM"]
-p25 = ["spectral_binning", "x", "x", "x", "x", "x", "smile_and_keystone", "x", "x", "SVM"]
-
-p26 = ["spectral_binning", "x", "x", "radiometric_calibration", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "x", "x", "SVM"]
-p27 = ["spectral_binning", "x", "x", "radiometric_calibration", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "PCA_hw", "x", "SVM"]
-
-p28 = ["spectral_binning", "x", "x", "radiometric_calibration", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "x", "geometric_registration", "SVM"]
-p29 = ["spectral_binning", "x", "x", "radiometric_calibration", "statisical_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "PCA_hw", "geometric_registration", "SVM"]
-"""
+p1_c4 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_sw"] #infeasable sample
+p2_c4 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_sw"]
+p3_c4 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CCSDS123_B2_sw"]
+p4_c4 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B2_sw"]
+p5_c4 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B2_sw"]
+p6_c4 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "CCSDS123_B2_sw"]
+p7_c4 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B2_sw"]
+p8_c4 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B2_sw"]
+p9_c4 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "MNF", "x", "CCSDS123_B2_sw"]
+p10_c4 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "MNF", "x", "CCSDS123_B2_sw"]
+p11_c4 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "CCSDS123_B2_sw"]
+p12_c4 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "ICA", "x", "CCSDS123_B2_sw"]
 
 
 
 
+compression_vec = [p0, p1_c1, p2_c1, p3_c1, p4_c1, p5_c1, p6_c1, p7_c1, p8_c1, p9_c1, p10_c1, \
+					p1_c2, p2_c2, p3_c2, p4_c2, p5_c2, p6_c2, \
+					p1_c3, p2_c3, p3_c3, p4_c3, p5_c3, p6_c3, p7_c3, p8_c3, \
+					p1_c4, p2_c4, p3_c4, p4_c4, p5_c4, p6_c4, p7_c4, p8_c4, p9_c4, p10_c4, p11_c4, p12_c4]
 
-#Legg inn for resten av de interessante pipelinene.
-
-
-pipeline_vec_low_runtime = [p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23]
-pipeline_vec = pipeline_vec_low_runtime
-
-pipeline_vec_all = [p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23] #, p24, p25, p26, p27, p28, p29]#, p30, p31, p3, p33, p34, p35, p36, p37, p38, p39, p40, p41, p4, p43, p44, p45, p46, p47, p48, p49, pNMF]
-#pipeline_vec = pipeline_vec_all
-
-
+pipeline_vec = compression_vec
 
 
 #Make pipeline names in correct order:
@@ -127,7 +116,7 @@ def make_pipeline_names_in_pipeline_order(pipeline_vec, pipeline_sizes):
 		name = ""
 	return names_pipelines_vec
 
-
+pipeline_sizes = 10
 print(make_pipeline_names_in_pipeline_order(pipeline_vec, pipeline_sizes))
 
 
@@ -153,9 +142,10 @@ def make_pipeline_plot(pipeline_vec):
 
 	##### Plotting cost Vs. accuracy #####
 	plt.figure(1, figsize=(17,15), tight_layout=True)
+	random.seed(1)
 	for i in range(0, len(pipeline_vec)):
 		#plot samples:
-		plt.plot(samples[i][3]*freq, samples[i][2], "o", color=colors_all[i])
+		plt.plot(samples[i][3]*freq, samples[i][2], "o", color=RGB(random.randrange(2, 200, 5), random.randrange(2, 200, 5), random.randrange(2, 200, 5)))
 
 		#plot sample index/marker:
 		plt.annotate(i, (samples[i][3]*freq, samples[i][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
@@ -163,7 +153,7 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		plt.text(1e4, 0.86-i*0.005, i_and_name, color = colors_all[i])
+		plt.text(1e4, 0.86-i*0.005, i_and_name, color=RGB(random.randrange(2, 200, 5), random.randrange(2, 200, 5), random.randrange(2, 200, 5)))
 
 	plt.grid()
 	plt.title('Cost Vs. Accuracy')
@@ -178,9 +168,10 @@ def make_pipeline_plot(pipeline_vec):
 
 	##### Plotting processing + downloading time Vs. accuracy #####
 	plt.figure(2, figsize=(17,15), tight_layout=True)
+	random.seed(1)
 	for i in range(0, len(pipeline_vec)):
 		#plot samples:
-		plt.plot(samples[i][3]*freq+samples[i][1]*16*download_rate, samples[i][2], "o", color=colors_all[i])
+		plt.plot(samples[i][3]*freq+samples[i][1]*16*download_rate, samples[i][2], "o", color=RGB(random.randrange(2, 200, 5), random.randrange(2, 200, 5), random.randrange(2, 200, 5)))
 
 		#plot sample index/marker:
 		plt.annotate(i, (samples[i][3]*freq+samples[i][1]*16*download_rate, samples[i][2]), textcoords="offset points", xytext=(0,10), color="black", ha='center')
@@ -188,7 +179,7 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		plt.text(1e4, 0.86-i*0.0051, i_and_name, color = colors_all[i])
+		plt.text(1e4, 0.86-i*0.0051, i_and_name, color=RGB(random.randrange(2, 200, 5), random.randrange(2, 200, 5), random.randrange(2, 200, 5)))
 
 	best_case = frames*framesamples*1*16*download_rate
 	bands_10 = frames*framesamples*10*16*download_rate
@@ -196,12 +187,14 @@ def make_pipeline_plot(pipeline_vec):
 	divided_4 = frames*framesamples*120/4*16*download_rate
 	divided_2 = frames*framesamples*120/2*16*download_rate
 	worst_case = frames*framesamples*120*16*download_rate
+	raw_cube = frames*framesamples*1080*16*download_rate
 	plt.plot(best_case, 0.8, "o", color="black")
 	plt.plot(bands_10, 0.8, "o", color="black")
 	plt.plot(bands_20, 0.8, "o", color="black")
 	plt.plot(divided_4, 0.8, "o", color="black")
 	plt.plot(divided_2, 0.8, "o", color="black")
 	plt.plot(worst_case, 0.8, "o", color="black")
+	plt.plot(raw_cube, 0.8, "o", color="black")
 	
 	plt.text(best_case, 0.8, "B", color = "black")
 	plt.text(bands_10, 0.8, "X", color = "black")
@@ -209,9 +202,8 @@ def make_pipeline_plot(pipeline_vec):
 	plt.text(divided_4, 0.8, "IV", color = "black")
 	plt.text(divided_2, 0.8, "II", color = "black")
 	plt.text(worst_case, 0.8, "W", color = "black")
-	print("divided_4", divided_4)
-	print("divided_2", divided_2)
-	print("worst_case", worst_case)
+	plt.text(raw_cube, 0.8, "R", color = "black")
+	
 
 	plt.grid()
 	plt.title('Processing + Downloading Time Vs. Accuracy')
@@ -226,11 +218,12 @@ def make_pipeline_plot(pipeline_vec):
 
 	##### Plotting cost Vs. MUV(accuracy, data output) #####
 	plt.figure(3, figsize=(17,15), tight_layout=True)
+	random.seed(1)
 	for i in range(0, len(pipeline_vec)):
 		#plot samples:
 		mvu = svu_acc_weight*make_SVU(svu_graph_accuracy, samples[i][2]) + svu_size_weight*make_SVU(svu_graph_size, samples[i][1]*16)
 		cost = samples[i][3]*freq
-		plt.plot(cost, mvu, "o", color=colors_all[i])
+		plt.plot(cost, mvu, "o", color=RGB(random.randrange(2, 200, 5), random.randrange(2, 200, 5), random.randrange(2, 200, 5)))
 
 		#plot sample index/marker:
 		plt.annotate(i, (cost, mvu), textcoords="offset points", xytext=(0,10), color="black", ha='center')
@@ -238,7 +231,7 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		plt.text(1e4, 1-i*0.04, i_and_name, color = colors_all[i])
+		plt.text(1e4, 1-i*0.04, i_and_name, color=RGB(random.randrange(2, 200, 5), random.randrange(2, 200, 5), random.randrange(2, 200, 5)))
 
 	plt.grid()
 	title_name = 'Cost Vs. MVU (Acc: ' + str(svu_acc_weight) + ' + Size: ' + str(svu_size_weight) + ')'

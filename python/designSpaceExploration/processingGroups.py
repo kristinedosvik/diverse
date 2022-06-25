@@ -130,7 +130,9 @@ def g31_algorithm(algorithm_detection, algorithm_correction, frames, framesample
     elif(algorithm_detection == "correlation_detection"):
         new_accuracy = 1
         cost = OC_correlation_detection(frames, framesamples, bands, num_regions)
-
+    elif(algorithm_detection == "mean_threshold_detection"):
+        new_accuracy = 1
+        cost = OC_mean_threshold_detection(frames, framesamples, bands)
     elif (algorithm_detection == "x" or algorithm_correction == "x"):
         new_frame_samples = framesamples
         new_frames = frames
@@ -454,6 +456,9 @@ def add_processingmodule_name_to_string(old_string, processing_name):
 
     elif(processing_name == "correlation_detection"):
         old_string += " Bad Pix Det (corr),"
+
+    elif(processing_name == "mean_threshold_detection"):
+        old_string += " Bad Pix Det (mean),"
 
     elif(processing_name == "nearest_neighbour_correction"):
         old_string += " Bad Pix Corr (neighbor),"
