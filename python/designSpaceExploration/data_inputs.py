@@ -19,7 +19,7 @@ bands_2_reduction = 20
 binningfactor = 9
 camera_linse_binning = -1
 whatToBin = "frames"
-num_regions = 80
+num_regions = 8 #num neighbors for bad pixel detection
 bad_samples = 600
 neigbourlevel = 2
 cardinal = 1
@@ -35,8 +35,8 @@ dot_product_blocks = 1 #framesamples
 kernel_element = 9
 fractional_domains = 10
 num_neighbours = outer_window-inner_window # 15*15-3*3
-num_classes = 9#4 
-total_num_support_vectors = 4757#1096
+num_classes = 4#9 
+total_num_support_vectors = 1096#4757
 x_ = 0
 
 

@@ -125,7 +125,7 @@ def matrix_multiplication(nr_rows_m1, nr_coloumns_m1, nr_rows_m2, nr_coloumns_m2
 def jacobi_algorithm_sw(matrix_size, extra_iterations):
     #print("J SW:")
     #print(matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size))
-    return (matrix_size/2*(matrix_size-1)+extra_iterations)*(matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size)+dot_product_hw(2)*matrix_size*2 + matrix_size/2*13)
+    return (matrix_size/2*(matrix_size-1)+extra_iterations)*(matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size)+dot_product_sw(2)*matrix_size*2 + matrix_size/2*13)
 
 def qr_eigen_vec_val(bands, iterations):
     qr = bands*(distance(bands) + bands*division()) + (bands**2/2-bands/2)*(dot_product(bands)+bands*subtraction())
