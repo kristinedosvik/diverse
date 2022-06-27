@@ -29,7 +29,7 @@ def g11_algorithm(algorithm, frames, framesamples, bands, accuracy, binningfacto
         cost = 0
 
     else:
-        print("Error", algorithm)
+        print("Error spec: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
@@ -54,7 +54,7 @@ def g12_algorithm(algorithm, frames, framesamples, bands, accuracy, binningfacto
         cost = 0
 
     else:
-        print("Error", algorithm)
+        print("Error spat: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
@@ -81,12 +81,12 @@ def g21_algorithm(algorithm, frames, framesamples, bands, accuracy):
         cost = 0
 
     else:
-        print("Error", algorithm)
+        print("Error thumb: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def g22_algorithm(algorithm, frames, framesamples, bands, accuracy):
+def g22_algorithm(algorithm, frames, framesamples, bands, accuracy, gLast):
     
     new_frame_samples = 0
     new_frames = 0
@@ -96,7 +96,10 @@ def g22_algorithm(algorithm, frames, framesamples, bands, accuracy):
     
     if (algorithm == "radiometric_calibration"):
         new_frames, new_frame_samples, new_bands = DOS_radiometricCalibration(frames, framesamples, bands)
-        new_accuracy = 1.05
+        if(gLast == "SAM_sw" or gLast == "CEM_sw" or gLast == "ACE_sw" or gLast == "SAM_hw" or gLast == "CEM_hw" or gLast == "ACE_hw" or gLast == "ASMF_hw"):
+            new_accuracy = 1.05
+        elif(gLast == "GRX_sw"): # usikker på om denne er i pipelinen
+            new_accuracy = 1.02
         cost = OC_radiometricCalibration(frames, framesamples, bands)
 
     elif (algorithm == "x"):
@@ -107,7 +110,7 @@ def g22_algorithm(algorithm, frames, framesamples, bands, accuracy):
         cost = 0
 
     else:
-        print("Error", algorithm)
+        print("Error R-cal: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
@@ -141,7 +144,7 @@ def g31_algorithm(algorithm_detection, algorithm_correction, frames, framesample
         cost = 0
 
     else:
-        print("Error", algorithm_detection)
+        print("Error bad P det: ", algorithm_detection)
 
     #correction:
     if(algorithm_correction == "nearest_neighbour_correction"):
@@ -163,12 +166,12 @@ def g31_algorithm(algorithm_detection, algorithm_correction, frames, framesample
         cost = 0
 
     else:
-        print("Error", algorithm_correction)
+        print("Error bad P corr: ", algorithm_correction)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def g32_algorithm(algorithm, frames, framesamples, bands, accuracy):
+def g32_algorithm(algorithm, frames, framesamples, bands, accuracy, gLast):
     
     new_frame_samples = 0
     new_frames = 0
@@ -178,7 +181,10 @@ def g32_algorithm(algorithm, frames, framesamples, bands, accuracy):
     
     if (algorithm == "smile_and_keystone"):
         new_frames, new_frame_samples, new_bands = DOS_smile_and_keystone(frames, framesamples, bands)
-        new_accuracy = 1.05
+        if(gLast == "SAM_sw" or gLast == "CEM_sw" or gLast == "ACE_sw" or gLast == "SAM_hw" or gLast == "CEM_hw" or gLast == "ACE_hw" or gLast == "ASMF_hw"):
+            new_accuracy = 1.05
+        else:
+            new_accuracy = accuracy
         cost = OC_smile_and_keystone(frames, framesamples, bands)
 
 
@@ -190,14 +196,19 @@ def g32_algorithm(algorithm, frames, framesamples, bands, accuracy):
         cost = 0
 
     else:
-        print("Error", algorithm)
+        print("Error Snk: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
 
 def g33_algorithm(algorithm, frames, framesamples, bands, accuracy):
-    
+    if(algorithm != "x"):
+        print("Error: Do not use this group, g33")
+    return 0, frames, framesamples, bands, accuracy
+
+
+    """
     new_frame_samples = 0
     new_frames = 0
     new_bands = 0
@@ -221,7 +232,7 @@ def g33_algorithm(algorithm, frames, framesamples, bands, accuracy):
         print("Error", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
-
+"""
 
 def g41_algorithm(algorithm, frames, framesamples, bands, accuracy, reducedbands, dot_product_blocks, iterations):
 
@@ -257,12 +268,12 @@ def g41_algorithm(algorithm, frames, framesamples, bands, accuracy, reducedbands
         cost = 0
 
     else:
-        print("Error", algorithm)
+        print("Error dimRed: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def g51_algorithm(algorithm, frames, framesamples, bands, accuracy, frame_increase_factor, framesample_increase_factor):
+def g51_algorithm(algorithm, frames, framesamples, bands, accuracy, frame_increase_factor, framesample_increase_factor, gLast):
     new_frame_samples = 0
     new_frames = 0
     new_bands = 0
@@ -275,7 +286,10 @@ def g51_algorithm(algorithm, frames, framesamples, bands, accuracy, frame_increa
         cost = OC_georeferencing(frames, framesamples, bands)
     elif (algorithm == "geometric_registration"):
         new_frames, new_frame_samples, new_bands = DOS_geometric_registration(frames, framesamples, bands, frame_increase_factor, framesample_increase_factor)
-        new_accuracy = 1.05
+        if (gLast == "GRX_sw" or gLast == "LRX_sw" or gLast == "F_MGD_hw" or gLast == "FrFT_RX_sw" or gLast == "CRD_sw"):
+            new_accuracy = 1.05
+        else:
+            new_accuracy = accuracy
         cost = OC_geometric_registration(frames, framesamples, bands, frame_increase_factor, framesample_increase_factor)
 
     elif (algorithm == "x"):
@@ -286,7 +300,7 @@ def g51_algorithm(algorithm, frames, framesamples, bands, accuracy, frame_increa
         cost = 0
 
     else:
-        print("Error", algorithm)
+        print("Error georef/reg: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
@@ -387,7 +401,7 @@ def gLast_algorithm(algorithm, frames, framesamples, bands, accuracy, outer_wind
         cost = 0    
 
     else:
-        print("Error", algorithm)
+        print("Error last: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
@@ -395,6 +409,8 @@ def gLast_algorithm(algorithm, frames, framesamples, bands, accuracy, outer_wind
 def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_factor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors):
     cost = 0
     accuracy = 0.84
+
+    gLast = pipeline[9]
     
     cost_group, frames, frame_sample, bands, accuracy_group = g11_algorithm(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor, camera_linse_binning)
     cost += cost_group
@@ -408,7 +424,8 @@ def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_fa
     cost += cost_group
     accuracy *= accuracy_group
 
-    cost_group, frames, frame_sample, bands, accuracy_group = g22_algorithm(pipeline[3], frames, frame_samples, bands, accuracy)
+    #geometric calibration:
+    cost_group, frames, frame_sample, bands, accuracy_group = g22_algorithm(pipeline[3], frames, frame_samples, bands, accuracy, gLast)
     cost += cost_group
     accuracy *= accuracy_group
     
@@ -416,7 +433,8 @@ def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_fa
     cost += cost_group
     accuracy *= accuracy_group
   
-    cost_group, frames, frame_sample, bands, accuracy_group = g32_algorithm(pipeline[6], frames, frame_samples, bands, accuracy)
+    #snk:
+    cost_group, frames, frame_sample, bands, accuracy_group = g32_algorithm(pipeline[6], frames, frame_samples, bands, accuracy, gLast)
     cost += cost_group
     accuracy *= accuracy_group
 
@@ -425,8 +443,8 @@ def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_fa
     cost += cost_group
     accuracy *= accuracy_group
     
-
-    cost_group, frames, frame_sample, bands, accuracy_group = g51_algorithm(pipeline[8], frames, frame_samples, bands, accuracy, frame_increase_factor, framesample_increase_factor)
+    #georeg
+    cost_group, frames, frame_sample, bands, accuracy_group = g51_algorithm(pipeline[8], frames, frame_samples, bands, accuracy, frame_increase_factor, framesample_increase_factor, gLast)
     cost += cost_group
     accuracy *= accuracy_group
 
@@ -548,6 +566,7 @@ def add_processingmodule_name_to_string(old_string, processing_name):
         print("Unknown name, ", processing_name)   
 
     return old_string
+
 
 def RGB(red, green, blue):
     rgb = "#"

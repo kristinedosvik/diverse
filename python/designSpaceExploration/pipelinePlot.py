@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from processingGroups import *
 from data_inputs import *
+from pipelines import *
 import random
 
 
@@ -43,71 +44,6 @@ def make_SVU(svu_graph, svu_sample):
     return svu_value
 
 
-p0 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x"] # infeasable sample
-
-#B1 (hw)
-
-p1_c1 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_hw"] #infeasable sample
-p2_c1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_hw"]
-p3_c1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CCSDS123_B1_hw"]
-p4_c1 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B1_hw"]
-p5_c1 = ["spectral_binning", "x", "x", "smile_and_keystone", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B1_hw"]
-p6_c1 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "radiometric_calibration", "PCA_hw", "x", "CCSDS123_B1_hw"]
-p7_c1 = ["spectral_binning", "x", "x", "smile_and_keystone", "mean_threshold_detection", "nearest_neighbour_correction", "radiometric_calibration", "PCA_hw", "x", "CCSDS123_B1_hw"]
-
-p8_c1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "CCSDS123_B1_hw"]
-p9_c1 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B1_hw"]
-p10_c1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "CCSDS123_B1_hw"]
-p11_c1 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "ICA", "x", "CCSDS123_B1_hw"]
-p12_c1 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "MNF", "x", "CCSDS123_B1_hw"]
-p13_c1 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "MNF", "x", "CCSDS123_B1_hw"]
-
-#B2 (hw)
-"""
-p1_c2 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"] #infeasable sample
-p2_c2 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"]
-p3_c2 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CCSDS123_B2_hw"]
-p4_c2 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B2_hw"]
-p5_c2 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "CCSDS123_B2_hw"]
-p6_c2 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B2_hw"]
-
-#B1 (sw)
-
-p1_c3 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_sw"] #infeasable sample
-p2_c3 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B1_sw"]
-p3_c3 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CCSDS123_B1_sw"]
-p4_c3 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B1_sw"]
-p5_c3 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B1_sw"]
-p6_c3 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "CCSDS123_B1_sw"]
-p7_c3 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B1_sw"]
-p8_c3 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B1_sw"]
-
-#B2 (sw)
-
-p1_c4 = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_sw"] #infeasable sample
-p2_c4 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_sw"]
-p3_c4 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CCSDS123_B2_sw"]
-p4_c4 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B2_sw"]
-p5_c4 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "x", "PCA_hw", "x", "CCSDS123_B2_sw"]
-p6_c4 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "CCSDS123_B2_sw"]
-p7_c4 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B2_sw"]
-p8_c4 = ["spectral_binning", "x", "x", "x", "statisical_threshold_detection", "nearest_neighbour_correction", "x", "PCA_sw", "x", "CCSDS123_B2_sw"]
-p9_c4 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "MNF", "x", "CCSDS123_B2_sw"]
-p10_c4 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "MNF", "x", "CCSDS123_B2_sw"]
-p11_c4 = ["spectral_binning", "x", "x", "x", "x", "x", "x", "ICA", "x", "CCSDS123_B2_sw"]
-p12_c4 = ["spectral_binning", "x", "x", "x", "mean_threshold_detection", "nearest_neighbour_correction", "x", "ICA", "x", "CCSDS123_B2_sw"]
-"""
-
-
-
-compression_vec = [p0, p1_c1, p2_c1, p3_c1, p4_c1, p5_c1, p6_c1, p7_c1] #, p8_c1, p9_c1, p10_c1, p11_c1, p12_c1, p13_c1 \
-					#p1_c2, p2_c2, p3_c2, p4_c2, p5_c2, p6_c2, \
-					#p1_c3, p2_c3, p3_c3, p4_c3, p5_c3, p6_c3, p7_c3, p8_c3, \
-					#p1_c4, p2_c4, p3_c4, p4_c4, p5_c4, p6_c4, p7_c4, p8_c4, p9_c4, p10_c4, p11_c4, p12_c4 \
-					#]
-
-pipeline_vec = compression_vec
-
 
 #Make pipeline names in correct order:
 def make_pipeline_names_in_pipeline_order(pipeline_vec, pipeline_sizes):
@@ -139,7 +75,7 @@ def make_pipeline_plot(pipeline_vec):
 
 	#Prepare MVU score:
 	svu_graph_size = create_svu_predefined_graph_points_outputted_data_size(frames, framesamples, bands)
-	svu_graph_accuracy = [[0.4,0], [0.7,0.4], [0.8, 0.8], [1,1]]
+	svu_graph_accuracy = [[0.4,0], [0.6, 0.1], [0.7,0.4], [0.85, 0.9], [1,1]]
 
 	svu_acc_weight = 0.5
 	svu_size_weight = 0.5
@@ -264,13 +200,13 @@ def make_pipeline_plot(pipeline_vec):
 	##### Plotting SVU graf #####
 	svu_graph_size_x = [row[0] for row in svu_graph_size]
 	svu_graph_size_y = [row[1] for row in svu_graph_size]
-	plt.figure(4, figsize=(17,4), tight_layout=True)
+	plt.figure(4, figsize=(4,4), tight_layout=True)
 	plt.plot(svu_graph_size_x, svu_graph_size_y, color="grey")
 	plt.xscale("linear")
 	
 	svu_graph_accuracy_x = [row[0] for row in svu_graph_accuracy]
 	svu_graph_accuracy_y = [row[1] for row in svu_graph_accuracy]
-	plt.figure(5, figsize=(17,4), tight_layout=True)
+	plt.figure(5, figsize=(4,4), tight_layout=True)
 	plt.plot(svu_graph_accuracy_x, svu_graph_accuracy_y, color="blue")
 	plt.xscale("linear")
 	#"""
