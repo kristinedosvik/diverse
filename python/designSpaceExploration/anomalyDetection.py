@@ -20,8 +20,12 @@ def OC_LRX(frames, framesamples, bands, outer_window, inner_window):
 
 
 def OC_CRD(frames, framesamples, bands, num_neighbours):
-    return (matrix_multiplication(num_neighbours, bands, bands, num_neighbours) + bands*addition() + matrix_inversion(num_neighbours) + matrix_vector_multiplication(num_neighbours, bands) + matrix_vector_multiplication(num_neighbours, num_neighbours) \
-    + matrix_vector_multiplication(bands, num_neighbours) + bands * subtraction() + distance(bands))*frames*framesamples
+    return correlation_matrix(num_neighbours, bands) - (num_neighbours*bands**2*division()) + bands*addition() + matrix_inversion(bands) + matrix_vector_multiplication(num_neighbours, bands) + matrix_vector_multiplication(num_neighbours, num_neighbours) \
+    + (frames*framesamples-1)*(update_correlation_matrix(2, bands) - (2*bands**2*division()) + bands*addition() + matrix_inversion(bands) + matrix_vector_multiplication(num_neighbours, bands) + matrix_vector_multiplication(num_neighbours, num_neighbours)) \
+    + frames*framesamples*(matrix_vector_multiplication(bands, num_neighbours) + bands*subtraction() + distance(bands))
+
+    #return (matrix_multiplication(num_neighbours, bands, bands, num_neighbours) + bands*addition() + matrix_inversion(num_neighbours) + matrix_vector_multiplication(num_neighbours, bands) + matrix_vector_multiplication(num_neighbours, num_neighbours) \
+    #+ matrix_vector_multiplication(bands, num_neighbours) + bands * subtraction() + distance(bands))*frames*framesamples
 
 
 def OC_FrFT_RX(frames, framesamples, bands, fractional_domains):

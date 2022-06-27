@@ -226,7 +226,7 @@ for i in range(0, len(algorithms_1)):
 
 #### bands = bands_2 ####
 for i in range(0, len(algorithms_2)):
-	if(i <= 16):
+	if(i <= 16 and (i != 11 and i != 12)):
 		continue
 	plt.plot(algorithms_2[i]*freq, -10, "o", color = color_cost_2[i])
 	plt.annotate(i, (algorithms_2[i]*freq, -10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
