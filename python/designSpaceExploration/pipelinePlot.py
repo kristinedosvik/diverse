@@ -75,10 +75,10 @@ def make_pipeline_plot(pipeline_vec):
 
 	#Prepare MVU score:
 	svu_graph_size = create_svu_predefined_graph_points_outputted_data_size(frames, framesamples, bands)
-	svu_graph_accuracy = [[0.4,0], [0.6, 0.1], [0.7,0.4], [0.85, 0.9], [1,1]]
+	svu_graph_accuracy = [[0.4,0], [0.6, 0.1], [0.7,0.4], [0.85, 0.9], [0.9, 0.98], [1,1]]
 
-	svu_acc_weight = 0.5
-	svu_size_weight = 0.5
+	svu_acc_weight = 0.6
+	svu_size_weight = 0.4
 
 
 	##### Plotting cost Vs. accuracy #####
@@ -191,7 +191,7 @@ def make_pipeline_plot(pipeline_vec):
 	#plt.xlim(1e-1, 1e6)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
-	#plt.show()
+	plt.show()
 	#plt.savefig("plot_low_cost_mvu.png")
 
 
@@ -200,15 +200,18 @@ def make_pipeline_plot(pipeline_vec):
 	##### Plotting SVU graf #####
 	svu_graph_size_x = [row[0] for row in svu_graph_size]
 	svu_graph_size_y = [row[1] for row in svu_graph_size]
-	plt.figure(4, figsize=(4,4), tight_layout=True)
+	plt.figure(4, figsize=(7,4), tight_layout=True)
 	plt.plot(svu_graph_size_x, svu_graph_size_y, color="grey")
 	plt.xscale("linear")
+	#plt.savefig("svu_size.png")
 	
 	svu_graph_accuracy_x = [row[0] for row in svu_graph_accuracy]
 	svu_graph_accuracy_y = [row[1] for row in svu_graph_accuracy]
-	plt.figure(5, figsize=(4,4), tight_layout=True)
+	plt.figure(5, figsize=(7,4), tight_layout=True)
 	plt.plot(svu_graph_accuracy_x, svu_graph_accuracy_y, color="blue")
+	plt.xlim(0,1)
 	plt.xscale("linear")
+	#plt.savefig("svu_acc.png")
 	#"""
 
 	plt.show()
