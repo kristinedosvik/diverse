@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 def plot_ccsds_graph():
 	ccsds123_graph = [[0,1], [128,0.9], [256, 0.1], [1024, 0]]
@@ -10,4 +11,7 @@ def plot_ccsds_graph():
 	#plt.savefig("ccsds123_b2_graph.png")
 	plt.show()
 
-plot_ccsds_graph()
+#plot_ccsds_graph()
+
+
+
