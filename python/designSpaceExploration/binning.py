@@ -29,46 +29,91 @@ def OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin):
         return ((division() + (binningfactor-1) * addition()) * bands * np.floor(framesamples/binningfactor) + (division() + (framesamples%binningfactor - 1)*addition())*bands)*frames
 
 
+def resolution_estimation(graph, sample):
+    
+    val = 1
+
+    for i in range(1, len(graph)): #skal ikke denne først sjekke 40 så 60?
+        if(sample < graph[i][0] and sample >= graph[i-1][0]):
+            a = (graph[i][1] - graph[i-1][1])/(graph[i][0] - graph[i-1][0])
+            val = a*sample + graph[i-1][1] - a*graph[i-1][0]
+        
+    if(sample > graph[-1][0]):
+        val = 0
+    val
+
+    return val
+
+
+def snr_of_binning(b):    
+    return 120*np.log(b)+110
+
+#import matplotlib.pyplot as plt
+def binning_accuracy(binningfactor, spec_or_spat):
+    #snr, binningfactor
+    x = []
+    y = []
+    for i in range(0, 30):
+        x.append(i)
+        y.append(snr_of_binning(i))
+
+
+    #resolution, accuracy
+    graph_res_dec = [[0,1],[1,1],[2,0.90],[3,0.80],[4,0.60],[5,0.30],[5,0.01],[6,0],[30,0]]
+    x_ = [row[0] for row in graph_res_dec]
+    y_ = [row[1] for row in graph_res_dec]
+    #plt.plot(x_, y_, color = "grey")
+    #plt.savefig("binning_res.png")
+    #plt.show()
+
+
+
+    x_tot = []
+    y_tot = []
+
+    w_snr = 0.0004
+    w_res = 1
+
+    #spat:
+    graph_binning_acc_spat = [[0,1]]
+
+    for i in range(1,30):
+        res = resolution_estimation(graph_res_dec, i)
+        y_tot = w_snr*snr_of_binning(i) + w_res*res
+        graph_binning_acc_spat.append([i,y_tot])
+
+    x_spat = [row[0] for row in graph_binning_acc_spat]
+    y_spat = [row[1] for row in graph_binning_acc_spat]    
+    #plt.plot(x_spat, y_spat, color = "grey")
+    #plt.savefig("binning_res_snr_spat.png")
+    #plt.show()
+
+    #spec:
+    graph_binning_acc_spec = [[0,1]]
+
+    for i in range(1,30):
+        res = resolution_estimation(graph_res_dec, i)
+        y_tot = w_snr*snr_of_binning(i) + w_res*res
+        graph_binning_acc_spec.append([i*9,y_tot])
+
+    x_spec = [row[0] for row in graph_binning_acc_spec]
+    y_spec = [row[1] for row in graph_binning_acc_spec]    
+    #plt.plot(x_spec, y_spec, color = "grey")
+    #plt.savefig("binning_res_snr_spec.png")
+    #plt.show()
+
+    if (spec_or_spat == "spec"):
+        return resolution_estimation(graph_binning_acc_spec, binningfactor)
+    else:
+        return resolution_estimation(graph_binning_acc, binningfactor)
+  
+binningfactor = 9
+binning_accuracy(binningfactor, "spec")
+
+
 def A_spectral_binning(bands, binningfactor, camera_linse_binning):
-    return resolution_factor_spectral(bands, binningfactor, camera_linse_binning) * (1 + snr_factor_spectral(binningfactor)/10000)
+    return binning_accuracy(binningfactor, "spec")
 
 
 def A_spatial_binning(frames, framesamples, binningfactor, whatToBin):
-    return resolution_factor_spatial(frames, framesamples, binningfactor, whatToBin) * (1 + snr_factor_spatial(binningfactor)/100000)
-
-
-def resolution_factor_spectral(bands, b, camera_linse_binning):
-    if (camera_linse_binning != -1):
-        #default:
-        camera_linse_binning = 9
-    
-    a = (0-1)/(bands/camera_linse_binning - camera_linse_binning)
-    x1 = 9
-    y1 = 1
-    y_ = a * (b- x1) + y1
-    if(y_ > 1):
-        return 1
-    else:
-        return y_
-
-def snr_factor_spectral(b):    
-    a = (150-45)/(18-1)
-    x1 = 1
-    y1 = 45
-    y_ = a * (b- x1) + y1
-    return y_
-
-
-def resolution_factor_spatial(frames, framesamples, b, whatToBin):
-    if(whatToBin == "frames"):
-        a = (0-1)/(frames-0)
-    else:
-        a = (0-1)/(framesamples-0)
-    x1 = 0
-    y1 = 1
-    y_ = a * (b- x1) + y1
-    return y_
-
-def snr_factor_spatial(b):    
-    return 120*np.log(b)+110
-
+    return binning_accuracy(binningfactor, "spat")
