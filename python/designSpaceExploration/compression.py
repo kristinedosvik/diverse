@@ -6,11 +6,36 @@ def DOS_CCSDS123_B1(frames, framesamples, bands):
     new_bands = bands
     return new_frames, new_frame_samples, new_bands
 
-def DOS_CCSDS123_B2(frames, framesamples, bands):
+def DOS_CCSDS123_B2(frames, framesamples, bands, absolute_error_value):
+    
+    a = (165 - 0)/(1024 - 0)
+    CR = a*absolute_error_value
+    
     new_frames = frames
-    new_frame_samples = framesamples/15 #?
+    new_frame_samples = framesamples/CR
     new_bands = bands
+
     return new_frames, new_frame_samples, new_bands
+
+
+ccsds123_graph = [[0,1], [128,0.9], [256, 0.1], [1024, 0]]
+def ccsds123_b2_accuracy_estimation(graph, sample):
+    val = 1
+
+    for i in range(1, len(graph)): #skal ikke denne først sjekke 40 så 60?
+        if(sample < graph[i][0] and sample >= graph[i-1][0]):
+            a = (graph[i][1] - graph[i-1][1])/(graph[i][0] - graph[i-1][0])
+            val = a*sample + graph[i-1][1] - a*graph[i-1][0]
+        
+    if(sample > graph[-1][0]):
+        val = 0
+    
+    return val
+
+def A_CCSDS123_B2(absolute_error_value):
+    return ccsds123_b2_accuracy_estimation(ccsds123_graph, absolute_error_value)
+
+
 
 def OC_CCSDS123_B1_sw(frames, framesamples, bands, P, bit_resolution):
     return frames * framesamples * bands \

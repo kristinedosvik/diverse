@@ -217,6 +217,7 @@ def make_pipeline_plot(pipeline_vec):
 	plt.show()
 
 
+
 print(framesamples*frames*120)
 print(framesamples*frames*120/2)
 make_pipeline_plot(pipeline_vec)

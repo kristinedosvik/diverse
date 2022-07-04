@@ -383,12 +383,12 @@ def gLast_algorithm(algorithm, frames, framesamples, bands, accuracy, outer_wind
         new_accuracy = 1
         cost = OC_CCSDS123_B1_hw(frames, framesamples, bands, P, D)
     elif (algorithm == "CCSDS123_B2_sw"):
-        new_frames, new_frame_samples, new_bands = DOS_CCSDS123_B2(frames, framesamples, bands)
-        new_accuracy = 0.9 #no idea
+        new_frames, new_frame_samples, new_bands = DOS_CCSDS123_B2(frames, framesamples, bands, absolute_error_value)
+        new_accuracy = A_CCSDS123_B2(absolute_error_value)
         cost = OC_CCSDS123_B2_sw(frames, framesamples, bands, P, D)
     elif (algorithm == "CCSDS123_B2_hw"):
-        new_frames, new_frame_samples, new_bands = DOS_CCSDS123_B2(frames, framesamples, bands)
-        new_accuracy = 0.9 #no idea
+        new_frames, new_frame_samples, new_bands = DOS_CCSDS123_B2(frames, framesamples, bands, absolute_error_value)
+        new_accuracy = A_CCSDS123_B2(absolute_error_value)
         cost = OC_CCSDS123_B2_hw(frames, framesamples, bands, P, D)
 
 

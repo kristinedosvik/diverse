@@ -33,67 +33,34 @@ def OC_ICA(frames, framesamples, bands, reducedbands, iterations):
     + bands * multiplication() + bands * addition() + sqrt() + bands * division()) \
     + matrix_multiplication(frames*framesamples, bands, bands, reducedbands) \
      
-def A_PCA(bands, reducedbands):
-    #based on 1752x3325x144 image, with 144 bands
-    c20 = 20
-    c15 = 15
-    c10 = 10
-    c5 = 5
-    c2 = 2
+
+PCA_graph_1 = [[1,0.632], [2,0.90], [3,0.98], [5,0.99], [10.0.995], [16,0.999]]
+PCA_graph_2 = [[1,0.903], [2,0.94], [3,0.98], [4,0.989], [5.0.992], [10,0.998], [24,0.999]]
+
+def PCA_accuracy_estimation(graph, sample):
+    val = 1
+
+    for i in range(1, len(graph)): #skal ikke denne først sjekke 40 så 60?
+        if(sample < graph[i][0] and sample >= graph[i-1][0]):
+            a = (graph[i][1] - graph[i-1][1])/(graph[i][0] - graph[i-1][0])
+            val = a*sample + graph[i-1][1] - a*graph[i-1][0]
+        
+    if(sample > graph[-1][0]):
+        val = 0.999
     
-    if (reducedbands > c20):
-        return 0.9653
-    elif(reducedbands > c15):
-        return 0.9652
-    elif(reducedbands > c20):
-        return 0.9651
-    elif(reducedbands > c5):
-        return 0.96
-    elif(reducedbands > c2):
-        return 0.925
-    else:
-        return 0
+    return val
+
+
+
+def A_PCA(bands, reducedbands):
+    a1 = PCA_accuracy_estimation(PCA_graph_1, reducedbands)
+    a2 = PCA_accuracy_estimation(PCA_graph_2, reducedbands)
+    return (a1+a2)/2
+
 
 def A_MNF(bands, reducedbands):
-    #based on 1752x3325x144 image, with 144 bands
-    c20 = 20
-    c15 = 15
-    c10 = 10
-    c5 = 5
-    c2 = 2
-    
-    if (reducedbands > c20):
-        return 0.9653
-    elif(reducedbands > c15):
-        return 0.9652
-    elif(reducedbands > c20):
-        return 0.965
-    elif(reducedbands > c5):
-        return 0.94
-    elif(reducedbands > c2):
-        return 0.924
-    else:
-        return 2
+    return A_PCA(bands, reducedbands)
 
 def A_ICA(bands, reducedbands):
-    #based on 1752x3325x144 image, with 144 bands
-    c20 = 20
-    c15 = 15
-    c10 = 10
-    c5 = 5
-    c2 = 2
-
-    if (reducedbands > c20):
-        return 0.951
-    elif(reducedbands > c15):
-        return 0.95
-    elif(reducedbands > c20):
-        return 0.9351
-    elif(reducedbands > c5):
-        return 0.934
-    elif(reducedbands > c2):
-        return 0.93
-    else:
-        return 4
-
+    return A_PCA(bands, reducedbands)*0.984
 
