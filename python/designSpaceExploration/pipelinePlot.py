@@ -5,6 +5,8 @@ from pipelines import *
 import random
 
 
+
+
 def create_svu_predefined_graph_points_outputted_data_size(frames, framesamples, bands):
     best_case = frames*framesamples*1*16
     bands_10 = frames*framesamples*10*16
@@ -65,7 +67,7 @@ def make_pipeline_plot(pipeline_vec):
 	#Make samples from pipelines:
 	samples = []
 	for i in range(0, len(pipeline_vec)):
-		sample = create_sample_by_pipeline(pipeline_vec[i], frames, framesamples, bands, binningfactor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors)
+		sample = create_sample_by_pipeline(pipeline_vec[i], frames, framesamples, bands, binningfactor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value)
 		#[pipeline, frames*frame_sample*bands, accuracy, cost]
 		#print(sample)
 		samples.append(sample)
@@ -108,12 +110,13 @@ def make_pipeline_plot(pipeline_vec):
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
 	#plt.show()
-	#plt.savefig("plot_low_coss_accuracy.png")
+	###plt.savefig("plot_low_cossanomalyacy.png")
 	"""
 
 
 	##### Plotting processing + downloading time Vs. accuracy #####
-	plt.figure(2, figsize=(17,15), tight_layout=True)
+	#plt.figure(2, figsize=(10,5), tight_layout=True)
+	plt.figure(2, figsize=(10,5), tight_layout=True)
 	random.seed(1)
 	for i in range(0, len(pipeline_vec)):
 		R = random.randrange(2, 200, 5)
@@ -128,7 +131,7 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		plt.text(1e4, 0.86-i*0.0051, i_and_name, color=RGB(R,G,B))
+		#plt.text(1e4, 0.86-i*0.0051, i_and_name, color=RGB(R,G,B))
 
 	best_case = frames*framesamples*1*16*download_rate
 	bands_10 = frames*framesamples*10*16*download_rate
@@ -137,36 +140,32 @@ def make_pipeline_plot(pipeline_vec):
 	divided_2 = frames*framesamples*120/2*16*download_rate
 	worst_case = frames*framesamples*120*16*download_rate
 	raw_cube = frames*framesamples*1080*16*download_rate
-	plt.plot(best_case, 0.8, "o", color="black")
-	plt.plot(bands_10, 0.8, "o", color="black")
-	plt.plot(bands_20, 0.8, "o", color="black")
-	plt.plot(divided_4, 0.8, "o", color="black")
-	plt.plot(divided_2, 0.8, "o", color="black")
-	plt.plot(worst_case, 0.8, "o", color="black")
-	plt.plot(raw_cube, 0.8, "o", color="black")
 	
-	plt.text(best_case, 0.8, "B", color = "black")
-	plt.text(bands_10, 0.8, "X", color = "black")
-	plt.text(bands_20, 0.8, "XX", color = "black")
-	plt.text(divided_4, 0.8, "IV", color = "black")
-	plt.text(divided_2, 0.8, "II", color = "black")
-	plt.text(worst_case, 0.8, "W", color = "black")
-	plt.text(raw_cube, 0.8, "R", color = "black")
+	plt.plot(best_case, 0.8, "o", color="black")
+	plt.plot(bands_20, 0.8, "o", color="black")
+	#plt.plot(worst_case, 0.8, "o", color="black")
+	
+	plt.text(best_case, 0.8, "  956 x 684 x 1", color = "black")
+	plt.text(bands_20, 0.8, "  956 x 684 x 20", color = "black")
+	#plt.text(worst_case, 0.8, "  956 x 684 x 120", color = "black")
+	
 	
 
 	plt.grid()
 	plt.title('Processing + Downloading Time Vs. Accuracy')
 	plt.xlabel('Processing + Downloading Time')
 	plt.ylabel('Accuracy')
-	##plt.xlim(1e-1, 1e6)
+	#plt.xlim(1e1, 2e1)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
-	#plt.show()
-	#plt.savefig("plot_low_cost_total_processing.png")
+	plt.savefig("plot_low_cost_total_processing_compression.png")
+	plt.show()
+	
 
 
 	##### Plotting cost Vs. MUV(accuracy, data output) #####
-	plt.figure(3, figsize=(17,15), tight_layout=True)
+	#plt.figure(3, figsize=(10,5), tight_layout=True)
+	plt.figure(3, figsize=(10,5), tight_layout=True)
 	random.seed(1)
 	for i in range(0, len(pipeline_vec)):
 		R = random.randrange(2, 200, 5)
@@ -183,7 +182,7 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		plt.text(1e4, 1-i*0.04, i_and_name, color=RGB(R,G,B))
+		#plt.text(1e4, 1-i*0.04, i_and_name, color=RGB(R,G,B))
 
 	plt.grid()
 	title_name = 'Cost Vs. MVU (Acc: ' + str(svu_acc_weight) + ' + Size: ' + str(svu_size_weight) + ')'
@@ -193,8 +192,9 @@ def make_pipeline_plot(pipeline_vec):
 	#plt.xlim(1e-1, 1e6)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
+	plt.savefig("plot_low_cost_mvu_compression.png")
 	plt.show()
-	#plt.savefig("plot_low_cost_mvu.png")
+	
 
 
 
@@ -205,7 +205,7 @@ def make_pipeline_plot(pipeline_vec):
 	plt.figure(4, figsize=(7,4), tight_layout=True)
 	plt.plot(svu_graph_size_x, svu_graph_size_y, color="grey")
 	plt.xscale("linear")
-	#plt.savefig("svu_size.png")
+	###plt.savefig(anomalyize.png")
 	
 	svu_graph_accuracy_x = [row[0] for row in svu_graph_accuracy]
 	svu_graph_accuracy_y = [row[1] for row in svu_graph_accuracy]
@@ -213,14 +213,21 @@ def make_pipeline_plot(pipeline_vec):
 	plt.plot(svu_graph_accuracy_x, svu_graph_accuracy_y, color="blue")
 	plt.xlim(0,1)
 	plt.xscale("linear")
-	#plt.savefig("svu_acc.png")
+	###plt.savefiganomalyacc.png")
 	plt.show()
 	"""
 
 	
 
-
-
-print(framesamples*frames*120)
-print(framesamples*frames*120/2)
-make_pipeline_plot(pipeline_vec)
+"""
+compression_pipelines
+classification_pipelines
+targetAnomalyHW_pipelines
+target_sw_pipelines
+anomaly_sw_pipelines
+"""
+make_pipeline_plot(compression_pipelines)
+#make_pipeline_plot(classification_pipelines)
+#make_pipeline_plot(targetAnomalyHW_pipelines)
+#make_pipeline_plot(target_sw_pipelines)
+#make_pipeline_plot(anomaly_sw_pipelines)
