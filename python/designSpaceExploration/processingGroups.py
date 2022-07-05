@@ -305,7 +305,7 @@ def g51_algorithm(algorithm, frames, framesamples, bands, accuracy, frame_increa
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def gLast_algorithm(algorithm, frames, framesamples, bands, accuracy, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors):
+def gLast_algorithm(algorithm, frames, framesamples, bands, accuracy, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value):
 
     new_frame_samples = 0
     new_frames = 0

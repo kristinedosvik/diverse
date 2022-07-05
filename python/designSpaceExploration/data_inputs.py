@@ -37,6 +37,7 @@ fractional_domains = 10
 num_neighbours = outer_window-inner_window # 15*15-3*3
 num_classes = 4#9 
 total_num_support_vectors = 1096#4757
+absolute_error_value = 64
 x_ = 0
 
 

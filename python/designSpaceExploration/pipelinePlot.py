@@ -82,6 +82,7 @@ def make_pipeline_plot(pipeline_vec):
 
 
 	##### Plotting cost Vs. accuracy #####
+	"""
 	plt.figure(1, figsize=(17,15), tight_layout=True)
 	random.seed(1)
 	for i in range(0, len(pipeline_vec)):
@@ -108,6 +109,7 @@ def make_pipeline_plot(pipeline_vec):
 	plt.xscale("log")
 	#plt.show()
 	#plt.savefig("plot_low_coss_accuracy.png")
+	"""
 
 
 	##### Plotting processing + downloading time Vs. accuracy #####
@@ -196,7 +198,7 @@ def make_pipeline_plot(pipeline_vec):
 
 
 
-	#"""
+	"""
 	##### Plotting SVU graf #####
 	svu_graph_size_x = [row[0] for row in svu_graph_size]
 	svu_graph_size_y = [row[1] for row in svu_graph_size]
@@ -212,9 +214,10 @@ def make_pipeline_plot(pipeline_vec):
 	plt.xlim(0,1)
 	plt.xscale("linear")
 	#plt.savefig("svu_acc.png")
-	#"""
-
 	plt.show()
+	"""
+
+	
 
 
 

@@ -34,8 +34,8 @@ def OC_ICA(frames, framesamples, bands, reducedbands, iterations):
     + matrix_multiplication(frames*framesamples, bands, bands, reducedbands) \
      
 
-PCA_graph_1 = [[1,0.632], [2,0.90], [3,0.98], [5,0.99], [10.0.995], [16,0.999]]
-PCA_graph_2 = [[1,0.903], [2,0.94], [3,0.98], [4,0.989], [5.0.992], [10,0.998], [24,0.999]]
+PCA_graph_1 = [[1,0.632], [2,0.90], [3,0.98], [5,0.99], [10,0.995], [16,0.999]]
+PCA_graph_2 = [[1,0.903], [2,0.94], [3,0.98], [4,0.989], [5,0.992], [10,0.998], [24,0.999]]
 
 def PCA_accuracy_estimation(graph, sample):
     val = 1
