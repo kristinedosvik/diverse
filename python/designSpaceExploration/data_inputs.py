@@ -9,7 +9,8 @@ freq_fast_mpd = 1/200000000
 freq_grx = 1/2.8e9
 freq_nmf = 1/3.6e9
 download_rate = dr1
-freq = freq_hypso1
+
+freq = freq_hypso1 #1/4.7e9 #freq_hypso1
 
 frames = 956#1#100#956#512#100#80#64#100#956#1000#956#614#350#956
 framesamples = 684#1600#245#100#684#512#300#100#64#100#684#245#684#512#350#684

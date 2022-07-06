@@ -96,7 +96,7 @@ def g22_algorithm(algorithm, frames, framesamples, bands, accuracy, gLast):
     
     if (algorithm == "radiometric_calibration"):
         new_frames, new_frame_samples, new_bands = DOS_radiometricCalibration(frames, framesamples, bands)
-        if(gLast == "SAM_sw" or gLast == "CEM_sw" or gLast == "ACE_sw" or gLast == "SAM_hw" or gLast == "CEM_hw" or gLast == "ACE_hw" or gLast == "ASMF_hw"):
+        if(gLast == "SAM_sw" or gLast == "CEM_sw" or gLast == "ACE_sw" or gLast == "SAM_hw" or gLast == "CEM_hw" or gLast == "ACE_hw" or gLast == "ASMF_hw" or gLast == "SVM"):
             new_accuracy = 1.05
         elif(gLast == "GRX_sw"): # usikker på om denne er i pipelinen
             new_accuracy = 1.02
@@ -181,7 +181,7 @@ def g32_algorithm(algorithm, frames, framesamples, bands, accuracy, gLast):
     
     if (algorithm == "smile_and_keystone"):
         new_frames, new_frame_samples, new_bands = DOS_smile_and_keystone(frames, framesamples, bands)
-        if(gLast == "SAM_sw" or gLast == "CEM_sw" or gLast == "ACE_sw" or gLast == "SAM_hw" or gLast == "CEM_hw" or gLast == "ACE_hw" or gLast == "ASMF_hw"):
+        if(gLast == "SAM_sw" or gLast == "CEM_sw" or gLast == "ACE_sw" or gLast == "SAM_hw" or gLast == "CEM_hw" or gLast == "ACE_hw" or gLast == "ASMF_hw" or gLast == "SVM"):
             new_accuracy = 1.05
         else:
             new_accuracy = accuracy

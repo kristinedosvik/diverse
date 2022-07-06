@@ -131,7 +131,7 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		#plt.text(1e4, 0.86-i*0.0051, i_and_name, color=RGB(R,G,B))
+		#plt.text(1e2, 0.86-i*0.0081, i_and_name, color=RGB(R,G,B))
 
 	best_case = frames*framesamples*1*16*download_rate
 	bands_10 = frames*framesamples*10*16*download_rate
@@ -158,7 +158,7 @@ def make_pipeline_plot(pipeline_vec):
 	#plt.xlim(1e1, 2e1)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
-	plt.savefig("plot_low_cost_total_processing_compression.png")
+	plt.savefig("plot_low_cost_total_processing_classification.png")
 	plt.show()
 	
 
@@ -182,24 +182,32 @@ def make_pipeline_plot(pipeline_vec):
 
 		#plot pipeline names:
 		i_and_name = str(i) + ": " + names[i]
-		#plt.text(1e4, 1-i*0.04, i_and_name, color=RGB(R,G,B))
+		#plt.text(1e2, 1-i*0.04, i_and_name, color=RGB(R,G,B))
 
 	plt.grid()
-	title_name = 'Cost Vs. MVU (Acc: ' + str(svu_acc_weight) + ' + Size: ' + str(svu_size_weight) + ')'
+	title_name = 'Cost Vs. MAU (Acc: ' + str(svu_acc_weight) + ' + Size: ' + str(svu_size_weight) + ')'
 	plt.title(title_name)
 	plt.xlabel('Cost')
-	plt.ylabel('MVU')
+	plt.ylabel('MAU')
 	#plt.xlim(1e-1, 1e6)
 	#plt.ylim(0.5, 1)
 	plt.xscale("log")
-	plt.savefig("plot_low_cost_mvu_compression.png")
+	#plt.savefig("plot_low_cost_MAU_compression.png")
+	plt.savefig("plot_low_cost_MAU_classification.png")
+	#plt.savefig("plot_low_cost_MAU_hw_processing.png")
+	#plt.savefig("plot_low_cost_MAU_target_sw.png")
+	#plt.savefig("plot_low_cost_MAU_anomaly_sw.png")
 	plt.show()
 	
+#make_pipeline_plot(compression_pipelines)
+make_pipeline_plot(classification_pipelines)
+#make_pipeline_plot(targetAnomalyHW_pipelines)
+#make_pipeline_plot(target_sw_pipelines)
+#make_pipeline_plot(anomaly_sw_pipelines)
 
-
-
-	"""
+	
 	##### Plotting SVU graf #####
+"""
 	svu_graph_size_x = [row[0] for row in svu_graph_size]
 	svu_graph_size_y = [row[1] for row in svu_graph_size]
 	plt.figure(4, figsize=(7,4), tight_layout=True)
@@ -215,19 +223,16 @@ def make_pipeline_plot(pipeline_vec):
 	plt.xscale("linear")
 	###plt.savefiganomalyacc.png")
 	plt.show()
-	"""
-
 	
 
-"""
 compression_pipelines
 classification_pipelines
 targetAnomalyHW_pipelines
 target_sw_pipelines
-anomaly_sw_pipelines
+anomaly_sw_pipelines	
+
 """
-make_pipeline_plot(compression_pipelines)
-#make_pipeline_plot(classification_pipelines)
-#make_pipeline_plot(targetAnomalyHW_pipelines)
-#make_pipeline_plot(target_sw_pipelines)
-#make_pipeline_plot(anomaly_sw_pipelines)
+
+
+
+
