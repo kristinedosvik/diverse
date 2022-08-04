@@ -1,10 +1,4 @@
-#Notater:
-"""
 
-- Må legge til A_ funksjoner til alle gruppene.
-
-
-"""
 
 dr1 =1/1000000
 dr2 = 1/125000
@@ -48,7 +42,6 @@ num_classes = 4#9
 total_num_support_vectors = 1096#4757
 absolute_error_value = 64
 x_ = 0
-
 
 def RGB(red, green, blue):
 	rgb = "#"

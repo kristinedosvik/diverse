@@ -65,13 +65,14 @@ def make_pipeline_names_in_pipeline_order(pipeline_vec):
 def make_pipeline_plot(pipeline_vec):
 	#Make pipeline samples:
 	samples = []
+	print("frames, framesamples, bands, binningfactor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value")
+	print(frames, framesamples, bands, binningfactor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value)
 	for i in range(0, len(pipeline_vec)):
 		sample = create_pipeline_sample(pipeline_vec[i], frames, framesamples, bands, binningfactor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value)
 		#(return from create_pipeline_sample is: [pipeline, frames*frame_sample*bands, accuracy, cost])
 		samples.append(sample)
 
-	print(samples) # ok!
-
+	
 	#Make name to each pipeline:
 	#names = make_pipeline_names_in_pipeline_order(pipeline_vec)
 
@@ -89,7 +90,6 @@ def make_pipeline_plot(pipeline_vec):
 	plt.figure(1, figsize=(10,5), tight_layout=True)
 	random.seed(1)
 
-	print(len(pipeline_vec)) # ok!
 
 	for i in range(0, len(pipeline_vec)):
 		R = random.randrange(2, 200, 5)
@@ -106,6 +106,7 @@ def make_pipeline_plot(pipeline_vec):
 		#i_and_name = str(i) + ": " + names[i]
 
 	#Make reference points:
+	
 	best_case = frames*framesamples*1*16*download_rate
 	bands_20 = frames*framesamples*20*16*download_rate
 	
@@ -129,7 +130,7 @@ def make_pipeline_plot(pipeline_vec):
 
 	plt.show()
 
-"""
+
 	##### Plotting cost Vs. MUV(accuracy, data output) #####
 	plt.figure(2, figsize=(10,5), tight_layout=True)
 	random.seed(1)
@@ -161,7 +162,7 @@ def make_pipeline_plot(pipeline_vec):
 	#plt.savefig("plot_mvu_vs_accuracy_classification.png")
 
 	plt.show()
-"""
+
 	
 	##### Plotting SVU graf #####
 """

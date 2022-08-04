@@ -59,17 +59,6 @@ def g_spatial_binning(algorithm, frames, framesamples, bands, accuracy, binningf
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def g_not_used(algorithm, frames, framesamples, bands, accuracy):
-    
-    new_frame_samples = 0
-    new_frames = 0
-    new_bands = 0
-    new_accuracy = 1
-    cost = 0
-    
-    return cost, new_frames, new_frame_samples, new_bands, new_accuracy
-
-
 def g_radiometric_calibration(algorithm, frames, framesamples, bands, accuracy, gLast):
     
     new_frame_samples = 0
@@ -193,7 +182,7 @@ def g_dimensional_reduction(algorithm, frames, framesamples, bands, accuracy, re
 
     new_frame_samples = 0
     new_frames = 0
-    new_bands = 0 
+    new_bands = 0
     new_accuracy = 1
     cost = 0
     
@@ -366,34 +355,35 @@ def create_pipeline_sample(pipeline, frames, frame_samples, bands, binning_facto
     accuracy = 0.84
 
     gLast = pipeline[9]
+    print("g_dimred1: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     
     cost_group, frames, frame_sample, bands, accuracy_group = g_spectral_binning(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor, camera_linse_binning)
     cost += cost_group
     accuracy *= accuracy_group
+    print("g_dimred2: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     
     cost_group, frames, frame_sample, bands, accuracy_group = g_spatial_binning(pipeline[1], frames, frame_samples, bands, accuracy, binning_factor, whatToBin)
     cost += cost_group
     accuracy *= accuracy_group
+    print("g_dimred3: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
 
-    cost_group, frames, frame_sample, bands, accuracy_group = g_not_used(pipeline[2], frames, frame_samples, bands, accuracy)
-    cost += cost_group
-    accuracy *= accuracy_group
-
-    #geometric calibration:
+    #geometric calibrationbands
     cost_group, frames, frame_sample, bands, accuracy_group = g_radiometric_calibration(pipeline[3], frames, frame_samples, bands, accuracy, gLast)
     cost += cost_group
     accuracy *= accuracy_group
+    print("g_dimred5: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     
     cost_group, frames, frame_sample, bands, accuracy_group = g_bad_pixel_det_corr(pipeline[4], pipeline[5], frames, frame_samples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal)
     cost += cost_group
     accuracy *= accuracy_group
   
+    print("g_dimred6: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     #snk:
     cost_group, frames, frame_sample, bands, accuracy_group = g_smile_and_keystone(pipeline[6], frames, frame_samples, bands, accuracy, gLast)
     cost += cost_group
     accuracy *= accuracy_group
 
-    
+    print("g_dimred7: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     cost_group, frames, frame_sample, bands, accuracy_group = g_dimensional_reduction(pipeline[7], frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     cost += cost_group
     accuracy *= accuracy_group

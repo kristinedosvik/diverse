@@ -53,7 +53,7 @@ def binning_accuracy(binningfactor, spec_or_spat):
     #snr, binningfactor
     x = []
     y = []
-    for i in range(0, 30):
+    for i in range(, 30):
         x.append(i)
         y.append(snr_of_binning(i))
 
@@ -106,9 +106,7 @@ def binning_accuracy(binningfactor, spec_or_spat):
         return resolution_estimation(graph_binning_acc_spec, binningfactor)
     else:
         return resolution_estimation(graph_binning_acc, binningfactor)
-  
-binningfactor = 9
-binning_accuracy(binningfactor, "spec")
+
 
 
 def A_spectral_binning(bands, binningfactor, camera_linse_binning):
