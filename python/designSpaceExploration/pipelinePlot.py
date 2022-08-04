@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from processingGroups import *
-from data_inputs import *
+from input_parameters import *
 from pipelines import *
 import random
 

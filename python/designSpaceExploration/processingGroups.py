@@ -1,15 +1,15 @@
-from binning import *
-from radiometricCalibration import *
-from compression import *
-from dimensionalReduction import *
-from georeferencing_and_geometricRegistration import *
-from pixelMitigation import *
-from smileAndKeystone import *
-from targetDetection import *
-from classification import *
-from anomalyDetection import *
+from g_binning import *
+from g_radiometricCalibration import *
+from g_compression import *
+from g_dimensionalReduction import *
+from g_georeferencing_and_geometricRegistration import *
+from g_badPixel import *
+from g_smileAndKeystone import *
+from g_targetDetection import *
+from g_classification import *
+from g_anomalyDetection import *
 
-def g11_algorithm(algorithm, frames, framesamples, bands, accuracy, binningfactor, camera_linse_binning):
+def g_spectral_binning(algorithm, frames, framesamples, bands, accuracy, binningfactor, camera_linse_binning):
     new_frame_samples = 0
     new_frames = 0
     new_bands = 0
@@ -29,12 +29,12 @@ def g11_algorithm(algorithm, frames, framesamples, bands, accuracy, binningfacto
         cost = 0
 
     else:
-        print("Error spec: ", algorithm)
+        print("Error spectral binning: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def g12_algorithm(algorithm, frames, framesamples, bands, accuracy, binningfactor, whatToBin):
+def g_spatial_binning(algorithm, frames, framesamples, bands, accuracy, binningfactor, whatToBin):
     new_frame_samples = 0
     new_frames = 0
     new_bands = 0
@@ -54,12 +54,12 @@ def g12_algorithm(algorithm, frames, framesamples, bands, accuracy, binningfacto
         cost = 0
 
     else:
-        print("Error spat: ", algorithm)
+        print("Error spatial binning: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def g21_algorithm(algorithm, frames, framesamples, bands, accuracy):
+def g_not_used(algorithm, frames, framesamples, bands, accuracy):
     
     new_frame_samples = 0
     new_frames = 0
@@ -67,26 +67,10 @@ def g21_algorithm(algorithm, frames, framesamples, bands, accuracy):
     new_accuracy = 1
     cost = 0
     
-    if (algorithm == "thumbnails"):
-        new_frames, new_frame_samples, new_bands = DOS_thumbnails(frames, framesamples, bands)
-        new_accuracy = 1
-        cost = OC_thumbnails(frames, framesamples, bands)
-
-
-    elif (algorithm == "x"):
-        new_frame_samples = framesamples
-        new_frames = frames
-        new_bands = bands
-        new_accuracy = 1
-        cost = 0
-
-    else:
-        print("Error thumb: ", algorithm)
-
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def g22_algorithm(algorithm, frames, framesamples, bands, accuracy, gLast):
+def g_radiometric_calibration(algorithm, frames, framesamples, bands, accuracy, gLast):
     
     new_frame_samples = 0
     new_frames = 0
@@ -98,8 +82,12 @@ def g22_algorithm(algorithm, frames, framesamples, bands, accuracy, gLast):
         new_frames, new_frame_samples, new_bands = DOS_radiometricCalibration(frames, framesamples, bands)
         if(gLast == "SAM_sw" or gLast == "CEM_sw" or gLast == "ACE_sw" or gLast == "SAM_hw" or gLast == "CEM_hw" or gLast == "ACE_hw" or gLast == "ASMF_hw" or gLast == "SVM"):
             new_accuracy = 1.05
-        elif(gLast == "GRX_sw"): # usikker på om denne er i pipelinen
+
+        #Radiometric calibration would normally not affect anomaly detection algorithms too much, 
+        #but since gloabal RX is global, it can have positive effect.
+        elif(gLast == "GRX_sw"):
             new_accuracy = 1.02
+        
         cost = OC_radiometricCalibration(frames, framesamples, bands)
 
     elif (algorithm == "x"):
@@ -110,12 +98,12 @@ def g22_algorithm(algorithm, frames, framesamples, bands, accuracy, gLast):
         cost = 0
 
     else:
-        print("Error R-cal: ", algorithm)
+        print("Error radiometric calibration: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def g31_algorithm(algorithm_detection, algorithm_correction, frames, framesamples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal):
+def g_bad_pixel_det_corr(algorithm_detection, algorithm_correction, frames, framesamples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal):
     
     new_frame_samples = 0
     new_frames = 0
@@ -144,7 +132,7 @@ def g31_algorithm(algorithm_detection, algorithm_correction, frames, framesample
         cost = 0
 
     else:
-        print("Error bad P det: ", algorithm_detection)
+        print("Error bad pixel detection: ", algorithm_detection)
 
     #correction:
     if(algorithm_correction == "nearest_neighbour_correction"):
@@ -166,12 +154,12 @@ def g31_algorithm(algorithm_detection, algorithm_correction, frames, framesample
         cost = 0
 
     else:
-        print("Error bad P corr: ", algorithm_correction)
+        print("Error bad pixel correction: ", algorithm_correction)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def g32_algorithm(algorithm, frames, framesamples, bands, accuracy, gLast):
+def g_smile_and_keystone(algorithm, frames, framesamples, bands, accuracy, gLast):
     
     new_frame_samples = 0
     new_frames = 0
@@ -196,49 +184,16 @@ def g32_algorithm(algorithm, frames, framesamples, bands, accuracy, gLast):
         cost = 0
 
     else:
-        print("Error Snk: ", algorithm)
+        print("Error smile and keystone: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-
-def g33_algorithm(algorithm, frames, framesamples, bands, accuracy):
-    if(algorithm != "x"):
-        print("Error: Do not use this group, g33")
-    return 0, frames, framesamples, bands, accuracy
-
-
-    """
-    new_frame_samples = 0
-    new_frames = 0
-    new_bands = 0
-    new_accuracy = 1
-    cost = 0
-    
-    if (algorithm == "radiometric_calibration"):
-        new_frames, new_frame_samples, new_bands = DOS_radiometric_calibration(frames, framesamples, bands)
-        new_accuracy = 1.05
-        cost = OC_radiometric_calibration(frames, framesamples, bands)
-
-
-    elif (algorithm == "x"):
-        new_frame_samples = framesamples
-        new_frames = frames
-        new_bands = bands
-        new_accuracy = 1
-        cost = 0
-
-    else:
-        print("Error", algorithm)
-
-    return cost, new_frames, new_frame_samples, new_bands, new_accuracy
-"""
-
-def g41_algorithm(algorithm, frames, framesamples, bands, accuracy, reducedbands, dot_product_blocks, iterations):
+def g_dimensional_reduction(algorithm, frames, framesamples, bands, accuracy, reducedbands, dot_product_blocks, iterations):
 
     new_frame_samples = 0
     new_frames = 0
-    new_bands = 8
+    new_bands = 8 # HALO! OMG!! FEIL!!
     new_accuracy = 1
     cost = 0
     
@@ -268,12 +223,12 @@ def g41_algorithm(algorithm, frames, framesamples, bands, accuracy, reducedbands
         cost = 0
 
     else:
-        print("Error dimRed: ", algorithm)
+        print("Error dimensional reduction: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def g51_algorithm(algorithm, frames, framesamples, bands, accuracy, frame_increase_factor, framesample_increase_factor, gLast):
+def g_georeferencing_and_registration(algorithm, frames, framesamples, bands, accuracy, frame_increase_factor, framesample_increase_factor, gLast):
     new_frame_samples = 0
     new_frames = 0
     new_bands = 0
@@ -300,12 +255,12 @@ def g51_algorithm(algorithm, frames, framesamples, bands, accuracy, frame_increa
         cost = 0
 
     else:
-        print("Error georef/reg: ", algorithm)
+        print("Error georeferencing and registration: ", algorithm)
 
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def gLast_algorithm(algorithm, frames, framesamples, bands, accuracy, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value):
+def g_target_anomaly_detection_classification_compression(algorithm, frames, framesamples, bands, accuracy, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value):
 
     new_frame_samples = 0
     new_frames = 0
@@ -412,43 +367,43 @@ def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_fa
 
     gLast = pipeline[9]
     
-    cost_group, frames, frame_sample, bands, accuracy_group = g11_algorithm(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor, camera_linse_binning)
+    cost_group, frames, frame_sample, bands, accuracy_group = g_spectral_binning(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor, camera_linse_binning)
     cost += cost_group
     accuracy *= accuracy_group
     
-    cost_group, frames, frame_sample, bands, accuracy_group = g12_algorithm(pipeline[1], frames, frame_samples, bands, accuracy, binning_factor, whatToBin)
+    cost_group, frames, frame_sample, bands, accuracy_group = g_spatial_binning(pipeline[1], frames, frame_samples, bands, accuracy, binning_factor, whatToBin)
     cost += cost_group
     accuracy *= accuracy_group
 
-    cost_group, frames, frame_sample, bands, accuracy_group = g21_algorithm(pipeline[2], frames, frame_samples, bands, accuracy)
+    cost_group, frames, frame_sample, bands, accuracy_group = g_not_used(pipeline[2], frames, frame_samples, bands, accuracy)
     cost += cost_group
     accuracy *= accuracy_group
 
     #geometric calibration:
-    cost_group, frames, frame_sample, bands, accuracy_group = g22_algorithm(pipeline[3], frames, frame_samples, bands, accuracy, gLast)
+    cost_group, frames, frame_sample, bands, accuracy_group = g_radiometric_calibration(pipeline[3], frames, frame_samples, bands, accuracy, gLast)
     cost += cost_group
     accuracy *= accuracy_group
     
-    cost_group, frames, frame_sample, bands, accuracy_group = g31_algorithm(pipeline[4], pipeline[5], frames, frame_samples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal)
+    cost_group, frames, frame_sample, bands, accuracy_group = g_bad_pixel_det_corr(pipeline[4], pipeline[5], frames, frame_samples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal)
     cost += cost_group
     accuracy *= accuracy_group
   
     #snk:
-    cost_group, frames, frame_sample, bands, accuracy_group = g32_algorithm(pipeline[6], frames, frame_samples, bands, accuracy, gLast)
+    cost_group, frames, frame_sample, bands, accuracy_group = g_smile_and_keystone(pipeline[6], frames, frame_samples, bands, accuracy, gLast)
     cost += cost_group
     accuracy *= accuracy_group
 
     
-    cost_group, frames, frame_sample, bands, accuracy_group = g41_algorithm(pipeline[7], frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
+    cost_group, frames, frame_sample, bands, accuracy_group = g_dimensional_reduction(pipeline[7], frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     cost += cost_group
     accuracy *= accuracy_group
     
     #georeg
-    cost_group, frames, frame_sample, bands, accuracy_group = g51_algorithm(pipeline[8], frames, frame_samples, bands, accuracy, frame_increase_factor, framesample_increase_factor, gLast)
+    cost_group, frames, frame_sample, bands, accuracy_group = g_georeferencing_and_registration(pipeline[8], frames, frame_samples, bands, accuracy, frame_increase_factor, framesample_increase_factor, gLast)
     cost += cost_group
     accuracy *= accuracy_group
 
-    cost_group, frames, frame_sample, bands, accuracy_group = gLast_algorithm(pipeline[9], frames, frame_samples, bands, accuracy, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value)
+    cost_group, frames, frame_sample, bands, accuracy_group = g_target_anomaly_detection_classification_compression(pipeline[9], frames, frame_samples, bands, accuracy, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value)
     cost += cost_group
     accuracy *= accuracy_group
     
@@ -458,9 +413,6 @@ def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_fa
 
 def add_processingmodule_name_to_string(old_string, processing_name):
     if(processing_name == "spectral_binning"):
-        old_string += " B (spec),"
-
-    elif(processing_name == "spectral_binning"):
         old_string += " B (spec),"
 
     elif(processing_name == "spatial_binning"):
