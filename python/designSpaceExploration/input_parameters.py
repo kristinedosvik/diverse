@@ -1,10 +1,6 @@
 #Notater:
 """
 
-- ProcessingGroupss --> dimensionell recuction, error: new bands var satt lik 8, og ikke til det det egentlig skulle settes til... .
-
-- Endret navn på gruppene.
-
 - Må legge til A_ funksjoner til alle gruppene.
 
 

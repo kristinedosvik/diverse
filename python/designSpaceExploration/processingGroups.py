@@ -193,7 +193,7 @@ def g_dimensional_reduction(algorithm, frames, framesamples, bands, accuracy, re
 
     new_frame_samples = 0
     new_frames = 0
-    new_bands = 8 # HALO! OMG!! FEIL!!
+    new_bands = 0 
     new_accuracy = 1
     cost = 0
     
@@ -361,7 +361,7 @@ def g_target_anomaly_detection_classification_compression(algorithm, frames, fra
     return cost, new_frames, new_frame_samples, new_bands, new_accuracy
 
 
-def create_sample_by_pipeline(pipeline, frames, frame_samples, bands, binning_factor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value):
+def create_pipeline_sample(pipeline, frames, frame_samples, bands, binning_factor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value):
     cost = 0
     accuracy = 0.84
 

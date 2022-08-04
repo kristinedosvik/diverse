@@ -96,9 +96,6 @@ def dot_product(vec_elements):
     return vec_elements*multiplication() + (vec_elements-1)*addition()
 
 def correlation_matrix(samples, bands):
-    #Endret til å følge proseduren i target detection code
-    #return matrix_multiplication(samples, bands, bands, samples) + samples**2 * division()
-    #return matrix_multiplication(bands, samples, samples, bands) + samples**2 * division()
     return samples * bands**2 * (addition() + multiplication() + division())
 
 def update_correlation_matrix(addedSamples, bands):
@@ -123,8 +120,6 @@ def matrix_multiplication(nr_rows_m1, nr_coloumns_m1, nr_rows_m2, nr_coloumns_m2
     return nr_rows_m1*nr_coloumns_m2*dot_product(nr_rows_m2)
 
 def jacobi_algorithm_sw(matrix_size, extra_iterations):
-    #print("J SW:")
-    #print(matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size))
     return (matrix_size/2*(matrix_size-1)+extra_iterations)*(matrix_multiplication(matrix_size, matrix_size, matrix_size, matrix_size)+dot_product_sw(2)*matrix_size*2 + matrix_size/2*13)
 
 def qr_eigen_vec_val(bands, iterations):
@@ -162,10 +157,7 @@ def matrix_multiplication_hw(nr_rows_m1, nr_coloumns_m1, nr_rows_m2, nr_coloumns
 
 def jacobi_algorithm_hw(matrix_size, extra_iterations, dot_product_blocks):
     return (matrix_size/2*(matrix_size-1)+extra_iterations)*(matrix_multiplication_hw(matrix_size, matrix_size, matrix_size, matrix_size, dot_product_blocks)+dot_product_hw(2)*matrix_size*2 + 12)
-    #return (matrix_size/2*(matrix_size-1)+extra_iterations)*(3*matrix_multiplication_hw(matrix_size, matrix_size, matrix_size, matrix_size, dot_product_blocks) + 12)
-    #(matrix_size/2*(matrix_size-1)+extra_iterations)*(matrix_multiplication_hw(matrix_size, matrix_size, matrix_size, matrix_size, dot_product_blocks)+dot_product_hw(2)*matrix_size*2 + 12)
-    #(3*matrix_multiplication_hw(matrix_size, matrix_size, matrix_size, matrix_size, dot_product_blocks) + 12)
-
+    
 def correlation_matrix_hw(samples, bands, dot_product_blocks):
     return matrix_multiplication_hw(bands, samples, samples, bands, dot_product_blocks) + bands**2 * division()
 

@@ -12,7 +12,7 @@ from g_anomalyDetection import *
 from g_radiometricCalibration import *
 from input_parameters import *
 
-def create_algorithmic_operationcount_array_given_bands(bands):
+def create_algorithmic_operationcounts_array(bands):
 	spectral_binning = OC_spectral_binning(frames, framesamples, bands, binningfactor)
 	spatial_binning = OC_spatial_binning(frames, framesamples, bands, binningfactor, whatToBin)
 
@@ -60,9 +60,9 @@ def create_algorithmic_operationcount_array_given_bands(bands):
 
 
 
-def print_algoritmic_operationcount(algoritmic_operationcount, algorithmic_names):
+def print_algoritmic_operationcounts(algoritmic_operationcounts, algorithmic_names):
 	for i in range (0, len(algorithmic_names)):
-		print(algorithmic_names, ": ", algoritmic_operationcount*freq)
+		print(algorithmic_names[i], ": ", algoritmic_operationcounts[i]*freq)
 
 
 def print_and_plot_algorithmic_runtimes():
@@ -71,48 +71,48 @@ def print_and_plot_algorithmic_runtimes():
 
 	############### Generate array of operation counts ##############
 
-	algoritmic_operationcount_no_band_reduction = create_algorithmic_runtime_array_given_bands(bands)
-	algoritmic_operationcount_1_band_reduction = create_algorithmic_runtime_array_given_bands(bands_1_reduction)
-	algoritmic_operationcount_2_band_reduction = create_algorithmic_runtime_array_given_bands(bands_2_reduction)
+	algoritmic_operationcounts_no_band_reduction = create_algorithmic_operationcounts_array(bands)
+	algoritmic_operationcounts_1_band_reduction = create_algorithmic_operationcounts_array(bands_1_reduction)
+	algoritmic_operationcounts_2_band_reduction = create_algorithmic_operationcounts_array(bands_2_reduction)
 
 
 	############### PRINTS ##############
 	
-	print("No band reduction: bands = ", bands)
-	print_algoritmic_runtimes(algoritmic_operationcount_no_band_reduction, algorithms_names_in_order)
+	print("\nNo band reduction: bands = ", bands)
+	print_algoritmic_operationcounts(algoritmic_operationcounts_no_band_reduction, algorithms_names_in_order)
 	
-	print("1. band reduction: bands = ", bands_1_reduction)
-	print_algoritmic_runtimes(algoritmic_operationcount_no_band_reduction, algorithms_names_in_order)
+	print("\n1. band reduction: bands = ", bands_1_reduction)
+	print_algoritmic_operationcounts(algoritmic_operationcounts_no_band_reduction, algorithms_names_in_order)
 	
-	print("2. band reduction: bands = ", bands_2_reduction)
-	print_algoritmic_runtimes(algoritmic_operationcount_no_band_reduction, algorithms_names_in_order)
+	print("\n2. band reduction: bands = ", bands_2_reduction)
+	print_algoritmic_operationcounts(algoritmic_operationcounts_no_band_reduction, algorithms_names_in_order)
 
 
 	############### PLOTS ##############
 	plt.figure(1, figsize=(13,7), tight_layout=True)
 
 	#### bands = bands ####
-	for i in range(0, len(algoritmic_operationcount_no_band_reduction)):
-		plt.plot(algoritmic_operationcount_no_band_reduction[i]*freq, 10, "o", color = color_cost_2[i])
-		plt.annotate(i, (algoritmic_operationcount_no_band_reduction[i]*freq, 10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+	for i in range(0, len(algoritmic_operationcounts_no_band_reduction)):
+		plt.plot(algoritmic_operationcounts_no_band_reduction[i]*freq, 10, "o", color = color_cost_2[i])
+		plt.annotate(i, (algoritmic_operationcounts_no_band_reduction[i]*freq, 10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 		i_and_name = str(i) + ": " + algorithms_names_in_order[i]
 		plt.text(2e7, 14-i, i_and_name, color = color_cost_2[i])
 
 	#### bands = bands_1 ####
-	for i in range(0, len(algoritmic_operationcount_1_band_reduction)):
-		if(algoritmic_operationcount_1_band_reduction[i] == spectral_binning_1 or algoritmic_operationcount_1_band_reduction[i] == spatial_binning_1):
+	for i in range(0, len(algoritmic_operationcounts_1_band_reduction)):
+		if(algorithms_names_in_order[i] == "Spectral binning" or algorithms_names_in_order[i] == "Spatial binning"):
 			continue
-		plt.plot(algoritmic_operationcount_1_band_reduction[i]*freq, 0, "o", color = color_cost_2[i])
-		plt.annotate(i, (algoritmic_operationcount_1_band_reduction[i]*freq, 0), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+		plt.plot(algoritmic_operationcounts_1_band_reduction[i]*freq, 0, "o", color = color_cost_2[i])
+		plt.annotate(i, (algoritmic_operationcounts_1_band_reduction[i]*freq, 0), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 		i_and_name = str(i) + ": " + algorithms_names_in_order[i]
 		
 
 	#### bands = bands_2 ####
-	for i in range(0, len(algoritmic_operationcount_2_band_reduction)):
+	for i in range(0, len(algoritmic_operationcounts_2_band_reduction)):
 		if(i <= 16 and (i != 11 and i != 12)):
 			continue
-		plt.plot(algoritmic_operationcount_2_band_reduction[i]*freq, -10, "o", color = color_cost_2[i])
-		plt.annotate(i, (algoritmic_operationcount_2_band_reduction[i]*freq, -10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
+		plt.plot(algoritmic_operationcounts_2_band_reduction[i]*freq, -10, "o", color = color_cost_2[i])
+		plt.annotate(i, (algoritmic_operationcounts_2_band_reduction[i]*freq, -10), textcoords="offset points", xytext=(0,10), color="black", ha='center')
 		i_and_name = str(i) + ": " + algorithms_names_in_order[i]
 
 

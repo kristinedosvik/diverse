@@ -17,17 +17,13 @@ b1_sw_spec = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS
 b2_hw = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"]
 b2_hw_spec = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_hw"]
 
-b2_sw = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_sw"]
-b2_sw_spec = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_sw"]
-
-##
+#b2_sw = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_sw"]
+#b2_sw_spec = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "CCSDS123_B2_sw"]
 
 pca_hw = ["x", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "x"]
 pca_hw_spec = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "x"]
 pca_hw_spec_b1_hw = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CCSDS123_B1_hw"]
 pca_hw_spec_b2_hw = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "CCSDS123_B2_hw"]
-
-##
 
 compression_pipelines = [b1_hw, b1_hw_spec, b1_sw, b1_sw_spec, b2_hw, b2_hw_spec, pca_hw, pca_hw_spec, pca_hw_spec_b1_hw, pca_hw_spec_b2_hw] 
 
@@ -38,8 +34,6 @@ svm = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "SVM"]
 svm_spectral = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "SVM"]
 svm_pca_hw_spec = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_hw", "x", "SVM"]
 svm_pca_hw_spec_dete_snk_radio = ["spectral_binning", "x", "x", "radiometric_calibration", "mean_threshold_detection", "nearest_neighbour_correction", "smile_and_keystone", "PCA_hw", "x", "SVM"]
-
-##
 
 svm_pca_sw_spec = ["spectral_binning", "x", "x", "x", "x", "x", "x", "PCA_sw", "x", "SVM"]
 svm_mnf_spec = ["spectral_binning", "x", "x", "x", "x", "x", "x", "MNF", "x", "SVM"]
@@ -69,7 +63,6 @@ targetAnomalyHW_pipelines = [fmgd_hw, fmgd_hw_spectral, spec_dete_geocal_fmgd_hw
 
 ############### Target detection SW: ###############
 
-# SAM:
 
 sam_sw = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "SAM_sw"]
 sam_sw_spectral = ["spectral_binning", "x", "x", "x", "x", "x", "x", "x", "x", "SAM_sw"]
@@ -121,11 +114,7 @@ anomaly_sw_pipelines = [GRX, GRX_spectral, GRX_spectral_pca_hw, GRX_spectral_det
 
 ############### Pipeline vector: ###############
 
-pipeline_vec = compression_pipelines
-pipeline_vec = classification_pipelines
-pipeline_vec = targetAnomalyHW_pipelines
-pipeline_vec = target_sw_pipelines
-pipeline_vec = anomaly_sw_pipelines
+
 
 pipeline_vec = []
 for i in range(0, len(compression_pipelines)):
