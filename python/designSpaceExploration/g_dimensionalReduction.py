@@ -11,8 +11,6 @@ def OC_PCA_sw(frames, framesamples, bands, reducedbands, iterations):
     + sorting(bands) + matrix_multiplication(reducedbands, bands, bands, frames*framesamples)
     
 def OC_PCA_hw(frames, framesamples, bands, reducedbands, iterations, dot_product_blocks):
-
-    print("OC_PCA_hw ", frames, framesamples, bands, reducedbands, iterations, dot_product_blocks)
     return correlation_matrix_hw(frames*framesamples, bands, dot_product_blocks) + jacobi_algorithm_hw(bands, iterations, dot_product_blocks) + sorting_hw(bands) + matrix_multiplication_hw(reducedbands, bands, bands, frames*framesamples, dot_product_blocks)
    
 def OC_MNF(frames, framesamples, bands, reducedbands, iterations):

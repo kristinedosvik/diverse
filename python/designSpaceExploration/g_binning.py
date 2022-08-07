@@ -53,7 +53,7 @@ def binning_accuracy(binningfactor, spec_or_spat):
     #snr, binningfactor
     x = []
     y = []
-    for i in range(, 30):
+    for i in range(0, 30):
         x.append(i)
         y.append(snr_of_binning(i))
 

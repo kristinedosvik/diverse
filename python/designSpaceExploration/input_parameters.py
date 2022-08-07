@@ -12,11 +12,11 @@ freq_grx = 1/2.8e9
 freq_nmf = 1/3.6e9
 download_rate = dr1
 
-freq = freq_hypso1 #1/4.7e9 #freq_hypso1
+freq = freq_hypso1 
 
-frames = 956#1#100#956#512#100#80#64#100#956#1000#956#614#350#956
-framesamples = 684#1600#245#100#684#512#300#100#64#100#684#245#684#512#350#684
-bands = 1080#160#450#120#189#120#224#126#175#169#189#200#120#1080#450#1080#120#1216#224#1080
+frames = 956
+framesamples = 684
+bands = 1080
 bands_1_reduction = 120
 bands_2_reduction = 20
 binningfactor = 9
@@ -34,12 +34,12 @@ outer_window = 13*13
 inner_window = 9*9
 P = 12
 D = 4
-dot_product_blocks = 1 #framesamples
+dot_product_blocks = 1
 kernel_element = 9
 fractional_domains = 10
-num_neighbours = outer_window-inner_window # 15*15-3*3
-num_classes = 4#9 
-total_num_support_vectors = 1096#4757
+num_neighbours = outer_window-inner_window 
+num_classes = 4
+total_num_support_vectors = 1096
 absolute_error_value = 64
 x_ = 0
 

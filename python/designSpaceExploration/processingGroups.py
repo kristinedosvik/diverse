@@ -355,40 +355,31 @@ def create_pipeline_sample(pipeline, frames, frame_samples, bands, binning_facto
     accuracy = 0.84
 
     gLast = pipeline[9]
-    print("g_dimred1: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     
     cost_group, frames, frame_sample, bands, accuracy_group = g_spectral_binning(pipeline[0], frames, frame_samples, bands, accuracy, binning_factor, camera_linse_binning)
     cost += cost_group
     accuracy *= accuracy_group
-    print("g_dimred2: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     
     cost_group, frames, frame_sample, bands, accuracy_group = g_spatial_binning(pipeline[1], frames, frame_samples, bands, accuracy, binning_factor, whatToBin)
     cost += cost_group
     accuracy *= accuracy_group
-    print("g_dimred3: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
 
-    #geometric calibrationbands
     cost_group, frames, frame_sample, bands, accuracy_group = g_radiometric_calibration(pipeline[3], frames, frame_samples, bands, accuracy, gLast)
     cost += cost_group
     accuracy *= accuracy_group
-    print("g_dimred5: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     
     cost_group, frames, frame_sample, bands, accuracy_group = g_bad_pixel_det_corr(pipeline[4], pipeline[5], frames, frame_samples, bands, accuracy, num_regions, bad_samples, neigbourlevel, cardinal)
     cost += cost_group
     accuracy *= accuracy_group
   
-    print("g_dimred6: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
-    #snk:
     cost_group, frames, frame_sample, bands, accuracy_group = g_smile_and_keystone(pipeline[6], frames, frame_samples, bands, accuracy, gLast)
     cost += cost_group
     accuracy *= accuracy_group
 
-    print("g_dimred7: ", frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     cost_group, frames, frame_sample, bands, accuracy_group = g_dimensional_reduction(pipeline[7], frames, frame_samples, bands, accuracy, reducedbands, iterations, dot_product_blocks)
     cost += cost_group
     accuracy *= accuracy_group
     
-    #georeg
     cost_group, frames, frame_sample, bands, accuracy_group = g_georeferencing_and_registration(pipeline[8], frames, frame_samples, bands, accuracy, frame_increase_factor, framesample_increase_factor, gLast)
     cost += cost_group
     accuracy *= accuracy_group
@@ -397,7 +388,6 @@ def create_pipeline_sample(pipeline, frames, frame_samples, bands, binning_facto
     cost += cost_group
     accuracy *= accuracy_group
     
-
     return [pipeline, frames*frame_sample*bands, accuracy, cost]
 
 

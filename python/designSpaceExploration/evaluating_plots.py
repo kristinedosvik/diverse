@@ -65,8 +65,6 @@ def make_pipeline_names_in_pipeline_order(pipeline_vec):
 def make_pipeline_plot(pipeline_vec):
 	#Make pipeline samples:
 	samples = []
-	print("frames, framesamples, bands, binningfactor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value")
-	print(frames, framesamples, bands, binningfactor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value)
 	for i in range(0, len(pipeline_vec)):
 		sample = create_pipeline_sample(pipeline_vec[i], frames, framesamples, bands, binningfactor, camera_linse_binning, whatToBin, num_regions, bad_samples, neigbourlevel, cardinal, reducedbands, dot_product_blocks, iterations, frame_increase_factor, framesample_increase_factor, outer_window, inner_window, P, D, kernel_element, fractional_domains, num_neighbours, num_classes, total_num_support_vectors, absolute_error_value)
 		#(return from create_pipeline_sample is: [pipeline, frames*frame_sample*bands, accuracy, cost])
@@ -165,7 +163,7 @@ def make_pipeline_plot(pipeline_vec):
 
 	
 	##### Plotting SVU graf #####
-"""
+
 	svu_graph_size_x = [row[0] for row in svu_graph_size]
 	svu_graph_size_y = [row[1] for row in svu_graph_size]
 	plt.figure(4, figsize=(7,4), tight_layout=True)
@@ -181,15 +179,18 @@ def make_pipeline_plot(pipeline_vec):
 	plt.xscale("linear")
 	#plt.savefig("svu_graph_accuracy.png")
 	plt.show()
-"""
+
 
 	
 
+# riktig iforhold til at jeg har feil inputs: kd_linux freq og bands=120: 
 make_pipeline_plot(compression_pipelines)
-#make_pipeline_plot(classification_pipelines)
-#make_pipeline_plot(targetAnomalyHW_pipelines)
-#make_pipeline_plot(target_sw_pipelines)
-#make_pipeline_plot(anomaly_sw_pipelines)
+# ok! #make_pipeline_plot(classification_pipelines)
+# riktig iforhold til at jeg har feil inputs: kd_linux freq og bands=120: 
+make_pipeline_plot(targetAnomalyHW_pipelines) # MAU run time problems
+# riktig iforhold til at jeg har feil inputs: kd_linux freq og bands=120: 
+make_pipeline_plot(target_sw_pipelines) # MAU run time problems
+# ok! #make_pipeline_plot(anomaly_sw_pipelines)
 
 
 
