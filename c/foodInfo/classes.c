@@ -1,139 +1,105 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 /*
-typedef struct Ingrediens {
-   //char ** nearingsstoffer;
-   //char nearingsstoffer[5][5];
-   //char number[2][6];
-   char * number;
-} Ingrediens;
+Peker på peker
+_______
+|     |
+|  a  |
+|_____|0x0
+|p*:  |
+| 0x0 |
+|_____|0x4
+|p**: |
+| 0x4 |
+|_____|0x8
+|     |
+|     |
+|_____|0x12
+|     |
+|     |
+|_____|0x16
 
+Minne plassert i kategorier:
+__________
+|_c1_|____|_________
+|_c2_|____|____|____|
+|_c3_|_________
+|_c4_|____|____|
+|_c5_|
 
-typedef struct Matoversikt {
-   Ingrediens fisk[2];
-   Ingrediens * kjott;
-   Ingrediens * meieri_and_egg;
-   Ingrediens * plantebasert;
-} Matoversikt;
-
-#define NUMBER_OF_ELEMENTS_1 5
-#define NUMBER_OF_ELEMENTS_2 5
 */
 
 /*
-Framgangsmetode:
-1) Allokering og deallokering til å fungere
-2) Reallokering dersom avsatt minnet er for lite.
+
+
+
+Designspesifikasjoner:
+
+INTERAKSJON:
+
+- Bruker spør om en dagsmeny/ingrediensliste
+- Dagsmenyene som genereres skal ha et krav om viss mengde ulike typer i løpet av en viss tid:
+ * proteiner
+ * mineraler
+ * vitaminer
+ * karbohydrater
+ * kostfiber
+ * umettet fett
+ * flerumettet fett
+ * omega-3
+ * omega-6
+ * osv.
+
+- Man skal kunne skrive inn ulike ting man har spist og få tracket hva man har spist
+ * Da får man opp mengden næringstoffer man har fått i seg
+ * Det inkluderer advarsel om hvilke uheldige stoffer vi har fått i oss
+ * Dette kan være en av dagsmenyene
+
+- Man ønsker en viss type fordeling av mengden næringsstoffer
+ * Etterhvert vil man sette opp matplaner slik at denne fordelingen opprettholdes til størst mulig grad
+
+- Dagsmenyen skal gi en advarsel over hvor stor mengde det er av
+ * mettet fett
+ * E stoffer
+ * Andre prosesseringsstoffer
+
+- Det skal genereres flere ulike dagsmenyer slik at man har valgmuligheter
+ * Menyene skal rates utifra hvor god kombinasjon de er i forhold til det som allerede er spist
+
+- Man skal kunne sette opp krav til at menyene inneholder visse ingrediens, eller utelukker en visse ingredienser
+
+- Hvor stor mengde av hver ingrediens porsjon skal være med
+
+- Man kan se oversikt over hvilke næringsstoffer man mangler, og få opp ingredienser som inneholder dette næringsstoffet sortert etter mengde per gram
+
+DATAOPPSETT:
+
+- Legge til ingrediens (legge til en tekstfil)
+ * Utvide tabellen over næringsstoffer etterhvert som næringsstoffer blir oppdaget
+- Lagre ingrediensliste (i tekst-fil format)
+- Sortering i forhold til ulike typer næringstoffer (lagres i vektorformat)
+- Oversikt over fordelingen mellom de ulike type næringsstoffene (lagres som prosentandeler av hvilken mat jeg får i meg)
+- Lagre næringsstoff med 1 enhets-verdier (så si hva typisk 1 posjon vil bidra med)
+
+
+Utviklingsplan:
+1) 
+2) 
+
 */
 
-//int** 
-void allocate_array(int ** p, int row, int col){
-   
-   int i = 0;
-   int j = 0;
+void make_category(){
 
-   p = (int**)malloc(row * sizeof(*p));   
-
-   for(i=0; i < row; i++){
-      p[i] = (int*)malloc(col * sizeof(*(p[i])));
-   }
-
-   //return p;
+   return 
 }
-/*
-void reallocate_array_coloumns(int **p, int row, int new_col){
-   for (int i = 0; i < row; i++){
-      p[i] = realloc(p[i], new_col * sizeof(*p[i]));
-      if (p[i] == NULL){
-         printf("Error: could not reallocate new memmory size of %i coloumns to p[%i]", new_col, i);
-         return;
-      }
-      return;
-   }
-}
-*/
-
-void deallocate_array(int ** p, int row){
-   
-   for (int i = 0; i < row; i++){
-      free(p[i]);
-      p[i] = NULL;
-   }
- 
-   free(p);
-   p = NULL;
-}
-
-/*
-void initialize_array(int ** p, int row, int col, int multiplier){
-   for (int i = 0; i < row; ++i)
-   {
-      for (int j = 0; j < col; ++j)
-      {
-         p[i][j] = i*multiplier;
-      }
-   }
-}
-
-/*
-void add_sentence_to_array(int ** p, int row, int col, int row_nr){
-   snprintf(p[row_nr], col, "Hei");
-}*/
-
-/*
-void print_array(int ** p, int row, int col){
-
-   for (int i = 0; i < row; ++i)
-   {
-      for (int j = 0; j < col; ++j)
-      {
-         printf("%i", p[i][j]);
-      }
-      printf("\n");
-   }
-}
-*/
 
 int main(){
    int *p;
    
-   int row = 3;
-   int col = 10;
-   int new_col = col*2;
-   int multiplier_1 = 1;
-   int multiplier_2 = 2;
-
-   printf("allocate_array:\n");
-   //p = allocate_array(p, row, col);
-   allocate_array(&p, row, col);
-/*
-   printf("initialize_array:\n");
-   initialize_array(p, row, col, multiplier_1);
-
-   printf("print_array:\n");
-   print_array(p, row, col);
-
-   printf("reallocate_array_coloumns:\n");
-   reallocate_array_coloumns(p, row, new_col);
-
-   printf("initialize_array:\n");
-   initialize_array(p, row, new_col, multiplier_2);
-   
-   //printf("add_sentence:\n");
-   //add_sentence_to_array(p, row, col, 2);
-   
-   printf("print_array:\n");
-   print_array(p, row, new_col);
-*/
-   printf("deallocate_array:\n");
-   deallocate_array(p, row);
   
    printf("finish:\n");
 
    return 0;
 
 }
-
-
